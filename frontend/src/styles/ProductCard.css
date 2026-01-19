@@ -1,0 +1,181 @@
+/* ================= PRODUCT GRID ================= */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* ================= PRODUCT CARD ================= */
+.product-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ================= IMAGE ================= */
+.product-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.08) rotate(1deg);
+  filter: brightness(1.1);
+}
+
+/* ================= PRODUCT TEXT ================= */
+.product-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #90094f; /* Deep pink/purple */
+  margin: 12px 0 6px;
+  transition: color 0.3s ease;
+}
+
+.product-card:hover .product-name {
+  color: #ff4081; /* Lighter pink on hover */
+}
+
+.product-price {
+  font-size: 16px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+.product-card:hover .product-price {
+  color: #e67e22; /* Highlight price on hover */
+}
+
+/* ================= BUTTONS ================= */
+.cart-btn,
+.view-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.cart-btn {
+  background: #ff7f50;
+  color: #fff;
+  margin-top: 10px;
+}
+
+.cart-btn:hover {
+  background: #ff5f2e;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.view-btn {
+  display: inline-block;
+  background: #ff7f50;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+  margin-top: 8px;
+}
+
+.view-btn:hover {
+  background: #ff5f2e;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ================= ADMIN ACTIONS ================= */
+.admin-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.edit-btn {
+  background: #4caf50;
+  color: #fff;
+  text-decoration: none;
+}
+
+.edit-btn:hover {
+  background: #43a047;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.delete-btn {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #e53935;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+
+  .product-card {
+    padding: 12px;
+  }
+
+  .product-image {
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .product-card {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .product-image {
+    height: 140px;
+  }
+}

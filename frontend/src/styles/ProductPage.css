@@ -1,0 +1,90 @@
+/* ---------------- PAGE WRAPPER ---------------- */
+.product-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 20px 60px;
+  background: linear-gradient(135deg, #fff0f7, #ffe4f2);
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------------- CARD ---------------- */
+.product-page-card {
+  width: 100%;
+  max-width: 620px;
+  background: #ffffff;
+  padding: 28px 26px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  animation: fadeUp 0.6s ease;
+}
+
+/* ---------------- TITLE ---------------- */
+.product-page-card h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #90094f;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* ---------------- IMAGE ---------------- */
+.product-page-image {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------------- DETAILS ---------------- */
+.product-page-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #d72878;
+  margin-bottom: 10px;
+}
+
+.product-page-description {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* ---------------- MESSAGES ---------------- */
+.product-page-message {
+  margin-top: 120px;
+  font-size: 18px;
+  color: #90094f;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ---------------- ANIMATION ---------------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 480px) {
+  .product-page-card {
+    padding: 22px 18px;
+  }
+
+  .product-page-card h2 {
+    font-size: 24px;
+  }
+
+  .product-page-price {
+    font-size: 16px;
+  }
+}
