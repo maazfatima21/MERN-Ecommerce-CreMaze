@@ -1,150 +1,105 @@
-/* ---------------- PAGE ---------------- */
+/* Page wrapper */
 .add-product-page {
-  max-width: 520px;
-  margin: 60px auto;
-  padding: 35px 30px;
-  background: rgba(255, 240, 248, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 18px;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.1);
-  font-family: "Poppins", sans-serif;
-  animation: fadeUp 0.6s ease;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* ---------------- TITLE ---------------- */
-.add-product-title {
+/* Heading */
+.add-product-page h2 {
   text-align: center;
-  font-size: 26px;
-  color: #90094f;
   margin-bottom: 20px;
+  color: #6a1b4d;
 }
 
-/* ---------------- STATUS ---------------- */
-.add-product-status {
+/* Status message */
+.add-product-page p {
   text-align: center;
   margin-bottom: 15px;
-  font-size: 14px;
-  color: #90094f;
+  font-weight: 500;
 }
 
-/* ---------------- SAMPLE PRODUCTS ---------------- */
+/* Sample products section */
+.sample-products {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .sample-products h4 {
   margin-bottom: 10px;
-  color: #6d053b;
+  color: #444;
 }
 
-.sample-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.sample-btn {
-  padding: 6px 14px;
+.sample-products button {
+  margin: 5px;
+  padding: 6px 12px;
   border-radius: 20px;
   border: none;
-  background: #f9b7d4;
-  color: #90094f;
-  font-size: 13px;
+  background: #f3d9eb;
+  color: #6a1b4d;
   cursor: pointer;
-  transition: all 0.25s ease;
+  font-size: 14px;
+  transition: 0.3s;
 }
 
-.sample-btn:hover {
-  background: #90094f;
-  color: #fff;
-  transform: translateY(-2px);
+.sample-products button:hover {
+  background: #e9bfe0;
 }
 
-/* ---------------- FORM ---------------- */
+/* Form */
 .add-product-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 14px;
 }
 
+/* Inputs & textarea */
 .add-product-form input,
 .add-product-form textarea {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1.5px solid #ddd;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
   font-size: 14px;
-  font-family: inherit;
-  transition: border 0.25s ease, box-shadow 0.25s ease;
 }
 
 .add-product-form textarea {
-  resize: none;
-  min-height: 90px;
+  resize: vertical;
+  min-height: 80px;
 }
 
-.add-product-form input:focus,
-.add-product-form textarea:focus {
-  outline: none;
-  border-color: #90094f;
-  box-shadow: 0 0 0 2px rgba(144,9,79,0.2);
-}
-
-/* ---------------- IMAGE PREVIEW ---------------- */
-.image-preview {
-  max-width: 200px;
-  border-radius: 12px;
-  margin-top: 5px;
-  align-self: center;
-  animation: zoomIn 0.4s ease;
-}
-
-/* ---------------- SUBMIT BUTTON ---------------- */
-.submit-btn {
-  margin-top: 10px;
-  padding: 12px;
+/* File input */
+.add-product-form input[type="file"] {
   border: none;
+}
+
+/* Image preview */
+.image-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
   border-radius: 10px;
-  background: #90094f;
+  margin: 10px auto;
+  display: block;
+  border: 1px solid #ddd;
+}
+
+/* Submit button */
+.add-product-form button {
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  background: linear-gradient(135deg, #7b1fa2, #d81b60);
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.submit-btn:hover {
-  background: #d72878;
+.add-product-form button:hover {
   transform: translateY(-2px);
-}
-
-.submit-btn:active {
-  transform: scale(0.96);
-}
-
-/* ---------------- ANIMATIONS ---------------- */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* ---------------- RESPONSIVE ---------------- */
-@media (max-width: 480px) {
-  .add-product-page {
-    margin: 40px 15px;
-    padding: 25px 20px;
-  }
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
