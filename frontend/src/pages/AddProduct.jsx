@@ -17,9 +17,9 @@ const AddProduct = () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [status, setStatus] = useState("");
-
+  
   useEffect(() => {
-    const isAdmin = localStorage.getItem("isAdmin");
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
     if (!isAdmin) {
       alert("Access denied! Only admins can add products.");
       navigate("/");

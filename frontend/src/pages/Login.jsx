@@ -53,9 +53,10 @@ const Login = () => {
 
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data));
+        localStorage.setItem("isAdmin", res.data.isAdmin ? "true" : "false");
 
         setStatus("Login successful! Redirecting...");
-        setTimeout(() => navigate("/courses"), 1000);
+        setTimeout(() => navigate("/admin/add-product"), 1000);
       } else {
         await API.post("/users/register", {
           firstname: formData.firstname,
