@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../api/axios";
 import "../styles/AddProduct.css";
 
 const sampleProducts = [
-  { name: "", 
-    price: "", 
-    description: ""
-   },
-  
+  { name: "Sample Product", price: 100, description: "Sample description" },
 ];
 
 const AddProduct = () => {
@@ -17,7 +13,7 @@ const AddProduct = () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [status, setStatus] = useState("");
-  
+
   useEffect(() => {
     const isAdmin = localStorage.getItem("isAdmin") === "true";
     if (!isAdmin) {
@@ -51,7 +47,7 @@ const AddProduct = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.post("/api/products", data, {
+      await API.post("/products", data, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -67,32 +63,28 @@ const AddProduct = () => {
     }
   };
 
-  const fillSample = (product) => {
-    setFormData({ name: product.name, description: product.description, price: product.price });
-  };
+  const fillSample = (product) => setFormData(product);
 
   return (
-    <div style={{ maxWidth: "500px", margin: "50px auto" }}>
+    <div className="add-product-page">
       <h2>Add Product (Admin)</h2>
       {status && <p>{status}</p>}
 
-      <div style={{ marginBottom: "20px" }}>
+      <div className="sample-products">
         <h4>Sample Products:</h4>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-          {sampleProducts.map((p, i) => (
-            <button key={i} onClick={() => fillSample(p)} style={{ padding: "5px 10px", cursor: "pointer" }}>
-              {p.name}
-            </button>
-          ))}
-        </div>
+        {sampleProducts.map((p, i) => (
+          <button key={i} onClick={() => fillSample(p)}>
+            {p.name}
+          </button>
+        ))}
       </div>
 
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+      <form onSubmit={handleSubmit} className="add-product-form">
         <input type="text" name="name" placeholder="Product Name" value={formData.name} onChange={handleChange} required />
         <textarea name="description" placeholder="Product Description" value={formData.description} onChange={handleChange} />
         <input type="number" name="price" placeholder="Price" value={formData.price} onChange={handleChange} required />
         <input type="file" accept="image/*" onChange={handleFileChange} />
-        {preview && <img src={preview} alt="Preview" style={{ maxWidth: "200px", marginTop: "10px" }} />}
+        {preview && <img src={preview} alt="Preview" className="image-preview" />}
         <button type="submit">Add Product</button>
       </form>
     </div>
