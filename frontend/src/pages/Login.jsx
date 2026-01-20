@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../api/axios";
 import "../styles/Login.css";
 
 const Login = () => {
@@ -46,16 +46,18 @@ const Login = () => {
 
     try {
       if (isLogin) {
-        const res = await axios.post("/api/users/login", { email: formData.email, password: formData.password });
+        const res = await API.post("/users/login", {
+        email: formData.email,
+        password: formData.password
+      });
 
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("firstname", res.data.firstname);
-        localStorage.setItem("lastname", res.data.lastname);
+        localStorage.setItem("user", JSON.stringify(res.data));
 
         setStatus("Login successful! Redirecting...");
         setTimeout(() => navigate("/courses"), 1000);
       } else {
-        await axios.post("/api/users/register", {
+        await API.post("/users/register", {
           firstname: formData.firstname,
           lastname: formData.lastname,
           email: formData.email,
@@ -114,7 +116,7 @@ const Login = () => {
           {["email", "password"].map((field) => (
             <div className="input-group" key={field}>
               <input
-                type={field}
+                type={field === "password" ? "password" : "email"}
                 name={field}
                 value={formData[field]}
                 onChange={handleChange}

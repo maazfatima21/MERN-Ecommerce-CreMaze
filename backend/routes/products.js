@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product'); // <-- updated
+const Product = require('../models/Product');
 const { protect, admin } = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
@@ -8,7 +8,7 @@ const path = require('path');
 // ---------------- Multer Config ----------------
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Ensure /uploads folder exists
+    cb(null, path.join(__dirname, '../uploads'));
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -20,15 +20,18 @@ const fileFilter = (req, file, cb) => {
   const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
 
-  if (extname && mimetype) cb(null, true);
-  else cb('Error: Only images are allowed!');
+  if (extname && mimetype) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only images are allowed!'), false);
+  }
 };
 
 const upload = multer({ storage, fileFilter });
 
 // ------------------- Routes -------------------
 
-// GET all products
+// GET all products (Public)
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
@@ -38,7 +41,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET single product by ID
+// GET single product by ID (Public)
 router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -49,7 +52,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// CREATE a product (Admin only)
+// CREATE product (Admin only)
 router.post('/', protect, admin, upload.single('image'), async (req, res) => {
   const { name, description, price } = req.body;
 
@@ -57,7 +60,7 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
     const product = new Product({
       name,
       description,
-      price,
+      price: Number(price),
       image: req.file ? req.file.filename : null
     });
 
@@ -68,13 +71,19 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
   }
 });
 
-// UPDATE a product (Admin only)
+// UPDATE product (Admin only)
 router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
   try {
     const updateData = { ...req.body };
+    if (updateData.price) updateData.price = Number(updateData.price);
     if (req.file) updateData.image = req.file.filename;
 
-    const product = await Product.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+
     if (!product) return res.status(404).json({ message: 'Product not found' });
 
     res.json(product);
@@ -83,11 +92,12 @@ router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
   }
 });
 
-// DELETE a product (Admin only)
+// DELETE product (Admin only)
 router.delete('/:id', protect, admin, async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
+
     res.json({ message: 'Product deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
