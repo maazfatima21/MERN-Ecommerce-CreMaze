@@ -16,6 +16,7 @@ import Cart from './pages/Cart';
 
 import ProductProvider from "./context/ProductContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import AdminRoute from "./pages/AdminRoute";
 
 function App() {
   return (
@@ -78,22 +79,24 @@ function App() {
           />
 
           {/* ---------- ADMIN-ONLY ROUTES ---------- */}
-          <Route
-            path="/add-product"
-            element={
-              <ProtectedRoute adminOnly={true}>
-                <AddProduct />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/edit-product/:id"
-            element={
-              <ProtectedRoute adminOnly={true}>
-                <EditProduct />
-              </ProtectedRoute>
-            }
-          />
+<Route
+  path="/admin/add-product"
+  element={
+    <AdminRoute>
+      <AddProduct />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/edit-product/:id"
+  element={
+    <AdminRoute>
+      <EditProduct />
+    </AdminRoute>
+  }
+/>
+
         </Routes>
 
         <Footer />

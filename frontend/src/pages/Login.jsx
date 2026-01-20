@@ -53,7 +53,7 @@ const Login = () => {
 
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data));
-        localStorage.setItem("isAdmin", res.data.isAdmin ? "true" : "false");
+        localStorage.setItem("isAdmin", res.data.isAdmin );
 
         setStatus("Login successful! Redirecting...");
         setTimeout(() => navigate("/"), 1000);

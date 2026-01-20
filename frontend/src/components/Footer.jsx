@@ -74,7 +74,7 @@ function Footer() {
       <div className="footer-bottom">
         &copy; 2025 CreMaze | All rights reserved.
       </div>
-      <img src="footer bg.png" class="footer-right-img" alt="" />
+      <img src="footer bg.png" className="footer-right-img" alt="" />
 
     </footer>
   );

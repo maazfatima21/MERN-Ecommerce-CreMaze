@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../api/axios";
 import "../styles/ProductCard.css";
 
 function ProductCard({ product, onDelete }) {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
+  const [deleting, setDeleting] = useState(false);
 
   // 🛒 ADD TO CART
   const handleAddToCart = () => {
@@ -27,6 +28,7 @@ function ProductCard({ product, onDelete }) {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
+      setDeleting(true);
       const token = localStorage.getItem("token");
 
       await API.delete(`/products/${product._id}`, {
@@ -39,18 +41,23 @@ function ProductCard({ product, onDelete }) {
     } catch (err) {
       console.error(err);
       alert("Failed to delete product");
+    } finally {
+      setDeleting(false);
     }
   };
 
   return (
     <div className="product-card">
-      {product.image && (
-        <img
-          src={`http://localhost:5000/uploads/${product.image}`}
-          alt={product.name}
-          className="product-image"
-        />
-      )}
+      {/* 🖼 IMAGE WITH FALLBACK */}
+      <img
+        src={
+          product.image
+            ? `http://localhost:5000/uploads/${product.image}`
+            : "/no-image.png"
+        }
+        alt={product.name}
+        className="product-image"
+      />
 
       <h3 className="product-name">{product.name}</h3>
       <p className="product-price">₹{product.price}</p>
@@ -65,6 +72,7 @@ function ProductCard({ product, onDelete }) {
         </button>
       </div>
 
+      {/* 🔐 ADMIN ACTIONS */}
       {isAdmin && (
         <div className="admin-actions">
           <Link
@@ -78,8 +86,9 @@ function ProductCard({ product, onDelete }) {
             type="button"
             onClick={handleDelete}
             className="delete-btn"
+            disabled={deleting}
           >
-            Delete
+            {deleting ? "Deleting..." : "Delete"}
           </button>
         </div>
       )}

@@ -45,7 +45,8 @@ const Products = () => {
       <div className="products-header">
         <h1>All Products</h1>
         {isAdmin && (
-          <button className="add-product-btn" onClick={() => navigate("/admin/add-product")}>
+          <button className="add-product-btn" 
+          onClick={() => navigate("/admin/add-product")}>
             + Add Product
           </button>
         )}
