@@ -16,7 +16,7 @@ import Cart from './pages/Cart';
 
 import ProductProvider from "./context/ProductContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import AdminRoute from "./pages/AdminRoute";
+import Checkout from "./pages/Checkout";
 
 function App() {
   return (
@@ -77,26 +77,32 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
 
           {/* ---------- ADMIN-ONLY ROUTES ---------- */}
-<Route
-  path="/admin/add-product"
-  element={
-    <AdminRoute>
-      <AddProduct />
-    </AdminRoute>
-  }
-/>
-
-<Route
-  path="/edit-product/:id"
-  element={
-    <AdminRoute>
-      <EditProduct />
-    </AdminRoute>
-  }
-/>
-
+          <Route
+            path="/add-product"
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <AddProduct />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/edit-product/:id"
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <EditProduct />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
 
         <Footer />
