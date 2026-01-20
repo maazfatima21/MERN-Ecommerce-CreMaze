@@ -56,7 +56,7 @@ const Login = () => {
         localStorage.setItem("isAdmin", res.data.isAdmin ? "true" : "false");
 
         setStatus("Login successful! Redirecting...");
-        setTimeout(() => navigate("/admin/add-product"), 1000);
+        setTimeout(() => navigate("/"), 1000);
       } else {
         await API.post("/users/register", {
           firstname: formData.firstname,

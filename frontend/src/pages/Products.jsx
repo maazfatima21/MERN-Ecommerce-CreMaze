@@ -5,10 +5,9 @@ import ProductCard from "../components/ProductCard";
 import "../styles/Products.css";
 import { ProductContext } from "../context/ProductContext";
 
-function Products() {
+const Products = () => {
   const { search } = useContext(ProductContext);
   const navigate = useNavigate();
-
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("");
@@ -17,36 +16,21 @@ function Products() {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await API.get("/products");
+        setProducts(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchProducts();
   }, []);
 
-  const fetchProducts = async () => {
-    try {
-      const res = await API.get("/products");
-      setProducts(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleDelete = (id) => setProducts(products.filter((p) => p._id !== id));
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
-
-    try {
-      const token = localStorage.getItem("token");
-      await API.delete(`/products/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setProducts(products.filter((p) => p._id !== id));
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || "Error deleting product");
-    }
-  };
-
-  // SEARCH + SORT
   const filteredProducts = [...products]
     .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
@@ -60,30 +44,20 @@ function Products() {
     <div className="products-page">
       <div className="products-header">
         <h1>All Products</h1>
-
         {isAdmin && (
-          <button
-            className="add-product-btn"
-            onClick={() => navigate("/admin/add-product")}
-          >
+          <button className="add-product-btn" onClick={() => navigate("/admin/add-product")}>
             + Add Product
           </button>
         )}
 
-        <select
-          className="sort-select"
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-        >
+        <select value={sort} onChange={(e) => setSort(e.target.value)} className="sort-select">
           <option value="">Sort</option>
           <option value="low">Price: Low → High</option>
           <option value="high">Price: High → Low</option>
           <option value="new">Newest</option>
         </select>
 
-        <button className="filter-btn" onClick={() => setShowFilter(!showFilter)}>
-          Filters
-        </button>
+        <button className="filter-btn" onClick={() => setShowFilter(!showFilter)}>Filters</button>
       </div>
 
       {showFilter && (
@@ -99,23 +73,12 @@ function Products() {
 
       {loading ? (
         <div className="products-grid">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="skeleton-card"></div>
-          ))}
+          {[...Array(6)].map((_, i) => <div key={i} className="skeleton-card" />)}
         </div>
       ) : filteredProducts.length ? (
         <div className="products-grid">
           {filteredProducts.map((product) => (
-            <div key={product._id} className="product-card-wrapper">
-              <ProductCard product={product} />
-
-              {isAdmin && (
-                <div className="admin-buttons">
-                  <button onClick={() => navigate(`/admin/edit-product/${product._id}`)}>Edit</button>
-                  <button onClick={() => handleDelete(product._id)}>Delete</button>
-                </div>
-              )}
-            </div>
+            <ProductCard key={product._id} product={product} onDelete={handleDelete} />
           ))}
         </div>
       ) : (
@@ -123,6 +86,6 @@ function Products() {
       )}
     </div>
   );
-}
+};
 
 export default Products;

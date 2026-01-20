@@ -126,6 +126,44 @@ nav .logo {
   height: 45px;
   object-fit: contain;
 }
+.logout-btn {
+  margin-left: 18px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #a85e04;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.logout-btn:hover {
+  background: #592408;
+  color: #ffffff;
+  transform: scale(1.05);
+  border-color: none;
+}
+
+.sidebar-logout {
+  margin-top: auto; 
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #a85e04;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sidebar-logout:hover {
+  background: #592408;
+  color: #ffffff;
+  transform: scale(1.05);
+  border-color: #984113;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -217,10 +255,16 @@ nav .logo {
   .hamburger {
     display: flex;
   }
+  .logout-btn {
+    display: none; 
+  }
 }
 
 @media (min-width: 1025px) {
   .sidebar {
     display: none !important;
+  }
+  .sidebar-logout {
+    display: none; 
   }
 }

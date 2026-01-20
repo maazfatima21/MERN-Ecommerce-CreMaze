@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import "../styles/EditProduct.css";
 
-function EditProduct() {
+const EditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -13,6 +13,12 @@ function EditProduct() {
   const [status, setStatus] = useState("");
 
   useEffect(() => {
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    if (!isAdmin) {
+      alert("Access denied! Only admins can edit products.");
+      navigate("/");
+    }
+
     const fetchProduct = async () => {
       try {
         const res = await API.get(`/products/${id}`);
@@ -23,7 +29,7 @@ function EditProduct() {
       }
     };
     fetchProduct();
-  }, [id]);
+  }, [id, navigate]);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -62,20 +68,19 @@ function EditProduct() {
 
   return (
     <div className="edit-product-page">
-      <div className="edit-product-card">
-        <h2>Edit Product</h2>
-        {status && <p className={status.toLowerCase().includes("success") ? "success" : "error"}>{status}</p>}
-        <form onSubmit={handleSubmit} className="edit-product-form">
-          <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Product Name" required />
-          <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Product Description" />
-          <input type="number" name="price" value={formData.price} onChange={handleChange} placeholder="Price" required />
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-          {preview && <img src={preview} alt="Preview" className="image-preview" />}
-          <button type="submit" className="update-btn">Update Product</button>
-        </form>
-      </div>
+      <h2>Edit Product</h2>
+      {status && <p className={status.toLowerCase().includes("success") ? "success" : "error"}>{status}</p>}
+
+      <form onSubmit={handleSubmit} className="edit-product-form">
+        <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Product Name" required />
+        <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Product Description" />
+        <input type="number" name="price" value={formData.price} onChange={handleChange} placeholder="Price" required />
+        <input type="file" accept="image/*" onChange={handleFileChange} />
+        {preview && <img src={preview} alt="Preview" className="image-preview" />}
+        <button type="submit">Update Product</button>
+      </form>
     </div>
   );
-}
+};
 
 export default EditProduct;

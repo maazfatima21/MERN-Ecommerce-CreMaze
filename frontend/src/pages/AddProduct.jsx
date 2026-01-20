@@ -4,7 +4,7 @@ import API from "../api/axios";
 import "../styles/AddProduct.css";
 
 const sampleProducts = [
-  { name: "Sample Product", price: 100, description: "Sample description" },
+  { name: "Mango Ice Cream", price: 190, description: "Fresh mango flavour" },
 ];
 
 const AddProduct = () => {
@@ -22,8 +22,7 @@ const AddProduct = () => {
     }
   }, [navigate]);
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -48,10 +47,7 @@ const AddProduct = () => {
     try {
       const token = localStorage.getItem("token");
       await API.post("/products", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` },
       });
 
       setStatus("Product added successfully!");
@@ -63,7 +59,7 @@ const AddProduct = () => {
     }
   };
 
-  const fillSample = (product) => setFormData(product);
+  const fillSample = (product) => setFormData({ ...product });
 
   return (
     <div className="add-product-page">
@@ -74,7 +70,7 @@ const AddProduct = () => {
         <h4>Sample Products:</h4>
         {sampleProducts.map((p, i) => (
           <button key={i} onClick={() => fillSample(p)}>
-            {p.name}
+            {p.name || "Sample"}
           </button>
         ))}
       </div>

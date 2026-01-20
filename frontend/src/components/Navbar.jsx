@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {  FaShoppingCart,  FaUser,  FaSearch} from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaSearch } from 'react-icons/fa';
 import '../styles/Navbar.css';
 
 function Navbar() {
@@ -56,8 +56,9 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('isAdmin');
+    localStorage.removeItem('token'); // clear token too
     setSidebarOpen(false);
-    navigate('/');
+    navigate('/login');
     window.location.reload();
   };
 
@@ -110,6 +111,12 @@ function Navbar() {
           </div>
 
           <FaUser className="icon" onClick={handleUserClick} />
+
+          {isLoggedIn && (
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
         </div>
       </nav>
 
@@ -150,11 +157,12 @@ function Navbar() {
           <Link to="/contact" onClick={() => setSidebarOpen(false)}>Contact Us</Link>
         </div>
 
-        {isLoggedIn && (
+        <div className="sidebar-logout-wrapper">
           <button className="sidebar-logout" onClick={handleLogout}>
             Logout
           </button>
-        )}
+        </div>
+
       </div>
     </>
   );
