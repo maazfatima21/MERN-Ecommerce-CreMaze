@@ -22,8 +22,7 @@ function ProductCard({ product, onDelete }) {
     localStorage.setItem("cart", JSON.stringify(cart));
     alert("Added to cart 🛒");
   };
-
-  // 🗑 DELETE PRODUCT (ADMIN)
+  // 🗑️ DELETE PRODUCT
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
@@ -48,7 +47,6 @@ function ProductCard({ product, onDelete }) {
 
   return (
     <div className="product-card">
-      {/* 🖼 IMAGE WITH FALLBACK */}
       <img
         src={
           product.image
@@ -72,7 +70,6 @@ function ProductCard({ product, onDelete }) {
         </button>
       </div>
 
-      {/* 🔐 ADMIN ACTIONS */}
       {isAdmin && (
         <div className="admin-actions">
           <Link
