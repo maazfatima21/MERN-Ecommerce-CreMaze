@@ -104,5 +104,17 @@
     padding-left: 0;
     padding-right: 0;
   }
-  
+}
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+  }
+  .add-product-btn,
+  .sort-select{
+    max-width: 30%;
+    font-size: 12px;
+    margin: 0 auto;
+  }
+
 }

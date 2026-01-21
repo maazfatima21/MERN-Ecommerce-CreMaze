@@ -11,12 +11,12 @@ import Login from "./pages/Login";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import AddProduct from "./pages/AddProduct";
-import EditProduct from "./pages/EditProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 
 import ProductProvider from "./context/ProductContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import EditProduct from "./pages/EditProduct";
 
 function App() {
   return (
