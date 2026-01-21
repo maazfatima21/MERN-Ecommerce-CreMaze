@@ -50,7 +50,7 @@ const Products = () => {
         {isAdmin && (
           <button
             className="add-product-btn"
-            onClick={() => navigate("/admin/add-product")}
+            onClick={() => navigate("/add-product")}
           >
             + Add Product
           </button>

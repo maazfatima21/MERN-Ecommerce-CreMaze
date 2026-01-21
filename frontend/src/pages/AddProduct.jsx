@@ -3,40 +3,50 @@ import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import "../styles/AddProduct.css";
 
-const sampleProducts = [
-  { name: "Mango Ice Cream", price: 190, description: "Fresh mango flavour" },
-];
-
 const AddProduct = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: "", description: "", price: "" });
+
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    price: "",
+  });
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  // 🔐 Admin check
   useEffect(() => {
     const isAdmin = localStorage.getItem("isAdmin") === "true";
     if (!isAdmin) {
-      alert("Access denied! Only admins can add products.");
+      alert("Access denied! Admins only.");
       navigate("/");
     }
   }, [navigate]);
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => setPreview(reader.result);
       reader.readAsDataURL(file);
-    } else setPreview(null);
+    } else {
+      setPreview(null);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus("Processing...");
+    setLoading(true);
+    setStatus("");
 
     const data = new FormData();
     data.append("name", formData.name);
@@ -46,43 +56,73 @@ const AddProduct = () => {
 
     try {
       const token = localStorage.getItem("token");
+
       await API.post("/products", data, {
-        headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
       });
 
-      setStatus("Product added successfully!");
+      setStatus("✅ Product added successfully!");
       setFormData({ name: "", description: "", price: "" });
       setImage(null);
       setPreview(null);
+
+      // optional redirect after success
+      setTimeout(() => navigate("/products"), 1200);
     } catch (err) {
-      setStatus(err.response?.data?.message || "Error adding product");
+      setStatus(err.response?.data?.message || "❌ Failed to add product");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const fillSample = (product) => setFormData({ ...product });
-
   return (
     <div className="add-product-page">
-      <h2>Add Product (Admin)</h2>
-      {status && <p>{status}</p>}
+      <div className="add-product-card">
+        <h2>Add New Product</h2>
+        <p className="subtitle">Admin dashboard</p>
 
-      <div className="sample-products">
-        <h4>Sample Products:</h4>
-        {sampleProducts.map((p, i) => (
-          <button key={i} onClick={() => fillSample(p)}>
-            {p.name || "Sample"}
+        {status && <p className="status-msg">{status}</p>}
+
+        <form onSubmit={handleSubmit} className="add-product-form">
+          <input
+            type="text"
+            name="name"
+            placeholder="Product Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+
+          <textarea
+            name="description"
+            placeholder="Product Description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+
+          <input
+            type="number"
+            name="price"
+            placeholder="Price (₹)"
+            value={formData.price}
+            onChange={handleChange}
+            required
+          />
+
+          <input type="file" accept="image/*" onChange={handleFileChange} />
+
+          {preview && (
+            <img src={preview} alt="Preview" className="image-preview" />
+          )}
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Adding..." : "Add Product"}
           </button>
-        ))}
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit} className="add-product-form">
-        <input type="text" name="name" placeholder="Product Name" value={formData.name} onChange={handleChange} required />
-        <textarea name="description" placeholder="Product Description" value={formData.description} onChange={handleChange} />
-        <input type="number" name="price" placeholder="Price" value={formData.price} onChange={handleChange} required />
-        <input type="file" accept="image/*" onChange={handleFileChange} />
-        {preview && <img src={preview} alt="Preview" className="image-preview" />}
-        <button type="submit">Add Product</button>
-      </form>
     </div>
   );
 };
