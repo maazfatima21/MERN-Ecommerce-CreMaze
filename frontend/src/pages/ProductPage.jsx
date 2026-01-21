@@ -23,6 +23,7 @@ function ProductPage() {
     fetchProduct();
   }, [id]);
 
+  
   if (loading)
     return <p className="product-page-message">Loading...</p>;
 
