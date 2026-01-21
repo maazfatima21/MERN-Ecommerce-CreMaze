@@ -7,25 +7,46 @@ function ProductPage() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchProduct = async () => {
       try {
         const res = await API.get(`/products/${id}`);
-        setProduct(res.data);
+        if (isMounted) setProduct(res.data);
       } catch (err) {
         console.error(err);
+        if (isMounted) setError("Failed to load product. Please try again later.");
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     fetchProduct();
+
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
-  
+  useEffect(() => {
+    if (product) {
+      document.title = `${product.name} - My Store`;
+    }
+  }, [product]);
+
+  const handleAddToCart = () => {
+    console.log(`${product.name} added to cart`);
+    // Add actual cart logic here
+  };
+
   if (loading)
-    return <p className="product-page-message">Loading...</p>;
+    return <div className="loader">Loading...</div>;
+
+  if (error)
+    return <p className="product-page-message">{error}</p>;
 
   if (!product)
     return <p className="product-page-message">Product not found.</p>;
@@ -35,21 +56,33 @@ function ProductPage() {
       <div className="product-page-card">
         <h2>{product.name}</h2>
 
-        {product.image && (
-          <img
-            src={`http://localhost:5000/uploads/${product.image}`}
-            alt={product.name}
-            className="product-page-image"
-          />
-        )}
+        <img
+          src={product.image ? `http://localhost:5000/uploads/${product.image}` : "/placeholder.png"}
+          alt={product.name || "Product image"}
+          className="product-page-image"
+        />
 
-        <p className="product-page-price">
-          Price: ₹{product.price}
+        <p className="product-page-price">Price: ₹{product.price}</p>
+
+        <p className="product-page-stock">
+          {product.stock > 0 ? "In Stock" : "Out of Stock"}
         </p>
+
+        {product.rating && (
+          <p className="product-page-rating">Rating: {product.rating} / 5</p>
+        )}
 
         <p className="product-page-description">
           {product.description || "No description available"}
         </p>
+
+        <button
+          className="product-page-button"
+          onClick={handleAddToCart}
+          disabled={product.stock === 0}
+        >
+          {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+        </button>
       </div>
     </div>
   );

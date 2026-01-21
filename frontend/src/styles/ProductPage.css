@@ -1,90 +1,132 @@
-/* ---------------- PAGE WRAPPER ---------------- */
+/* ProductPage.css */
+
 .product-page {
-  width: 100%;
-  min-height: 100vh;
-  padding: 40px 20px 60px;
-  background: linear-gradient(135deg, #fff0f7, #ffe4f2);
-  font-family: "Poppins", sans-serif;
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
 }
 
-/* ---------------- CARD ---------------- */
 .product-page-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 500px;
   width: 100%;
-  max-width: 620px;
-  background: #ffffff;
-  padding: 28px 26px;
-  border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  animation: fadeUp 0.6s ease;
-}
-
-/* ---------------- TITLE ---------------- */
-.product-page-card h2 {
-  font-size: 30px;
-  font-weight: 700;
-  color: #90094f;
-  margin-bottom: 16px;
   text-align: center;
+  transition: transform 0.2s ease-in-out;
 }
 
-/* ---------------- IMAGE ---------------- */
+.product-page-card:hover {
+  transform: translateY(-5px);
+}
+
 .product-page-image {
   width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 18px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
-/* ---------------- DETAILS ---------------- */
 .product-page-price {
-  font-size: 18px;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #d72878;
-  margin-bottom: 10px;
+  color: #2c3e50;
+  margin: 10px 0;
+}
+
+.product-page-stock {
+  font-size: 1rem;
+  margin: 5px 0 15px;
+  font-weight: 500;
+  color: #27ae60; /* green for in stock */
+}
+
+.product-page-stock:empty {
+  display: none;
+}
+
+.product-page-stock.out-of-stock {
+  color: #e74c3c; /* red for out of stock */
+}
+
+.product-page-rating {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #f39c12; /* star color */
 }
 
 .product-page-description {
-  font-size: 15px;
-  color: #444;
-  line-height: 1.6;
+  font-size: 1rem;
+  color: #555;
+  margin: 15px 0 25px;
 }
 
-/* ---------------- MESSAGES ---------------- */
+.product-page-button {
+  background-color: #3498db;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.product-page-button:hover:not(:disabled) {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.product-page-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
 .product-page-message {
-  margin-top: 120px;
-  font-size: 18px;
-  color: #90094f;
-  font-weight: 500;
+  font-size: 1.2rem;
+  color: #555;
   text-align: center;
+  margin-top: 50px;
 }
 
-/* ---------------- ANIMATION ---------------- */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Loader spinner */
+.loader {
+  border: 6px solid #f3f3f3; /* Light grey */
+  border-top: 6px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin: 100px auto;
+  animation: spin 1s linear infinite;
 }
 
-/* ---------------- RESPONSIVE ---------------- */
-@media (max-width: 480px) {
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
   .product-page-card {
-    padding: 22px 18px;
-  }
-
-  .product-page-card h2 {
-    font-size: 24px;
+    padding: 20px;
   }
 
   .product-page-price {
-    font-size: 16px;
+    font-size: 1.3rem;
+  }
+
+  .product-page-description {
+    font-size: 0.95rem;
+  }
+
+  .product-page-button {
+    padding: 10px 20px;
+    font-size: 0.95rem;
   }
 }
