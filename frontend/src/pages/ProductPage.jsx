@@ -18,7 +18,9 @@ function ProductPage() {
         if (isMounted) setProduct(res.data);
       } catch (err) {
         console.error(err);
-        if (isMounted) setError("Failed to load product. Please try again later.");
+        if (isMounted) {
+          setError("Failed to load product. Please try again later.");
+        }
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -38,18 +40,13 @@ function ProductPage() {
   }, [product]);
 
   const handleAddToCart = () => {
+    if (product.stock === 0) return;
     console.log(`${product.name} added to cart`);
-    // Add actual cart logic here
   };
 
-  if (loading)
-    return <div className="loader">Loading...</div>;
-
-  if (error)
-    return <p className="product-page-message">{error}</p>;
-
-  if (!product)
-    return <p className="product-page-message">Product not found.</p>;
+  if (loading) return <div className="loader">Loading...</div>;
+  if (error) return <p className="product-page-message">{error}</p>;
+  if (!product) return <p className="product-page-message">Product not found.</p>;
 
   return (
     <div className="product-page">
@@ -57,31 +54,42 @@ function ProductPage() {
         <h2>{product.name}</h2>
 
         <img
-          src={product.image ? `http://localhost:5000/uploads/${product.image}` : "/placeholder.png"}
-          alt={product.name || "Product image"}
+          src={
+            product.image
+              ? `http://localhost:5000/uploads/${product.image}`
+              : "/placeholder.png"
+          }
+          alt={product.name}
           className="product-page-image"
         />
 
+        {/* ✅ Description moved ABOVE price */}
+        <p className="product-page-description">
+          {product.description || "No description available"}
+        </p>
+
         <p className="product-page-price">Price: ₹{product.price}</p>
 
-        <p className="product-page-stock">
+        <p
+          className={`product-page-stock ${
+            product.stock > 0 ? "in-stock" : "out-of-stock"
+          }`}
+        >
           {product.stock > 0 ? "In Stock" : "Out of Stock"}
         </p>
 
         {product.rating && (
-          <p className="product-page-rating">Rating: {product.rating} / 5</p>
+          <p className="product-page-rating">
+            Rating: {product.rating} / 5
+          </p>
         )}
-
-        <p className="product-page-description">
-          {product.description || "No description available"}
-        </p>
 
         <button
           className="product-page-button"
           onClick={handleAddToCart}
           disabled={product.stock === 0}
         >
-          {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+          {product.stock > 0 ? "Add to Cart" : "Notify Me"}
         </button>
       </div>
     </div>
