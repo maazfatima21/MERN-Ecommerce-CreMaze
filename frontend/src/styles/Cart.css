@@ -1,6 +1,7 @@
 .cart-page {
   min-height: 100vh;
   padding: 40px 16px 80px;
+  border-radius: 18px;
   background: linear-gradient(135deg, #ddf8dd, #fff2e6, #ddf8dd);
 }
 .cart-page h1 {

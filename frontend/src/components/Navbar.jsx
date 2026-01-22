@@ -49,17 +49,18 @@ function Navbar() {
   };
 
   const handleUserClick = () => {
-    navigate(isLoggedIn ? '/profile' : '/login');
-    setSidebarOpen(false);
-  };
+  if (!isLoggedIn) {
+    navigate('/login');
+  }
+  setSidebarOpen(false);
+};
 
   const handleLogout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('isAdmin');
-    localStorage.removeItem('token'); // clear token too
+    localStorage.removeItem('token'); 
     setSidebarOpen(false);
     navigate('/login');
-    window.location.reload();
   };
 
   return (

@@ -13,7 +13,7 @@ import Contact from "./pages/Contact";
 import AddProduct from "./pages/AddProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-
+import AdminOrders from "./pages/AdminOrders";
 import ProductProvider from "./context/ProductContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import EditProduct from "./pages/EditProduct";
@@ -40,6 +40,7 @@ function App() {
           {/* Admin only */}
           <Route path="/add-product" element={<ProtectedRoute adminOnly><AddProduct /></ProtectedRoute>} />
           <Route path="/edit-product/:id" element={<ProtectedRoute adminOnly><EditProduct /></ProtectedRoute>} />
+          <Route path="/admin/orders" element={<ProtectedRoute adminOnly><AdminOrders /></ProtectedRoute>} />
         </Routes>
 
         <Footer />

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/Cart.css";
 
 function Cart() {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [toast, setToast] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading for better UX
     setTimeout(() => {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       setCartItems(cart);
@@ -166,9 +167,12 @@ function Cart() {
               <h2>Total: ₹{totalPrice}</h2>
             </div>
 
-            <button className="checkout-btn">
-               Checkout
+            <button  className="checkout-btn"  
+              disabled={cartItems.length === 0}
+              onClick={() => navigate("/checkout")}>
+              Checkout
             </button>
+
 
             <p className="checkout-info">
               🔒 Secure checkout · 🚚 Fast delivery · 💳 Easy payments
