@@ -49,13 +49,13 @@
   color: #fff;
   font-weight: 600;
   text-align: left;
-  font-size: 0.95rem;
+  font-size: 16px;
 }
 
 .orders-table td {
   padding: 14px;
-  border-bottom: 1px solid #eee;
-  font-size: 0.95rem;
+  border-bottom: 1px solid #59585853;
+  font-size: 16px;
   color: #343333;
 }
 
@@ -87,43 +87,4 @@
 .pending {
   color: #f0ad4e;
   font-weight: 600;
-}
-
-@media (max-width: 768px) {
-  .orders-table {
-    font-size: 0.85rem;
-  }
-
-  .orders-table thead {
-    display: none;
-  }
-
-  .orders-table,
-  .orders-table tbody,
-  .orders-table tr,
-  .orders-table td {
-    display: block;
-    width: 100%;
-  }
-
-  .orders-table tr {
-    margin-bottom: 15px;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-    padding: 10px;
-  }
-
-  .orders-table td {
-    border: none;
-    padding: 8px 10px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .orders-table td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #555;
-  }
 }
