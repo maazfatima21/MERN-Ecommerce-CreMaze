@@ -10,7 +10,7 @@
 .product-page::before {
   content: "";
   position: absolute;
-  left: 80px;
+  left: 40px;
   width: 400px;   
   height: 700px;
   background: url("/PP2.png") no-repeat center / contain;
