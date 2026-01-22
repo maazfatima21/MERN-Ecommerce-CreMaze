@@ -1,25 +1,33 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/axios";
-import "../styles/Orders.css";
+import "../styles/MyOrders.css";
 
 function MyOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchMyOrders = async () => {
-      try {
-        const { data } = await API.get("/orders/myorders");
-        setOrders(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchMyOrders = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-    fetchMyOrders();
-  }, []);
+      const { data } = await API.get("/orders/myorders", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setOrders(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchMyOrders();
+}, []);
+
 
   if (loading) return <h2>Loading orders...</h2>;
 

@@ -77,13 +77,15 @@ function Navbar() {
         <div className="nav-links">
           <Link to="/">Home</Link>
           <Link to="/products">Delights</Link>
-          <Link to="/about">About Us</Link>
-          <Link to="/contact">Contact Us</Link>
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
+          {isLoggedIn && (
+            <Link to="/my-orders">Orders</Link>  )}
+          
           {isAdmin && (
-            <Link to="/add-product" className="admin-link">
-              Add Product
-            </Link>
-          )}
+            <Link to="/add-product" className="admin-link"> + Item </Link> )}
+          {isAdmin && (
+            <Link to="/admin/orders" className="admin-link"> Manage </Link>)}
         </div>
 
         <div className="nav-search">
@@ -154,16 +156,23 @@ function Navbar() {
         <div className="sidebar-links">
           <Link to="/" onClick={() => setSidebarOpen(false)}>Home</Link>
           <Link to="/products" onClick={() => setSidebarOpen(false)}>Delights</Link>
-          <Link to="/about" onClick={() => setSidebarOpen(false)}>About Us</Link>
-          <Link to="/contact" onClick={() => setSidebarOpen(false)}>Contact Us</Link>
+          <Link to="/about" onClick={() => setSidebarOpen(false)}>About</Link>
+          <Link to="/contact" onClick={() => setSidebarOpen(false)}>Contact</Link>
+          {isLoggedIn && (
+            <Link to="/my-orders" onClick={() => setSidebarOpen(false)}>Orders</Link>  )}
+          {isAdmin && (
+            <Link to="/add-product" className="admin-link" onClick={() => setSidebarOpen(false)}> + Item </Link> )}
+          {isAdmin && (  
+            <Link to="/admin/orders" className="admin-link" onClick={() => setSidebarOpen(false)}> Manage </Link> )}
         </div>
 
+        {isLoggedIn && (
         <div className="sidebar-logout-wrapper">
           <button className="sidebar-logout" onClick={handleLogout}>
             Logout
           </button>
         </div>
-
+        )}
       </div>
     </>
   );
