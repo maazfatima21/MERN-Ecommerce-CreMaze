@@ -17,6 +17,7 @@ import AdminOrders from "./pages/AdminOrders";
 import ProductProvider from "./context/ProductContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import EditProduct from "./pages/EditProduct";
+import MyOrders from "./pages/MyOrders";
 
 function App() {
   return (
@@ -36,11 +37,13 @@ function App() {
           <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
           <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
           <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+          <Route path="/myorders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
 
           {/* Admin only */}
           <Route path="/add-product" element={<ProtectedRoute adminOnly><AddProduct /></ProtectedRoute>} />
           <Route path="/edit-product/:id" element={<ProtectedRoute adminOnly><EditProduct /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute adminOnly><AdminOrders /></ProtectedRoute>} />
+          
         </Routes>
 
         <Footer />
