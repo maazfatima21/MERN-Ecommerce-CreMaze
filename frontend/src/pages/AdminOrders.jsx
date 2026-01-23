@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/axios";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+import { jsPDF } from "jspdf"; // note: named import
+import autoTable from "jspdf-autotable"; // import as autoTable
+
 import "../styles/AdminOrders.css";
 
 const AdminOrders = () => {
@@ -61,26 +62,27 @@ const AdminOrders = () => {
   };
 
   /* ---------------- PDF INVOICE ---------------- */
-  const downloadInvoice = (order) => {
-    const doc = new jsPDF();
+const downloadInvoice = (order) => {
+  const doc = new jsPDF();
 
-    doc.text("INVOICE", 14, 15);
-    doc.text(`Order ID: ${order._id}`, 14, 25);
-    doc.text(`Customer: ${order.user?.email || "Guest"}`, 14, 35);
-    doc.text(`Total: ₹${order.totalPrice}`, 14, 45);
+  // Add a title
+  doc.setFontSize(18);
+  doc.text("INVOICE", 14, 15);
 
-    doc.autoTable({
-      startY: 55,
-      head: [["Product", "Qty", "Price"]],
-      body: order.orderItems.map((item) => [
-        item.name,
-        item.qty,
-        `₹${item.price}`,
-      ]),
-    });
+  doc.setFontSize(12);
+  doc.text(`Order ID: ${order._id}`, 14, 25);
+  doc.text(`Customer: ${order.user?.email || "Guest"}`, 14, 32);
+  doc.text(`Total: ₹${order.totalPrice}`, 14, 39);
 
-    doc.save(`invoice-${order._id}.pdf`);
-  };
+  // AutoTable
+  autoTable(doc, {
+    startY: 50,
+    head: [["Product", "Qty", "Price"]],
+    body: order.orderItems.map((item) => [item.name, item.qty, `₹${item.price}`]),
+  });
+
+  doc.save(`invoice-${order._id}.pdf`);
+};
 
   /* ---------------- DASHBOARD STATS ---------------- */
   const totalOrders = orders.length;
