@@ -70,7 +70,7 @@ const AdminOrders = () => {
     const brandBrown = [139, 69, 19];
     const lightBeige = [245, 240, 235];
 
-    // ---------------- LOGO ----------------
+    /* ---------------- LOGO ---------------- */
     try {
       const logoUrl = "/logo.png";
       const img = await fetch(logoUrl).then((res) => res.blob());
@@ -78,21 +78,19 @@ const AdminOrders = () => {
 
       await new Promise((resolve) => {
         reader.onload = () => {
-          doc.addImage(reader.result, "PNG", 14, 10, 30, 15);
+          
+          doc.addImage(reader.result, "PNG", 14, 10, 25, 12);
           resolve();
         };
         reader.readAsDataURL(img);
       });
 
-      doc.setFontSize(18);
-      doc.setTextColor(...brandBrown);
-      doc.text("CreMaze", 50, 20);
-      startY = 40;
+      startY = 35;
     } catch {
       startY = 20;
     }
 
-    // ---------------- INVOICE HEADER ----------------
+    /* ---------------- INVOICE HEADER ---------------- */
     doc.setFontSize(16);
     doc.setTextColor(...brandBrown);
     doc.text("Invoice", 14, startY);
@@ -102,59 +100,73 @@ const AdminOrders = () => {
     doc.setFontSize(11);
     doc.setTextColor(0);
 
-    // ---------------- ORDER INFO ----------------
+    /* ---------------- ORDER INFO ---------------- */
     doc.text(`Order ID: ${order._id}`, 14, startY + 12);
     doc.text(`Customer: ${order.user?.email || "Guest"}`, 14, startY + 20);
     doc.text(`Payment: ${order.paymentMethod}`, 14, startY + 28);
-    doc.text(`Total: ₹${order.totalPrice}`, 14, startY + 36);
+    doc.text(`Total: Rs. ${order.totalPrice}`, 14, startY + 36);
 
-    // ---------------- SHIPPING ADDRESS ----------------
-    const address =
-      typeof order.shippingAddress === "string"
-        ? order.shippingAddress
-        : order.shippingAddress
-        ? `${order.shippingAddress.address || ""}, ${order.shippingAddress.city || ""}, ${order.shippingAddress.state || ""}, ${order.shippingAddress.pincode || ""}`
-        : "—";
+  // ---------------- SHIPPING ADDRESS ----------------
+    let addressText = "Not provided";
+
+    if (order.shippingAddress) {
+      if (typeof order.shippingAddress === "string") {
+        addressText = order.shippingAddress;
+      } else {
+        const { address, city, state, pincode } = order.shippingAddress;
+
+        addressText = [address, city, state, pincode]
+          .filter(Boolean)
+          .join(", ");
+      }
+    }
 
     doc.setFontSize(11);
     doc.setTextColor(...brandBrown);
     doc.text("Shipping Address:", 14, startY + 44);
-    doc.setTextColor(0);
-    doc.text(address, 14, startY + 52);
 
-    // ---------------- GST & TAX ----------------
+    doc.setTextColor(0);
+    doc.text(addressText, 14, startY + 52);
+
+    /* ---------------- GST & TAX ---------------- */
     const taxRate = 0.05; // 5% GST
     const taxAmount = order.totalPrice * taxRate;
     const totalWithTax = order.totalPrice + taxAmount;
 
     doc.setTextColor(...brandBrown);
-    doc.text("GST & Tax:", 140, startY + 44);
+    doc.text("GST & Tax:", 140, startY + 46);
     doc.setTextColor(0);
-    doc.text(`Subtotal: ₹${order.totalPrice}`, 140, startY + 52);
-    doc.text(`GST (5%): ₹${taxAmount.toFixed(2)}`, 140, startY + 60);
-    doc.text(`Total with GST: ₹${totalWithTax.toFixed(2)}`, 140, startY + 68);
+    doc.text(`Subtotal: Rs. ${order.totalPrice}`, 140, startY + 54);
+    doc.text(`GST (5%): Rs. ${taxAmount.toFixed(2)}`, 140, startY + 62);
+    doc.text(`Total with GST: Rs. ${totalWithTax.toFixed(2)}`, 140, startY + 70);
 
-    // ---------------- ORDER ITEMS TABLE ----------------
+    /* ---------------- ITEMS TABLE ---------------- */
     autoTable(doc, {
-      startY: startY + 72,
+      startY: startY + 80,
       head: [["Product", "Quantity", "Price"]],
       body: order.orderItems.map((item) => [
         item.name || "",
-        item.qty?.toString() || "",
-        `₹${item.price?.toString() || ""}`,
+        item.qty?.toString() || "1",
+        `Rs. ${item.price || 0}`,
       ]),
       theme: "grid",
-      headStyles: { fillColor: brandBrown, textColor: [255, 255, 255], fontStyle: "bold" },
-      bodyStyles: { textColor: [60, 60, 60] },
+      headStyles: {
+        fillColor: brandBrown,
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+      },
+      bodyStyles: {
+        textColor: [60, 60, 60],
+      },
       alternateRowStyles: { fillColor: lightBeige },
       styles: { fontSize: 10, cellPadding: 6 },
     });
 
-    // ---------------- FOOTER ----------------
+    /* ---------------- FOOTER ---------------- */
     doc.setFontSize(9);
     doc.setTextColor(120);
     doc.text(
-      "Thank you for ordering from CreMaze 🤎",
+      "Thank you for choosing CreMaze ",
       105,
       290,
       { align: "center" }

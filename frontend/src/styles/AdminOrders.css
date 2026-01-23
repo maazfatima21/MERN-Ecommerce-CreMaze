@@ -50,16 +50,6 @@
   text-align: center;
 }
 
-.stat-item {
-  background: #ffffff;
-  padding: 12px 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  font-weight: 600;
-  text-align: center;
-  min-width: 130px;
-}
-
 .admin-orders-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -80,12 +70,6 @@
 
 .admin-order-card h4 {
   margin-bottom: 10px;
-}
-
-.order-id {
-  font-size: 16px;
-  color: #06570b;
-  margin-bottom: 8px;
 }
 
 .admin-order-card p {
@@ -141,25 +125,34 @@
 }
 
 .admin-view-btn {
-  background: linear-gradient(135deg, #02265b, #047bdd);
+  background: linear-gradient(135deg,  #011a40, #0356a8);
   color: #ffffff;
 }
-
+.admin-view-btn:hover {
+  background: linear-gradient(135deg, #023178, #1381da);
+}
 .admin-deliver-btn {
-  background: linear-gradient(135deg, #026c2e, #06cf5a);
+  background: linear-gradient(135deg, #025a27, #04b84e);
   color: #fff;
 }
-
+.admin-deliver-btn:hover {
+  background: linear-gradient(135deg, #04933f, #1cdf6d);
+}
 .admin-invoice-btn {
-  background: linear-gradient(135deg, #470762, #9b59b6);
+  background: linear-gradient(135deg, #3a054f, #7d3c98);
   color: #fff;
+}
+.admin-invoice-btn:hover {
+  background: linear-gradient(135deg, #5e0584, #ba70d7);
 }
 
 .admin-cancel-btn {
-  background: linear-gradient(135deg, #9b0603, #d05143);
+  background: linear-gradient(135deg, #7a0402, #b83b2f);
   color: #fff;
 }
-
+.admin-cancel-btn:hover {
+  background: linear-gradient(135deg, #b50805, #e16456);
+}
 .admin-card-actions button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
