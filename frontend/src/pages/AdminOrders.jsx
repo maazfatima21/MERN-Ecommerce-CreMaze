@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/axios";
-import { jsPDF } from "jspdf"; // note: named import
-import autoTable from "jspdf-autotable"; // import as autoTable
-
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 import "../styles/AdminOrders.css";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [filter, setFilter] = useState("all"); // all, pending, delivered, cancelled
 
   const token = localStorage.getItem("token");
 
@@ -62,50 +62,130 @@ const AdminOrders = () => {
   };
 
   /* ---------------- PDF INVOICE ---------------- */
-const downloadInvoice = (order) => {
-  const doc = new jsPDF();
+  const downloadInvoice = async (order) => {
+  try {
+    const doc = new jsPDF({ unit: "mm", format: "a4" });
+    let startY = 20;
 
-  // ---------------- COMPANY LOGO ----------------
-  
-  const img = new Image();
-  img.src = "/logo.png"; 
-  img.onload = () => {
-    doc.addImage(img, "PNG", 14, 10, 40, 20); // x, y, width, height
+    const brandBrown = [139, 69, 19];
+    const lightBeige = [245, 240, 235];
 
-    // ---------------- COMPANY NAME ----------------
-    doc.setFontSize(18);
-    doc.text("CreMaze", 60, 20); 
+    // ---------------- LOGO ----------------
+    try {
+      const logoUrl = "/logo.png";
+      const img = await fetch(logoUrl).then((res) => res.blob());
+      const reader = new FileReader();
 
-    // ---------------- INVOICE DETAILS ----------------
-    doc.setFontSize(12);
-    doc.text(`Invoice`, 14, 40);
-    doc.text(`Order ID: ${order._id}`, 14, 50);
-    doc.text(`Customer: ${order.user?.email || "Guest"}`, 14, 60);
-    doc.text(`Total: ₹${order.totalPrice}`, 14, 70);
+      await new Promise((resolve) => {
+        reader.onload = () => {
+          doc.addImage(reader.result, "PNG", 14, 10, 30, 15);
+          resolve();
+        };
+        reader.readAsDataURL(img);
+      });
+
+      doc.setFontSize(18);
+      doc.setTextColor(...brandBrown);
+      doc.text("CreMaze", 50, 20);
+      startY = 40;
+    } catch {
+      startY = 20;
+    }
+
+    // ---------------- INVOICE HEADER ----------------
+    doc.setFontSize(16);
+    doc.setTextColor(...brandBrown);
+    doc.text("Invoice", 14, startY);
+    doc.setDrawColor(...brandBrown);
+    doc.line(14, startY + 4, 195, startY + 4);
+
+    doc.setFontSize(11);
+    doc.setTextColor(0);
+
+    // ---------------- ORDER INFO ----------------
+    doc.text(`Order ID: ${order._id}`, 14, startY + 12);
+    doc.text(`Customer: ${order.user?.email || "Guest"}`, 14, startY + 20);
+    doc.text(`Payment: ${order.paymentMethod}`, 14, startY + 28);
+    doc.text(`Total: ₹${order.totalPrice}`, 14, startY + 36);
+
+    // ---------------- SHIPPING ADDRESS ----------------
+    const address =
+      typeof order.shippingAddress === "string"
+        ? order.shippingAddress
+        : order.shippingAddress
+        ? `${order.shippingAddress.address || ""}, ${order.shippingAddress.city || ""}, ${order.shippingAddress.state || ""}, ${order.shippingAddress.pincode || ""}`
+        : "—";
+
+    doc.setFontSize(11);
+    doc.setTextColor(...brandBrown);
+    doc.text("Shipping Address:", 14, startY + 44);
+    doc.setTextColor(0);
+    doc.text(address, 14, startY + 52);
+
+    // ---------------- GST & TAX ----------------
+    const taxRate = 0.05; // 5% GST
+    const taxAmount = order.totalPrice * taxRate;
+    const totalWithTax = order.totalPrice + taxAmount;
+
+    doc.setTextColor(...brandBrown);
+    doc.text("GST & Tax:", 140, startY + 44);
+    doc.setTextColor(0);
+    doc.text(`Subtotal: ₹${order.totalPrice}`, 140, startY + 52);
+    doc.text(`GST (5%): ₹${taxAmount.toFixed(2)}`, 140, startY + 60);
+    doc.text(`Total with GST: ₹${totalWithTax.toFixed(2)}`, 140, startY + 68);
 
     // ---------------- ORDER ITEMS TABLE ----------------
-    doc.autoTable({
-      startY: 80,
-      head: [["Product", "Qty", "Price"]],
+    autoTable(doc, {
+      startY: startY + 72,
+      head: [["Product", "Quantity", "Price"]],
       body: order.orderItems.map((item) => [
-        item.name,
-        item.qty,
-        `₹${item.price}`,
+        item.name || "",
+        item.qty?.toString() || "",
+        `₹${item.price?.toString() || ""}`,
       ]),
+      theme: "grid",
+      headStyles: { fillColor: brandBrown, textColor: [255, 255, 255], fontStyle: "bold" },
+      bodyStyles: { textColor: [60, 60, 60] },
+      alternateRowStyles: { fillColor: lightBeige },
+      styles: { fontSize: 10, cellPadding: 6 },
     });
 
-    // ---------------- SAVE PDF ----------------
-    doc.save(`invoice-${order._id}.pdf`);
-  };
+    // ---------------- FOOTER ----------------
+    doc.setFontSize(9);
+    doc.setTextColor(120);
+    doc.text(
+      "Thank you for ordering from CreMaze 🤎",
+      105,
+      290,
+      { align: "center" }
+    );
+
+    doc.save(`invoice-${order._id.slice(-6)}.pdf`);
+  } catch (error) {
+    console.error("Invoice error:", error);
+    alert("Failed to generate invoice");
+  }
 };
 
-  /* ---------------- DASHBOARD STATS ---------------- */
-  const totalOrders = orders.length;
-  const deliveredOrders = orders.filter(o => o.isDelivered).length;
-  const cancelledOrders = orders.filter(o => o.isCancelled).length;
+
+
+
+  /* ---------------- FILTERED ORDERS ---------------- */
+  const filteredOrders = orders.filter((order) => {
+    if (filter === "all") return true;
+    if (filter === "pending") return !order.isDelivered && !order.isCancelled;
+    if (filter === "delivered") return order.isDelivered;
+    if (filter === "cancelled") return order.isCancelled;
+    return true;
+  });
+
+  /* ---------------- DYNAMIC STATS ---------------- */
+  const totalOrders = filteredOrders.length;
+  const deliveredOrders = filteredOrders.filter((o) => o.isDelivered).length;
+  const cancelledOrders = filteredOrders.filter((o) => o.isCancelled).length;
   const pendingOrders = totalOrders - deliveredOrders - cancelledOrders;
 
-  const revenue = orders.reduce(
+  const revenue = filteredOrders.reduce(
     (sum, o) => (!o.isCancelled ? sum + (o.totalPrice || 0) : sum),
     0
   );
@@ -120,25 +200,23 @@ const downloadInvoice = (order) => {
         <p>View, deliver, cancel orders and generate invoices</p>
       </header>
 
-      {/* ---------------- DASHBOARD ---------------- */}
+      {/* ---------------- DASHBOARD STATS (clickable for filter) ---------------- */}
       <section className="admin-stats">
-        <div>Total Orders: <strong>{totalOrders}</strong></div>
-        <div>Pending: <strong>{pendingOrders}</strong></div>
-        <div>Delivered: <strong>{deliveredOrders}</strong></div>
-        <div>Cancelled: <strong>{cancelledOrders}</strong></div>
+        <div onClick={() => setFilter("all")}>Total Orders: <strong>{totalOrders}</strong></div>
+        <div onClick={() => setFilter("pending")}>Pending: <strong>{pendingOrders}</strong></div>
+        <div onClick={() => setFilter("delivered")}>Delivered: <strong>{deliveredOrders}</strong></div>
+        <div onClick={() => setFilter("cancelled")}>Cancelled: <strong>{cancelledOrders}</strong></div>
         <div>Revenue: <strong>₹{revenue}</strong></div>
       </section>
 
       {/* ---------------- ORDER CARDS ---------------- */}
       <section className="admin-orders-grid">
-        {orders.map((order) => (
+        {filteredOrders.map((order) => (
           <div key={order._id} className="admin-order-card">
             <h4>Order #{order._id.slice(-6)}</h4>
-
             <p><strong>User:</strong> {order.user?.email || "Guest"}</p>
             <p><strong>Total:</strong> ₹{order.totalPrice}</p>
             <p><strong>Payment:</strong> {order.paymentMethod}</p>
-
             <p
               className={`admin-status ${
                 order.isCancelled
@@ -202,7 +280,6 @@ const downloadInvoice = (order) => {
             onClick={(e) => e.stopPropagation()}
           >
             <h3>Order Details</h3>
-
             <p><strong>User:</strong> {selectedOrder.user?.email}</p>
             <p><strong>Total:</strong> ₹{selectedOrder.totalPrice}</p>
             <p><strong>Payment:</strong> {selectedOrder.paymentMethod}</p>
