@@ -65,23 +65,38 @@ const AdminOrders = () => {
 const downloadInvoice = (order) => {
   const doc = new jsPDF();
 
-  // Add a title
-  doc.setFontSize(18);
-  doc.text("INVOICE", 14, 15);
+  // ---------------- COMPANY LOGO ----------------
+  
+  const img = new Image();
+  img.src = "/logo.png"; 
+  img.onload = () => {
+    doc.addImage(img, "PNG", 14, 10, 40, 20); // x, y, width, height
 
-  doc.setFontSize(12);
-  doc.text(`Order ID: ${order._id}`, 14, 25);
-  doc.text(`Customer: ${order.user?.email || "Guest"}`, 14, 32);
-  doc.text(`Total: ₹${order.totalPrice}`, 14, 39);
+    // ---------------- COMPANY NAME ----------------
+    doc.setFontSize(18);
+    doc.text("CreMaze", 60, 20); 
 
-  // AutoTable
-  autoTable(doc, {
-    startY: 50,
-    head: [["Product", "Qty", "Price"]],
-    body: order.orderItems.map((item) => [item.name, item.qty, `₹${item.price}`]),
-  });
+    // ---------------- INVOICE DETAILS ----------------
+    doc.setFontSize(12);
+    doc.text(`Invoice`, 14, 40);
+    doc.text(`Order ID: ${order._id}`, 14, 50);
+    doc.text(`Customer: ${order.user?.email || "Guest"}`, 14, 60);
+    doc.text(`Total: ₹${order.totalPrice}`, 14, 70);
 
-  doc.save(`invoice-${order._id}.pdf`);
+    // ---------------- ORDER ITEMS TABLE ----------------
+    doc.autoTable({
+      startY: 80,
+      head: [["Product", "Qty", "Price"]],
+      body: order.orderItems.map((item) => [
+        item.name,
+        item.qty,
+        `₹${item.price}`,
+      ]),
+    });
+
+    // ---------------- SAVE PDF ----------------
+    doc.save(`invoice-${order._id}.pdf`);
+  };
 };
 
   /* ---------------- DASHBOARD STATS ---------------- */
