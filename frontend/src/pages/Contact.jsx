@@ -1,71 +1,85 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import API from "../api/axios";
 import "../styles/Contact.css";
 
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaInstagram, FaFacebook, FaTwitter, FaLinkedin,
+import {
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+  FaClock,
+  FaInstagram,
+  FaFacebook,
+  FaTwitter,
+  FaLinkedin,
 } from "react-icons/fa";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    message: "",
     phone: "",
+    message: "",
   });
 
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  /* ---------------- VALIDATION ---------------- */
   const validateForm = () => {
     const newErrors = {};
 
     if (!formData.name.trim()) newErrors.name = "Name is required";
+
     if (!formData.email.trim()) newErrors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Invalid email format";
 
-    if (!formData.message.trim()) newErrors.message = "Message cannot be empty";
+    if (!formData.message.trim())
+      newErrors.message = "Message cannot be empty";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  /* ---------------- SUBMIT ---------------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     try {
-      await axios.post("/api/contact/send", formData);
+      setLoading(true);
+      await API.post("/contact/send", formData);
+
       setStatus("Message sent successfully!");
-      setFormData({ name: "", email: "", message: "", phone: "" });
+      setFormData({ name: "", email: "", phone: "", message: "" });
+
+      setTimeout(() => setStatus(""), 3000);
     } catch (err) {
       setStatus(err.response?.data?.message || "Failed to send message.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="contact-container">
+      {/* BUBBLES */}
       <div className="bubble-area">
-  {[...Array(10)].map((_, i) => (
-    <div key={i} className={`bubble bubble${i + 1}`}></div>
-  ))}
-</div>
+        {[...Array(10)].map((_, i) => (
+          <div key={i} className={`bubble bubble${i + 1}`} />
+        ))}
+      </div>
 
       {/* HEADER */}
       <header className="contact-header">
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;400&display=swap"
-          rel="stylesheet"
-        />
-
         <h1>GET IN TOUCH!</h1>
-        <br />
         <h3>
           We’d Love to Hear From You! <br />
-          Connect with Cremaze
+          Connect with CreMaze
         </h3>
       </header>
 
@@ -74,44 +88,38 @@ const Contact = () => {
         {/* MAP */}
         <div className="map-box">
           <iframe
-            title="Cremaze Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3890.735829029326!2d77.5946!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670b4d4b8c9%3A0x4d2d3b7b4f7ed4c!2sBengaluru%20City!5e0!3m2!1sen!2sin!4v0000000000000"
+            title="CreMaze Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3890.7358!2d77.5946!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670b4d4b8c9%3A0x4d2d3b7b4f7ed4c!2sBengaluru!5e0!3m2!1sen!2sin!4v1710000000000"
             loading="lazy"
             allowFullScreen
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+          />
         </div>
 
-        {/* CONTACT INFO */}
+        {/* INFO */}
         <div className="contact-info">
           <h3>Reach Us</h3>
 
           <div className="info-row">
+            <div><FaMapMarkerAlt /> 123 Cream Avenue, Bangalore</div>
+            <div><FaPhone /> +91 98765 43210</div>
+            <div><FaEnvelope /> hello@cremaze.com</div>
             <div>
-              <FaMapMarkerAlt /> 123 Cream Avenue, Bangalore
-            </div>
-            <div>
-              <FaPhone /> +91 98765 43210
-            </div>
-            <div>
-              <FaEnvelope /> hello@cremaze.com
-            </div>
-            <div>
-              <FaClock /> Mon–Fri: 10 AM - 10 PM <br /> Sat–Sun: 11 AM - 11 PM
+              <FaClock /> Mon–Fri: 10 AM - 10 PM <br />
+              Sat–Sun: 11 AM - 11 PM
             </div>
           </div>
 
           <h3>Join Us</h3>
           <div className="contact-socials">
-            <FaInstagram />
-            <FaFacebook />
-            <FaTwitter />
-            <FaLinkedin />
+            <a href="https://instagram.com" target="_blank" rel="noreferrer"><FaInstagram /></a>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer"><FaFacebook /></a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer"><FaTwitter /></a>
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer"><FaLinkedin /></a>
           </div>
         </div>
       </div>
 
-      {/* CONTACT FORM */}
+      {/* FORM */}
       <div className="contact-section">
         <h3>
           Got a scoop to share? <br />
@@ -122,35 +130,25 @@ const Contact = () => {
           <h2>Get the Scoop</h2>
 
           {status && (
-            <p
-              className={
-                status.includes("fail") ? "server-error" : "success-message"
-              }
-            >
+            <p className={status.includes("Failed") ? "server-error" : "success-message"}>
               {status}
             </p>
           )}
 
           <form onSubmit={handleSubmit} className="contact-form">
-            {/* Name & Email */}
             {["name", "email"].map((field) => (
               <div className="input-group" key={field}>
                 <input
                   type={field === "email" ? "email" : "text"}
                   name={field}
-                  placeholder={`Your ${
-                    field.charAt(0).toUpperCase() + field.slice(1)
-                  }`}
+                  placeholder={`Your ${field}`}
                   value={formData[field]}
                   onChange={handleChange}
                 />
-                {errors[field] && (
-                  <span className="error">{errors[field]}</span>
-                )}
+                {errors[field] && <span className="error">{errors[field]}</span>}
               </div>
             ))}
 
-            {/* Phone */}
             <div className="input-group">
               <input
                 type="tel"
@@ -161,7 +159,6 @@ const Contact = () => {
               />
             </div>
 
-            {/* Message */}
             <div className="input-group">
               <textarea
                 name="message"
@@ -170,72 +167,54 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
               />
-              {errors.message && (
-                <span className="error">{errors.message}</span>
-              )}
+              {errors.message && <span className="error">{errors.message}</span>}
             </div>
 
-            {/* Checkbox + Button */}
             <div className="form-footer">
               <label className="checkbox-group">
-                <input type="checkbox" name="newsletter" />
-                Send offers
+                <input type="checkbox" /> Send offers
               </label>
 
-              <button type="submit" className="contact-btn">
-                Submit
+              <button type="submit" className="contact-btn" disabled={loading}>
+                {loading ? "Sending..." : "Submit"}
               </button>
             </div>
           </form>
         </div>
       </div>
 
+      {/* PARTY BOOKING */}
       <div className="party-booking">
-  <div className="party-booking-content">
-    <h2>Cremaze Booking</h2>
-    <p className="party-tagline">
-      Make Every Celebration Sweet & Memorable!
-    </p>
+        <div className="party-booking-content">
+          <h2>CreMaze Booking</h2>
+          <p className="party-tagline">Make Every Celebration Sweet!</p>
 
-    <p className="party-description">
-      Birthdays • Corporate Events • School Parties <br />
-      Celebrate with live counters, custom flavors, and handcrafted desserts.
-    </p>
+          <ul className="party-features">
+            <li>🍦 Custom Ice Cream Flavors</li>
+            <li>🎨 Live Dessert Counters</li>
+            <li>🎁 Party Favors</li>
+            <li>📸 Photo Booths</li>
+          </ul>
 
-    <ul className="party-features">
-      <li>🍦 Custom Ice Cream Flavors</li>
-      <li>🎨 Live Dessert Counters</li>
-      <li>🎁 Party Favors & Goodies</li>
-      <li>📸 Fun Photo Booths</li>
-    </ul>
+          <button className="party-btn">Reserve Now</button>
+        </div>
 
-    <p className="party-contact">Contact us today to reserve your date!</p>
-    <button className="party-btn">Reserve Now</button>
-  </div>
+        <img src="/img.png" alt="Ice Cream Party" />
+      </div>
 
-  <img src="img.png" alt="Ice Cream Party" />
-</div>
-
-
-      {/* FAQs */}
+      {/* FAQ */}
       <div className="faq-section">
         <h2>FAQs</h2>
-
         <div className="faq-box">
           {[
-            { q: "How soon will you respond?", 
-              a: "We usually respond within 24 hours, often much sooner during business hours." },
-            { q: "Do you cater events?", 
-              a: "Yes! We offer event catering with live counters and customized ice cream flavors." },
-            { q: "Do you offer bulk discounts?", 
-              a: "Yes, we provide special pricing and discounts for bulk and party orders." },
-            { q: "What payment methods do you accept?", 
-              a: "We accept cards, UPI payments, and cash on delivery." },
-
-          ].map((faq, i) => (
+            ["How soon will you respond?", "Within 24 hours."],
+            ["Do you cater events?", "Yes, with live counters."],
+            ["Do you offer bulk discounts?", "Yes, for party orders."],
+            ["Payment methods?", "Cards, UPI & COD."],
+          ].map(([q, a], i) => (
             <details key={i}>
-              <summary>{faq.q}</summary>
-              <p>{faq.a}</p>
+              <summary>{q}</summary>
+              <p>{a}</p>
             </details>
           ))}
         </div>

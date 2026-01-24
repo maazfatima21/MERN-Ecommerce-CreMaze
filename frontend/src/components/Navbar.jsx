@@ -86,6 +86,9 @@ function Navbar() {
             <Link to="/add-product" className="admin-link"> + Item </Link> )}
           {isAdmin && (
             <Link to="/admin/orders" className="admin-link"> Manage </Link>)}
+          {isAdmin && (
+            <Link to="/admin/messages" className="admin-link"> Messages </Link>)}
+
         </div>
 
         <div className="nav-search">
@@ -164,6 +167,9 @@ function Navbar() {
             <Link to="/add-product" className="admin-link" onClick={() => setSidebarOpen(false)}> + Item </Link> )}
           {isAdmin && (  
             <Link to="/admin/orders" className="admin-link" onClick={() => setSidebarOpen(false)}> Manage </Link> )}
+          {isAdmin && (
+            <Link to="/admin/messages" className="admin-link" onClick={() => setSidebarOpen(false)}> Messages </Link> )}
+
         </div>
 
         {isLoggedIn && (

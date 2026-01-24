@@ -5,10 +5,10 @@ const cors = require('cors');
 const path = require('path');
 
 // ---------------- Routes ----------------
-const productsRoute = require('./routes/products'); // renamed
+const productsRoute = require('./routes/products'); 
 const ordersRoute = require('./routes/orders');
 const usersRoute = require('./routes/users');
-const contactRoute = require('./routes/contact');
+const contactRoute = require('./routes/contactRoutes');
 
 const app = express();
 
