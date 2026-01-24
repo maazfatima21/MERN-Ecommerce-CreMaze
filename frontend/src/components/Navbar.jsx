@@ -117,30 +117,17 @@ function Navbar() {
           {isAdmin && (
   <div
     className="admin-menu"
+    onMouseEnter={() => setAdminOpen(true)}
     onMouseLeave={() => setAdminOpen(false)}
   >
-    <span
-      className="admin-trigger"
-      onClick={() => setAdminOpen((prev) => !prev)}
-    >
-      Admin ▾
-    </span>
+    <span className="admin-trigger">Admin ▾</span>
 
     {adminOpen && (
       <div className="admin-dropdown">
-        <Link to="/add-product" onClick={() => setAdminOpen(false)}>
-          + Add Item
-        </Link>
+        <Link to="/add-product">+ Add Item</Link>
+        <Link to="/admin/orders">Manage Orders</Link>
 
-        <Link to="/admin/orders" onClick={() => setAdminOpen(false)}>
-          Manage Orders
-        </Link>
-
-        <Link
-          to="/admin/messages"
-          className="admin-badge-wrapper"
-          onClick={() => setAdminOpen(false)}
-        >
+        <Link to="/admin/messages" className="admin-badge-wrapper">
           Messages
           {unreadMessages > 0 && (
             <span className="badge">{unreadMessages}</span>

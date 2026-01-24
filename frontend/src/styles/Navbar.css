@@ -177,7 +177,6 @@ nav .logo {
   padding: 8px 0;
   min-width: 170px;
   z-index: 2000;
-  pointer-events: auto;
 }
 
 .admin-dropdown a {
@@ -190,9 +189,9 @@ nav .logo {
   font-size: 14px;
 }
 
-/* .admin-dropdown a:hover {
+.admin-dropdown a:hover {
   background: #f6efe8;
-} */
+}
 
 
 /* ===== BADGE ===== */
