@@ -12,6 +12,7 @@ function Navbar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [unreadMessages, setUnreadMessages] = useState(0);
+  const [adminOpen, setAdminOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -114,18 +115,42 @@ function Navbar() {
           {isLoggedIn && <Link to="/my-orders">Orders</Link>}
 
           {isAdmin && (
-            <>
-              <Link to="/add-product" className="admin-link">+ Item</Link>
-              <Link to="/admin/orders" className="admin-link">Manage</Link>
+  <div
+    className="admin-menu"
+    onMouseLeave={() => setAdminOpen(false)}
+  >
+    <span
+      className="admin-trigger"
+      onClick={() => setAdminOpen((prev) => !prev)}
+    >
+      Admin ▾
+    </span>
 
-              <Link to="/admin/messages" className="admin-link admin-badge-wrapper">
-                Messages
-                {unreadMessages > 0 && (
-                  <span className="badge">{unreadMessages}</span>
-                )}
-              </Link>
-            </>
+    {adminOpen && (
+      <div className="admin-dropdown">
+        <Link to="/add-product" onClick={() => setAdminOpen(false)}>
+          + Add Item
+        </Link>
+
+        <Link to="/admin/orders" onClick={() => setAdminOpen(false)}>
+          Manage Orders
+        </Link>
+
+        <Link
+          to="/admin/messages"
+          className="admin-badge-wrapper"
+          onClick={() => setAdminOpen(false)}
+        >
+          Messages
+          {unreadMessages > 0 && (
+            <span className="badge">{unreadMessages}</span>
           )}
+        </Link>
+      </div>
+    )}
+  </div>
+)}
+
         </div>
 
         <div className="nav-search">
