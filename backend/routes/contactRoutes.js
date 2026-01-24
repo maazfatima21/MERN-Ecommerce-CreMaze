@@ -4,6 +4,7 @@ const Contact = require("../models/ContactMessage");
 const { protect, admin } = require("../middleware/auth");
 const sendEmail = require("../utils/sendEmail");
 
+/* ---------------- SEND CONTACT MESSAGE ---------------- */
 router.post("/send", async (req, res) => {
   try {
     const { name, email, message, phone } = req.body;
@@ -19,71 +20,40 @@ router.post("/send", async (req, res) => {
       email,
       "We received your message 🍦 | CreMaze",
       `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+        <div style="font-family: Arial, sans-serif;">
           <h2 style="color:#8B4513;">Hi ${name},</h2>
-
-          <p>Thank you for contacting <strong>CreMaze</strong> 🍨</p>
-
-          <p>
-            We've received your message and our team will get back to you
-            within <strong>24 hours</strong>.
-          </p>
-
-          <hr />
-
-          <p style="font-size:14px;color:#555;">
-            <strong>Your message:</strong><br/>
-            "${message}"
-          </p>
-
-          <br />
-
-          <p>
-            Warm regards,<br/>
-            <strong>Team CreMaze</strong><br/>
-            <span style="color:#8B4513;">Spreading sweetness everywhere 🍦</span>
-          </p>
+          <p>Thanks for contacting <strong>CreMaze</strong> 🍨</p>
+          <p>We'll reply within <strong>24 hours</strong>.</p>
+          <hr/>
+          <p><strong>Your message:</strong><br/>"${message}"</p>
         </div>
       `
     );
 
     res.status(201).json({ message: "Message sent successfully!" });
   } catch (err) {
-    console.error("Contact error:", err);
     res.status(500).json({ message: "Failed to send message" });
   }
 });
 
+/* ---------------- ADMIN: ALL MESSAGES ---------------- */
 router.get("/", protect, admin, async (req, res) => {
-  try {
-    const messages = await Contact.find().sort({ createdAt: -1 });
-    res.json(messages);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to load messages" });
-  }
+  const messages = await Contact.find().sort({ createdAt: -1 });
+  res.json(messages);
 });
 
+/* ---------------- ADMIN: UNREAD COUNT ---------------- */
 router.get("/unread-count", protect, admin, async (req, res) => {
-  try {
-    const count = await Contact.countDocuments({ isRead: false });
-    res.json({ count });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch unread count" });
-  }
+  const count = await Contact.countDocuments({ isRead: false });
+  res.json({ count });
 });
 
+/* ---------------- ADMIN: MARK AS READ ---------------- */
 router.put("/:id/read", protect, admin, async (req, res) => {
-  try {
-    const msg = await Contact.findById(req.params.id);
-    if (!msg) return res.status(404).json({ message: "Not found" });
-
-    msg.isRead = true;
-    await msg.save();
-
-    res.json(msg);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to update message" });
-  }
+  const msg = await Contact.findById(req.params.id);
+  msg.isRead = true;
+  await msg.save();
+  res.json(msg);
 });
 
-module.exports = router;
+module.exports = router; 

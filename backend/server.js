@@ -30,7 +30,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ---------------- API Routes ----------------
-app.use('/api/products', productsRoute); // frontend can also use /api/products
+app.use('/api/products', productsRoute); 
 app.use('/api/orders', ordersRoute);
 app.use('/api/users', usersRoute);
 app.use('/api/contact', contactRoute);

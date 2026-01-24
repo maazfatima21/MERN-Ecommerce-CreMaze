@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaUser, FaSearch } from 'react-icons/fa';
-import '../styles/Navbar.css';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaShoppingCart, FaUser, FaSearch } from "react-icons/fa";
+import "../styles/Navbar.css";
 
 function Navbar() {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
   const user = JSON.parse(localStorage.getItem("user"));
   const isLoggedIn = !!user;
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [unreadMessages, setUnreadMessages] = useState(0);
 
   const navigate = useNavigate();
 
+  /* ---------------- CART COUNT ---------------- */
   useEffect(() => {
     const updateCartCount = () => {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -30,13 +32,40 @@ function Navbar() {
     };
   }, []);
 
+  /* ---------------- UNREAD ADMIN MESSAGES ---------------- */
+  useEffect(() => {
+  if (!isAdmin) return;
+
+  const fetchUnreadMessages = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const res = await fetch(
+        "http://localhost:5000/api/contact/unread-count",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      setUnreadMessages(data.count || 0);
+    } catch (err) {
+      console.error("Unread messages error", err);
+    }
+  };
+
+  fetchUnreadMessages();
+}, [isAdmin]);
+
+
+  /* ---------------- RESPONSIVE ---------------- */
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 1024) {
-        setSidebarOpen(false);
-      }
+      if (window.innerWidth > 1024) setSidebarOpen(false);
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -49,28 +78,23 @@ function Navbar() {
   };
 
   const handleUserClick = () => {
-  if (!isLoggedIn) {
-    navigate('/login');
-  }
-  setSidebarOpen(false);
-};
+    if (!isLoggedIn) navigate("/login");
+    setSidebarOpen(false);
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('isAdmin');
-    localStorage.removeItem('token'); 
+    localStorage.clear();
     setSidebarOpen(false);
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
     <>
+      {/* ================= NAVBAR ================= */}
       <nav>
         <img src="/logo1.png" alt="CreMaze Logo" className="logo" />
-        <div
-          className="hamburger"
-          onClick={() => setSidebarOpen(prev => !prev)}
-        >
+
+        <div className="hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>
           <img src="/Menu.png" alt="Menu" className="hamburger-image" />
         </div>
 
@@ -79,16 +103,22 @@ function Navbar() {
           <Link to="/products">Delights</Link>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
-          {isLoggedIn && (
-            <Link to="/my-orders">Orders</Link>  )}
-          
-          {isAdmin && (
-            <Link to="/add-product" className="admin-link"> + Item </Link> )}
-          {isAdmin && (
-            <Link to="/admin/orders" className="admin-link"> Manage </Link>)}
-          {isAdmin && (
-            <Link to="/admin/messages" className="admin-link"> Messages </Link>)}
 
+          {isLoggedIn && <Link to="/my-orders">Orders</Link>}
+
+          {isAdmin && (
+            <>
+              <Link to="/add-product" className="admin-link">+ Item</Link>
+              <Link to="/admin/orders" className="admin-link">Manage</Link>
+
+              <Link to="/admin/messages" className="admin-link admin-badge-wrapper">
+                Messages
+                {unreadMessages > 0 && (
+                  <span className="badge">{unreadMessages}</span>
+                )}
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="nav-search">
@@ -99,17 +129,12 @@ function Navbar() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button type="submit">
-              <FaSearch />
-            </button>
+            <button type="submit"><FaSearch /></button>
           </form>
         </div>
 
         <div className="nav-icons">
-          <div
-            className="cart-icon-wrapper"
-            onClick={() => navigate('/cart')}
-          >
+          <div className="cart-icon-wrapper" onClick={() => navigate("/cart")}>
             <FaShoppingCart className="icon" />
             {cartCount > 0 && (
               <span className="cart-badge">{cartCount}</span>
@@ -119,14 +144,13 @@ function Navbar() {
           <FaUser className="icon" onClick={handleUserClick} />
 
           {isLoggedIn && (
-            <button className="logout-btn" onClick={handleLogout}>
-              Logout
-            </button>
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>
           )}
         </div>
       </nav>
 
-      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+      {/* ================= SIDEBAR ================= */}
+      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <form className="sidebar-search" onSubmit={handleSearchSubmit}>
           <input
             type="text"
@@ -134,50 +158,38 @@ function Navbar() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button type="submit">
-            <FaSearch />
-          </button>
+          <button type="submit"><FaSearch /></button>
         </form>
-
-        <div className="sidebar-icons">
-          <div
-            className="cart-icon-wrapper"
-            onClick={() => {
-              navigate('/cart');
-              setSidebarOpen(false);
-            }}
-          >
-            <FaShoppingCart className="icon" />
-            {cartCount > 0 && (
-              <span className="cart-badge">{cartCount}</span>
-            )}
-          </div>
-
-          <FaUser className="icon" onClick={handleUserClick} />
-        </div>
 
         <div className="sidebar-links">
           <Link to="/" onClick={() => setSidebarOpen(false)}>Home</Link>
           <Link to="/products" onClick={() => setSidebarOpen(false)}>Delights</Link>
           <Link to="/about" onClick={() => setSidebarOpen(false)}>About</Link>
           <Link to="/contact" onClick={() => setSidebarOpen(false)}>Contact</Link>
-          {isLoggedIn && (
-            <Link to="/my-orders" onClick={() => setSidebarOpen(false)}>Orders</Link>  )}
-          {isAdmin && (
-            <Link to="/add-product" className="admin-link" onClick={() => setSidebarOpen(false)}> + Item </Link> )}
-          {isAdmin && (  
-            <Link to="/admin/orders" className="admin-link" onClick={() => setSidebarOpen(false)}> Manage </Link> )}
-          {isAdmin && (
-            <Link to="/admin/messages" className="admin-link" onClick={() => setSidebarOpen(false)}> Messages </Link> )}
 
+          {isLoggedIn && (
+            <Link to="/my-orders" onClick={() => setSidebarOpen(false)}>Orders</Link>
+          )}
+
+          {isAdmin && (
+            <>
+              <Link to="/add-product" onClick={() => setSidebarOpen(false)}>+ Item</Link>
+              <Link to="/admin/orders" onClick={() => setSidebarOpen(false)}>Manage</Link>
+
+              <Link to="/admin/messages" onClick={() => setSidebarOpen(false)}>
+                Messages
+                {unreadMessages > 0 && (
+                  <span className="badge">{unreadMessages}</span>
+                )}
+              </Link>
+            </>
+          )}
         </div>
 
         {isLoggedIn && (
-        <div className="sidebar-logout-wrapper">
-          <button className="sidebar-logout" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
+          <div className="sidebar-logout-wrapper">
+            <button className="sidebar-logout" onClick={handleLogout}>Logout</button>
+          </div>
         )}
       </div>
     </>
