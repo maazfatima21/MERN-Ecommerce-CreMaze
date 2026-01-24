@@ -1,17 +1,7 @@
 import React, { useState } from "react";
 import API from "../api/axios";
 import "../styles/Contact.css";
-import toast from "react-hot-toast";
-import {
-  FaMapMarkerAlt,
-  FaPhone,
-  FaEnvelope,
-  FaClock,
-  FaInstagram,
-  FaFacebook,
-  FaTwitter,
-  FaLinkedin,
-} from "react-icons/fa";
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +13,8 @@ const Contact = () => {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,16 +42,31 @@ const Contact = () => {
     if (!validateForm()) return;
 
     try {
-      setLoading(true);
-      await API.post("/contact/send", formData);
+  setLoading(true);
+  await API.post("/contact/send", formData);
 
-      toast.success("Message sent successfully 🍦");
-      setFormData({ name: "", email: "", phone: "", message: "" });
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to send message ❌");
-    } finally {
-      setLoading(false);
-    }
+  setFormData({ name: "", email: "", phone: "", message: "" });
+  setSuccess("Thanks! Your message has been sent. We’ll get back to you shortly.");
+  setSubmitted(true);
+
+  // auto-hide after 4 seconds
+  setTimeout(() => {
+    setSuccess("");
+    setSubmitted(false);
+  }, 4000);
+
+  // smooth scroll to success message
+  setTimeout(() => {
+    document
+      .querySelector(".success-message")
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 100);
+  } catch (err) {
+    alert(err.response?.data?.message || "Failed to send message ❌");
+  } finally {
+    setLoading(false);
+  }
+
   };
 
   return (
@@ -123,6 +130,7 @@ const Contact = () => {
 
         <div className="contact-form-container">
           <h2>Get the Scoop</h2>
+            {success && (<div className="success-message"> {success} </div>)}
 
           <form onSubmit={handleSubmit} className="contact-form">
             {["name", "email"].map((field) => (
@@ -134,7 +142,7 @@ const Contact = () => {
                   value={formData[field]}
                   onChange={handleChange}
                 />
-                {errors[field] && <span className="error">{errors[field]}</span>}
+                {errors[field] && (<span className="form-error">{errors[field]}</span>)}
               </div>
             ))}
 
@@ -156,7 +164,7 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
               />
-              {errors.message && <span className="error">{errors.message}</span>}
+              {errors.message && ( <span className="form-error">Message cannot be empty</span>)}
             </div>
 
             <div className="form-footer">
@@ -164,9 +172,10 @@ const Contact = () => {
                 <input type="checkbox" /> Send offers
               </label>
 
-              <button type="submit" className="contact-btn" disabled={loading}>
-                {loading ? "Sending..." : "Submit"}
+              <button type="submit" className="contact-btn" disabled={loading || submitted}>
+                {submitted ? "Message Sent ✓" : loading ? "Sending..." : "Submit"}
               </button>
+
             </div>
           </form>
         </div>
