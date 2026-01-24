@@ -1,7 +1,8 @@
 {
   "dependencies": {
-    "jspdf": "^2.5.1",
-  "jspdf-autotable": "^3.5.25",
+    "jspdf": "^4.0.0",
+    "jspdf-autotable": "^5.0.7",
+    "react-hot-toast": "^2.6.0",
     "react-toastify": "^11.0.5"
   }
 }

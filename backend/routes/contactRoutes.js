@@ -16,25 +16,32 @@ router.post("/send", async (req, res) => {
       phone,
     });
 
-    await sendEmail(
-      email,
-      "We received your message 🍦 | CreMaze",
-      `
-        <div style="font-family: Arial, sans-serif;">
-          <h2 style="color:#8B4513;">Hi ${name},</h2>
-          <p>Thanks for contacting <strong>CreMaze</strong> 🍨</p>
-          <p>We'll reply within <strong>24 hours</strong>.</p>
-          <hr/>
-          <p><strong>Your message:</strong><br/>"${message}"</p>
-        </div>
-      `
-    );
+    try {
+      await sendEmail(
+        email,
+        "We received your message 🍦 | CreMaze",
+        `
+          <div style="font-family: Arial, sans-serif;">
+            <h2>Hi ${name},</h2>
+            <p>Thanks for contacting <b>CreMaze</b> 🍨</p>
+            <p>We'll reply within <b>24 hours</b>.</p>
+            <hr/>
+            <p><b>Your message:</b><br/>"${message}"</p>
+          </div>
+        `
+      );
+    } catch (emailErr) {
+      console.error("Email failed:", emailErr.message);
+    }
 
     res.status(201).json({ message: "Message sent successfully!" });
+
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Failed to send message" });
   }
 });
+
 
 /* ---------------- ADMIN: ALL MESSAGES ---------------- */
 router.get("/", protect, admin, async (req, res) => {

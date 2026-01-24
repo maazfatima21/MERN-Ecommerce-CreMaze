@@ -25,8 +25,8 @@ function App() {
     <ProductProvider>
       <Router>
         <Navbar />
-
-        <Routes>
+       
+       <Routes>
           {/* Public */}
           <Route path="/login" element={<Login />} />
 

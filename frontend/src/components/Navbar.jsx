@@ -33,7 +33,7 @@ function Navbar() {
   }, []);
 
   /* ---------------- UNREAD ADMIN MESSAGES ---------------- */
-  useEffect(() => {
+ useEffect(() => {
   if (!isAdmin) return;
 
   const fetchUnreadMessages = async () => {
@@ -45,10 +45,9 @@ function Navbar() {
         "http://localhost:5000/api/contact/unread-count",
         {
           headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const data = await res.json();
       setUnreadMessages(data.count || 0);
@@ -58,6 +57,14 @@ function Navbar() {
   };
 
   fetchUnreadMessages();
+
+  const interval = setInterval(fetchUnreadMessages, 15000);
+  window.addEventListener("messagesUpdated", fetchUnreadMessages);
+
+  return () => {
+    clearInterval(interval);
+    window.removeEventListener("messagesUpdated", fetchUnreadMessages);
+  };
 }, [isAdmin]);
 
 

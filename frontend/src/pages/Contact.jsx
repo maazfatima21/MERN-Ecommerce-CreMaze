@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import API from "../api/axios";
 import "../styles/Contact.css";
-
+import toast from "react-hot-toast";
 import {
   FaMapMarkerAlt,
   FaPhone,
@@ -22,7 +22,6 @@ const Contact = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) =>
@@ -54,12 +53,10 @@ const Contact = () => {
       setLoading(true);
       await API.post("/contact/send", formData);
 
-      setStatus("Message sent successfully!");
+      toast.success("Message sent successfully 🍦");
       setFormData({ name: "", email: "", phone: "", message: "" });
-
-      setTimeout(() => setStatus(""), 3000);
     } catch (err) {
-      setStatus(err.response?.data?.message || "Failed to send message.");
+      toast.error(err.response?.data?.message || "Failed to send message ❌");
     } finally {
       setLoading(false);
     }
@@ -85,7 +82,6 @@ const Contact = () => {
 
       {/* MAP + INFO */}
       <div className="contact-box">
-        {/* MAP */}
         <div className="map-box">
           <iframe
             title="CreMaze Location"
@@ -95,7 +91,6 @@ const Contact = () => {
           />
         </div>
 
-        {/* INFO */}
         <div className="contact-info">
           <h3>Reach Us</h3>
 
@@ -128,12 +123,6 @@ const Contact = () => {
 
         <div className="contact-form-container">
           <h2>Get the Scoop</h2>
-
-          {status && (
-            <p className={status.includes("Failed") ? "server-error" : "success-message"}>
-              {status}
-            </p>
-          )}
 
           <form onSubmit={handleSubmit} className="contact-form">
             {["name", "email"].map((field) => (
