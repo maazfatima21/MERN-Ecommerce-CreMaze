@@ -14,6 +14,19 @@ function Navbar() {
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [adminOpen, setAdminOpen] = useState(false);
 
+  const closeAdminMenu = () => setAdminOpen(false);
+
+const handleAdminKeyDown = (e) => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    setAdminOpen((prev) => !prev);
+  }
+
+  if (e.key === "Escape") {
+    closeAdminMenu();
+  }
+};
+
   const navigate = useNavigate();
 
   /* ---------------- CART COUNT ---------------- */
@@ -120,14 +133,29 @@ function Navbar() {
             onMouseEnter={() => setAdminOpen(true)}
             onMouseLeave={() => setAdminOpen(false)}
           >
-            <span className="admin-trigger">Admin ▾</span>
+            <button className="admin-trigger" type="button" aria-haspopup="true" 
+              aria-expanded={adminOpen} tabIndex="0" onKeyDown={handleAdminKeyDown}>
+              Admin ▾
+            </button>
+
 
             {adminOpen && (
-              <div className="admin-dropdown">
-                <Link to="/add-product">+ Add Item</Link>
-                <Link to="/admin/orders">Manage Orders</Link>
+              <div
+                className="admin-dropdown"
+                role="menu"
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") closeAdminMenu();
+                }}
+              >
+                <Link to="/add-product" role="menuitem" tabIndex="0">
+                  + Add Item
+                </Link>
 
-                <Link to="/admin/messages" className="admin-badge-wrapper">
+                <Link to="/admin/orders" role="menuitem" tabIndex="0">
+                  Manage Orders
+                </Link>
+
+                <Link to="/admin/messages" role="menuitem" tabIndex="0">
                   Messages
                   {unreadMessages > 0 && (
                     <span className="badge">{unreadMessages}</span>
@@ -135,6 +163,7 @@ function Navbar() {
                 </Link>
               </div>
             )}
+
           </div>
         )}
 
@@ -169,7 +198,13 @@ function Navbar() {
       </nav>
 
       {/* ================= SIDEBAR ================= */}
-      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+      {sidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+        )}
+
+      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}
+         onClick={(e) => e.stopPropagation()}>
+
         <form className="sidebar-search" onSubmit={handleSearchSubmit}>
           <input
             type="text"
