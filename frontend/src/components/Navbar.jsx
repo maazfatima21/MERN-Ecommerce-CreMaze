@@ -115,7 +115,7 @@ const handleAdminKeyDown = (e) => {
       <nav>
         <img src="/logo1.png" alt="CreMaze Logo" className="logo" />
 
-        <div className="hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        <div className="hamburger" onClick={(e) => {e.stopPropagation();  setSidebarOpen(true);  }}>
           <img src="/Menu.png" alt="Menu" className="hamburger-image" />
         </div>
 
@@ -200,7 +200,7 @@ const handleAdminKeyDown = (e) => {
       {/* ================= SIDEBAR ================= */}
       {sidebarOpen && (
         <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
-        )}
+      )}
 
       <div className={`sidebar ${sidebarOpen ? "open" : ""}`}
          onClick={(e) => e.stopPropagation()}>
