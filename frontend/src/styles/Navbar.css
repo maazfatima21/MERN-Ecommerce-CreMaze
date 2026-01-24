@@ -156,6 +156,15 @@ nav .logo {
 /* ===== ADMIN DROPDOWN ===== */
 .admin-menu {
   position: relative;
+  z-index: 3000;
+}
+.admin-menu::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  height: 12px;          
+  width: 100%;
 }
 
 .admin-trigger {

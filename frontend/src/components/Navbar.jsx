@@ -115,28 +115,28 @@ function Navbar() {
           {isLoggedIn && <Link to="/my-orders">Orders</Link>}
 
           {isAdmin && (
-  <div
-    className="admin-menu"
-    onMouseEnter={() => setAdminOpen(true)}
-    onMouseLeave={() => setAdminOpen(false)}
-  >
-    <span className="admin-trigger">Admin ▾</span>
+          <div
+            className="admin-menu"
+            onMouseEnter={() => setAdminOpen(true)}
+            onMouseLeave={() => setAdminOpen(false)}
+          >
+            <span className="admin-trigger">Admin ▾</span>
 
-    {adminOpen && (
-      <div className="admin-dropdown">
-        <Link to="/add-product">+ Add Item</Link>
-        <Link to="/admin/orders">Manage Orders</Link>
+            {adminOpen && (
+              <div className="admin-dropdown">
+                <Link to="/add-product">+ Add Item</Link>
+                <Link to="/admin/orders">Manage Orders</Link>
 
-        <Link to="/admin/messages" className="admin-badge-wrapper">
-          Messages
-          {unreadMessages > 0 && (
-            <span className="badge">{unreadMessages}</span>
-          )}
-        </Link>
-      </div>
-    )}
-  </div>
-)}
+                <Link to="/admin/messages" className="admin-badge-wrapper">
+                  Messages
+                  {unreadMessages > 0 && (
+                    <span className="badge">{unreadMessages}</span>
+                  )}
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
 
         </div>
 
