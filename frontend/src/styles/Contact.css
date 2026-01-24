@@ -126,7 +126,9 @@
 .contact-socials svg:hover {
   animation: bounce 0.4s ease;
 }
-.contact-section h3 {
+
+/* Contact Section */
+.scoop-contact-section h3 {
   text-align: center;
   font-size: 24px;
   font-weight: 350;
@@ -134,100 +136,113 @@
   margin-bottom: 35px;
   font-family: "Fredoka", sans-serif;
 }
-.contact-form-container {
+
+/* Form Container */
+.scoop-form-container {
   flex: 1;
   min-width: 250px;
   max-width: 400px;
   background: #fff3ff;
-  padding: 1px 18px;
+  padding: 20px;
   border-radius: 8px;
   border: 2px solid #ecb3ffbf;
   box-shadow: 0 0 8px rgba(224,185,254,0.5);
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  gap: 8px;
+  gap: 12px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-.contact-form-container:hover {
+
+.scoop-form-container:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 28px rgba(0,0,0,0.12);
 }
-.contact-form-container h2 {
+
+.scoop-form-container h2 {
   font-size: 22px;
   margin-bottom: 15px;
   color: #3c0d56;
   text-align: center;
 }
-.contact-form {
+
+/* Form and Inputs */
+.scoop-contact-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
   width: 100%;
   align-items: center;
 }
-.input-group {
+
+.scoop-input-group {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
-.input-group input,.input-group textarea {
+
+.scoop-input-group input,
+.scoop-input-group textarea {
   width: 80%;
   padding: 10px 12px;
   border: 1.5px solid #f8b5fa;
   border-radius: 8px;
   font-size: 15px;
   outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
-.input-group textarea {
+
+.scoop-input-group textarea {
   resize: none;
   min-height: 80px;
 }
-.input-group input:focus,
-.input-group textarea:focus {
+
+.scoop-input-group input:focus,
+.scoop-input-group textarea:focus {
   border-color: #fb99fd;
   box-shadow: 0 0 6px rgba(255,78,203,0.2);
 }
-.form-error {
-  width: 80%;              
+
+/* Error Message */
+.scoop-form-error {
+  width: 80%;
   font-size: 12px;
   color: #d32f2f;
   margin-top: 2px;
-  text-align: left;        
+  text-align: left;
   font-weight: 500;
   animation: fadeIn 0.2s ease-in;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.form-footer {
+/* Footer */
+.scoop-form-footer {
   display: flex;
   justify-content: space-between;
   width: 80%;
   margin: 8px 0 20px;
 }
-.checkbox-group {
+
+.scoop-checkbox-group {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
 }
-.checkbox-group input {
+
+.scoop-checkbox-group input {
   width: 16px;
   height: 16px;
 }
-.contact-btn {
+
+/* Button */
+.scoop-contact-btn {
   width: 120px;
   padding: 10px 0;
   font-size: 15px;
@@ -238,11 +253,14 @@
   background: #670c7dc2;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.contact-btn:hover {
+
+.scoop-contact-btn:hover {
   transform: scale(1.06);
   box-shadow: 0 6px 16px rgba(0,0,0,0.18);
 }
-.success-message {
+
+/* Success Message */
+.scoop-success-message {
   background: linear-gradient(135deg, #e6fff3, #d1f7e8);
   color: #0f5132;
   padding: 14px 18px;
@@ -251,19 +269,12 @@
   font-weight: 500;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-
   animation: slideFadeIn 0.5s ease forwards;
 }
 
 @keyframes slideFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 

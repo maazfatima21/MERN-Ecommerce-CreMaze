@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import API from "../api/axios";
 import "../styles/Contact.css";
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { FaMapMarkerAlt,  FaPhone,  FaEnvelope,  FaClock,  FaInstagram,  FaFacebook,  FaTwitter,  FaLinkedin, } from "react-icons/fa";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,8 +13,8 @@ const Contact = () => {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [scoopSuccess, setScoopSuccess] = useState(""); 
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,6 +29,10 @@ const Contact = () => {
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Invalid email format";
 
+    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+    else if (!/^\d{10}$/.test(formData.phone))
+      newErrors.phone = "Phone number must be 10 digits";
+
     if (!formData.message.trim())
       newErrors.message = "Message cannot be empty";
 
@@ -42,42 +46,35 @@ const Contact = () => {
     if (!validateForm()) return;
 
     try {
-  setLoading(true);
-  await API.post("/contact/send", formData);
+      setLoading(true);
+      await API.post("/contact/send", formData);
 
-  setFormData({ name: "", email: "", phone: "", message: "" });
-  setSuccess("Thanks! Your message has been sent. We’ll get back to you shortly.");
-  setSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      setScoopSuccess(
+        "Thanks! Your message has been sent. We’ll get back to you shortly."
+      );
+      setSubmitted(true);
 
-  // auto-hide after 4 seconds
-  setTimeout(() => {
-    setSuccess("");
-    setSubmitted(false);
-  }, 4000);
+      setTimeout(() => {
+        setScoopSuccess("");
+        setSubmitted(false);
+      }, 4000);
 
-  // smooth scroll to success message
-  setTimeout(() => {
-    document
-      .querySelector(".success-message")
-      ?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, 100);
-  } catch (err) {
-    alert(err.response?.data?.message || "Failed to send message ❌");
-  } finally {
-    setLoading(false);
-  }
-
+      setTimeout(() => {
+        document
+          .querySelector(".scoop-success-message")
+          ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to send message ❌");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="contact-container">
-      {/* BUBBLES */}
-      <div className="bubble-area">
-        {[...Array(10)].map((_, i) => (
-          <div key={i} className={`bubble bubble${i + 1}`} />
-        ))}
-      </div>
-
+      
       {/* HEADER */}
       <header className="contact-header">
         <h1>GET IN TOUCH!</h1>
@@ -102,9 +99,15 @@ const Contact = () => {
           <h3>Reach Us</h3>
 
           <div className="info-row">
-            <div><FaMapMarkerAlt /> 123 Cream Avenue, Bangalore</div>
-            <div><FaPhone /> +91 98765 43210</div>
-            <div><FaEnvelope /> hello@cremaze.com</div>
+            <div>
+              <FaMapMarkerAlt /> 123 Cream Avenue, Bangalore
+            </div>
+            <div>
+              <FaPhone /> +91 98765 43210
+            </div>
+            <div>
+              <FaEnvelope /> hello@cremaze.com
+            </div>
             <div>
               <FaClock /> Mon–Fri: 10 AM - 10 PM <br />
               Sat–Sun: 11 AM - 11 PM
@@ -113,28 +116,50 @@ const Contact = () => {
 
           <h3>Join Us</h3>
           <div className="contact-socials">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer"><FaInstagram /></a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer"><FaFacebook /></a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer"><FaTwitter /></a>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer"><FaLinkedin /></a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaFacebook />
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer">
+              <FaTwitter />
+            </a>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaLinkedin />
+            </a>
           </div>
         </div>
       </div>
 
-      {/* FORM */}
-      <div className="contact-section">
+      {/* SCOOP FORM */}
+      <div className="scoop-contact-section">
         <h3>
           Got a scoop to share? <br />
           We’d love to swirl your thoughts into something sweet.
         </h3>
 
-        <div className="contact-form-container">
+        <div className="scoop-form-container">
           <h2>Get the Scoop</h2>
-            {success && (<div className="success-message"> {success} </div>)}
+          {scoopSuccess && (
+            <div className="scoop-success-message">{scoopSuccess}</div>
+          )}
 
-          <form onSubmit={handleSubmit} className="contact-form">
+          <form onSubmit={handleSubmit} className="scoop-contact-form">
             {["name", "email"].map((field) => (
-              <div className="input-group" key={field}>
+              <div className="scoop-input-group" key={field}>
                 <input
                   type={field === "email" ? "email" : "text"}
                   name={field}
@@ -142,11 +167,14 @@ const Contact = () => {
                   value={formData[field]}
                   onChange={handleChange}
                 />
-                {errors[field] && (<span className="form-error">{errors[field]}</span>)}
+                {errors[field] && (
+                  <span className="scoop-form-error">{errors[field]}</span>
+                )}
               </div>
             ))}
 
-            <div className="input-group">
+            {/* PHONE */}
+            <div className="scoop-input-group">
               <input
                 type="tel"
                 name="phone"
@@ -154,9 +182,13 @@ const Contact = () => {
                 value={formData.phone}
                 onChange={handleChange}
               />
+              {errors.phone && (
+                <span className="scoop-form-error">{errors.phone}</span>
+              )}
             </div>
 
-            <div className="input-group">
+            {/* MESSAGE */}
+            <div className="scoop-input-group">
               <textarea
                 name="message"
                 placeholder="Message"
@@ -164,18 +196,23 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
               />
-              {errors.message && ( <span className="form-error">Message cannot be empty</span>)}
+              {errors.message && (
+                <span className="scoop-form-error">{errors.message}</span>
+              )}
             </div>
 
-            <div className="form-footer">
-              <label className="checkbox-group">
+            <div className="scoop-form-footer">
+              <label className="scoop-checkbox-group">
                 <input type="checkbox" /> Send offers
               </label>
 
-              <button type="submit" className="contact-btn" disabled={loading || submitted}>
+              <button
+                type="submit"
+                className="scoop-contact-btn"
+                disabled={loading || submitted}
+              >
                 {submitted ? "Message Sent ✓" : loading ? "Sending..." : "Submit"}
               </button>
-
             </div>
           </form>
         </div>
