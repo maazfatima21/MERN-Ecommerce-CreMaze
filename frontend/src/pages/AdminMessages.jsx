@@ -6,7 +6,7 @@ const AdminMessages = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showUnread, setShowUnread] = useState(false);
+  const [filter, setFilter] = useState("inbox"); // inbox | unread | archived
 
   const token = localStorage.getItem("token");
 
@@ -19,7 +19,6 @@ const AdminMessages = () => {
       });
       setMessages(data);
     } catch (err) {
-      console.error("Fetch messages failed", err);
       setError("Failed to load messages. Please try again.");
     } finally {
       setLoading(false);
@@ -35,21 +34,57 @@ const AdminMessages = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Optimistic UI update
       setMessages((prev) =>
         prev.map((m) =>
           m._id === id ? { ...m, isRead: true } : m
         )
       );
 
-      // Update navbar badge
       window.dispatchEvent(new Event("messagesUpdated"));
     } catch (err) {
       console.error("Mark read failed", err);
     }
   };
 
-  /* ---------------- DELETE MESSAGE ---------------- */
+  /* ---------------- ARCHIVE ---------------- */
+  const archiveMessage = async (id) => {
+    try {
+      await API.put(
+        `/contact/${id}/archive`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setMessages((prev) =>
+        prev.map((m) =>
+          m._id === id ? { ...m, isArchived: true } : m
+        )
+      );
+    } catch (err) {
+      console.error("Archive failed", err);
+    }
+  };
+
+  /* ---------------- RESTORE ---------------- */
+  const restoreMessage = async (id) => {
+    try {
+      await API.put(
+        `/contact/${id}/restore`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setMessages((prev) =>
+        prev.map((m) =>
+          m._id === id ? { ...m, isArchived: false } : m
+        )
+      );
+    } catch (err) {
+      console.error("Restore failed", err);
+    }
+  };
+
+  /* ---------------- DELETE ---------------- */
   const deleteMessage = async (id) => {
     if (!window.confirm("Delete this message permanently?")) return;
 
@@ -60,7 +95,6 @@ const AdminMessages = () => {
 
       setMessages((prev) => prev.filter((m) => m._id !== id));
     } catch (err) {
-      console.error("Delete failed", err);
       alert("Failed to delete message");
     }
   };
@@ -73,22 +107,39 @@ const AdminMessages = () => {
   }, []);
 
   /* ---------------- FILTER ---------------- */
-  const filteredMessages = showUnread
-    ? messages.filter((m) => !m.isRead)
-    : messages;
+  const filteredMessages = messages.filter((m) => {
+    if (filter === "unread") return !m.isRead && !m.isArchived;
+    if (filter === "archived") return m.isArchived;
+    return !m.isArchived; // inbox
+  });
 
-  if (loading) return <p className="loading">Loading messages...</p>;
+  if (loading) return <p className="loading">Loading messages…</p>;
 
   return (
     <div className="admin-messages">
       <h1>📬 Contact Messages</h1>
 
-      <button
-        className="filter-btn"
-        onClick={() => setShowUnread(!showUnread)}
-      >
-        {showUnread ? "Show All" : "Show Unread"}
-      </button>
+      {/* FILTER BAR */}
+      <div className="filter-bar">
+        <button
+          className={filter === "inbox" ? "active" : ""}
+          onClick={() => setFilter("inbox")}
+        >
+          Inbox
+        </button>
+        <button
+          className={filter === "unread" ? "active" : ""}
+          onClick={() => setFilter("unread")}
+        >
+          Unread
+        </button>
+        <button
+          className={filter === "archived" ? "active" : ""}
+          onClick={() => setFilter("archived")}
+        >
+          Archived
+        </button>
+      </div>
 
       {error && <p className="error">{error}</p>}
 
@@ -103,7 +154,7 @@ const AdminMessages = () => {
         >
           <div className="message-header">
             <h4>{msg.name}</h4>
-            {!msg.isRead && <span className="dot" />}
+            {!msg.isRead && !msg.isArchived && <span className="dot" />}
           </div>
 
           <p className="message-text">{msg.message}</p>
@@ -118,9 +169,21 @@ const AdminMessages = () => {
           </small>
 
           <div className="actions">
-            {!msg.isRead && (
+            {!msg.isRead && !msg.isArchived && (
               <button onClick={() => markRead(msg._id)}>
                 Mark as Read
+              </button>
+            )}
+
+            {!msg.isArchived && (
+              <button onClick={() => archiveMessage(msg._id)}>
+                Archive
+              </button>
+            )}
+
+            {msg.isArchived && (
+              <button onClick={() => restoreMessage(msg._id)}>
+                Restore
               </button>
             )}
 
