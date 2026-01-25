@@ -79,4 +79,22 @@ router.put("/:id/read", protect, admin, async (req, res) => {
   res.json({ message: "Marked as read" });
 });
 
+router.delete("/:id", protect, admin, async (req, res) => {
+  try {
+    const msg = await Contact.findById(req.params.id);
+
+    if (!msg) {
+      return res.status(404).json({ message: "Message not found" });
+    }
+
+    await msg.deleteOne();
+
+    res.json({ success: true, message: "Message deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 module.exports = router;
