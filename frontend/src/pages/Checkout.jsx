@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import "../styles/Checkout.css";
@@ -9,21 +9,31 @@ const Checkout = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
+  const [showRequired, setShowRequired] = useState(false);
+  const [shake, setShake] = useState(false);
 
-  /* ---------- CUSTOMER DETAILS ---------- */
+  /* ---------- REFS FOR AUTO SCROLL ---------- */
+  const nameRef = useRef(null);
+  const phoneRef = useRef(null);
+  const houseRef = useRef(null);
+  const streetRef = useRef(null);
+  const cityRef = useRef(null);
+  const pincodeRef = useRef(null);
+
+  /* ---------- CUSTOMER ---------- */
   const [customer, setCustomer] = useState({
     name: "",
     phone: "",
     email: "",
   });
 
-  /* ---------- SHIPPING ADDRESS ---------- */
+  /* ---------- ADDRESS ---------- */
   const [address, setAddress] = useState({
+    houseNo: "",
     street: "",
+    landmark: "",
     city: "",
-    state: "",
     pincode: "",
-    country: "India",
   });
 
   const [paymentMethod, setPaymentMethod] = useState("COD");
@@ -31,44 +41,61 @@ const Checkout = () => {
   /* ---------- LOAD CART ---------- */
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cart.length === 0) {
-      navigate("/cart");
-      return;
-    }
-    setCartItems(cart);
+    if (cart.length === 0) navigate("/cart");
+    else setCartItems(cart);
   }, [navigate]);
 
-  /* ---------- PRICE CALCULATION ---------- */
+  /* ---------- PRICE ---------- */
   const itemsPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.qty,
     0
   );
-
   const shippingPrice = itemsPrice > 1000 ? 0 : 50;
   const taxPrice = Math.round(itemsPrice * 0.05);
   const totalPrice = itemsPrice + shippingPrice + taxPrice;
 
+  const isFormValid =
+    customer.name.trim() &&
+    customer.phone.trim() &&
+    address.houseNo.trim() &&
+    address.street.trim() &&
+    address.city.trim() &&
+    address.pincode.trim();
+
+  /* ---------- SCROLL TO FIRST ERROR ---------- */
+  const scrollToFirstError = () => {
+    const fields = [
+      { value: customer.name, ref: nameRef },
+      { value: customer.phone, ref: phoneRef },
+      { value: address.houseNo, ref: houseRef },
+      { value: address.street, ref: streetRef },
+      { value: address.city, ref: cityRef },
+      { value: address.pincode, ref: pincodeRef },
+    ];
+
+    const firstInvalid = fields.find((f) => !f.value.trim());
+    if (firstInvalid?.ref?.current) {
+      firstInvalid.ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      firstInvalid.ref.current.focus();
+    }
+  };
+
   /* ---------- PLACE ORDER ---------- */
   const placeOrderHandler = async () => {
-    if (
-      !customer.name ||
-      !customer.phone ||
-      !address.street ||
-      !address.city ||
-      !address.pincode
-    ) {
-      setStatus("Please fill all required fields.");
+    if (!isFormValid) {
+      setShowRequired(true);
+      setShake(true);
+      scrollToFirstError();
+      setTimeout(() => setShake(false), 400);
       return;
     }
 
     if (paymentMethod === "ONLINE") {
       navigate("/payment", {
-        state: {
-          cartItems,
-          customer,
-          address,
-          totalPrice,
-        },
+        state: { cartItems, customer, address, totalPrice },
       });
       return;
     }
@@ -95,11 +122,7 @@ const Checkout = () => {
           shippingPrice,
           totalPrice,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       localStorage.removeItem("cart");
@@ -115,143 +138,171 @@ const Checkout = () => {
 
   return (
     <div className="checkout-container">
-      <h2>Secure Checkout</h2>
-      <div className="checkout-card">
+      <h2>Checkout</h2>
 
-      {status && <p className="error">{status}</p>}
+      <div className={`checkout-card ${shake ? "shake" : ""}`}>
+        {status && <p className="error">{status}</p>}
 
-      {/* ---------- CUSTOMER DETAILS ---------- */}
-      <div className="checkout-section">
-        <h3>Customer Information</h3>
+        {/* ---------- CUSTOMER ---------- */}
+        <div className="checkout-section">
+          <h3>Customer Information</h3>
 
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={customer.name}
-          onChange={(e) =>
-            setCustomer({ ...customer, name: e.target.value })
-          }
-        />
-
-        <input
-          type="tel"
-          placeholder="Phone Number"
-          value={customer.phone}
-          onChange={(e) =>
-            setCustomer({ ...customer, phone: e.target.value })
-          }
-        />
-
-        <input
-          type="email"
-          placeholder="Email (optional)"
-          value={customer.email}
-          onChange={(e) =>
-            setCustomer({ ...customer, email: e.target.value })
-          }
-        />
-      </div>
-
-      {/* ---------- SHIPPING ADDRESS ---------- */}
-      <div className="checkout-section">
-        <h3>Shipping Address</h3>
-
-        <textarea
-          placeholder="Street Address"
-          value={address.street}
-          onChange={(e) =>
-            setAddress({ ...address, street: e.target.value })
-          }
-        />
-
-        <div className="two-col">
           <input
+            ref={nameRef}
             type="text"
-            placeholder="City"
-            value={address.city}
+            className={showRequired && !customer.name ? "invalid" : ""}
+            placeholder={`Full Name${showRequired && !customer.name ? " *" : ""}`}
+            value={customer.name}
             onChange={(e) =>
-              setAddress({ ...address, city: e.target.value })
+              setCustomer({ ...customer, name: e.target.value })
             }
           />
+
           <input
-            type="text"
-            placeholder="State"
-            value={address.state}
+            ref={phoneRef}
+            type="tel"
+            className={showRequired && !customer.phone ? "invalid" : ""}
+            placeholder={`Phone Number${
+              showRequired && !customer.phone ? " *" : ""
+            }`}
+            value={customer.phone}
             onChange={(e) =>
-              setAddress({ ...address, state: e.target.value })
+              setCustomer({ ...customer, phone: e.target.value })
+            }
+          />
+
+          <input
+            type="email"
+            placeholder="Email (optional)"
+            value={customer.email}
+            onChange={(e) =>
+              setCustomer({ ...customer, email: e.target.value })
             }
           />
         </div>
 
-        <div className="two-col">
+        {/* ---------- ADDRESS ---------- */}
+        <div className="checkout-section">
+          <h3>Shipping Address</h3>
+
           <input
+            ref={houseRef}
             type="text"
-            placeholder="Pincode"
-            value={address.pincode}
+            className={showRequired && !address.houseNo ? "invalid" : ""}
+            placeholder={`House / Flat No.${
+              showRequired && !address.houseNo ? " *" : ""
+            }`}
+            value={address.houseNo}
             onChange={(e) =>
-              setAddress({ ...address, pincode: e.target.value })
+              setAddress({ ...address, houseNo: e.target.value })
             }
           />
-          <input type="text" value="India" disabled />
-        </div>
-      </div>
 
-      {/* ---------- PAYMENT ---------- */}
-      <div className="checkout-section">
-        <h3>Payment Method</h3>
+          <textarea
+            ref={streetRef}
+            className={showRequired && !address.street ? "invalid" : ""}
+            placeholder={`Street / Area${
+              showRequired && !address.street ? " *" : ""
+            }`}
+            value={address.street}
+            onChange={(e) =>
+              setAddress({ ...address, street: e.target.value })
+            }
+          />
 
-        <div className="payment-options">
-          <label>
+          <input
+            type="text"
+            placeholder="Landmark (optional)"
+            value={address.landmark}
+            onChange={(e) =>
+              setAddress({ ...address, landmark: e.target.value })
+            }
+          />
+
+          <div className="two-col">
             <input
-              type="radio"
-              checked={paymentMethod === "COD"}
-              onChange={() => setPaymentMethod("COD")}
+              ref={cityRef}
+              type="text"
+              className={showRequired && !address.city ? "invalid" : ""}
+              placeholder={`City${showRequired && !address.city ? " *" : ""}`}
+              value={address.city}
+              onChange={(e) =>
+                setAddress({ ...address, city: e.target.value })
+              }
             />
-            Cash On Delivery
-          </label>
 
-          <label>
             <input
-              type="radio"
-              checked={paymentMethod === "ONLINE"}
-              onChange={() => setPaymentMethod("ONLINE")}
+              ref={pincodeRef}
+              type="text"
+              inputMode="numeric"
+              maxLength={6}
+              className={showRequired && !address.pincode ? "invalid" : ""}
+              placeholder={`Pincode${
+                showRequired && !address.pincode ? " *" : ""
+              }`}
+              value={address.pincode}
+              onChange={(e) =>
+                setAddress({ ...address, pincode: e.target.value })
+              }
             />
-            Online Payment
-          </label>
-        </div>
-      </div>
-
-
-      {/* ---------- ORDER SUMMARY ---------- */}
-      <div className="checkout-section summary">
-        <h3>Order Summary</h3>
-
-        {cartItems.map((item) => (
-          <div key={item._id} className="summary-row">
-            <span>
-              {item.name} × {item.qty}
-            </span>
-            <span>₹{item.price * item.qty}</span>
           </div>
-        ))}
+        </div>
 
-        <div className="summary-total">
-          <p>Items: ₹{itemsPrice}</p>
-          <p>Shipping: ₹{shippingPrice}</p>
-          <p>Tax: ₹{taxPrice}</p>
-          <h3>Total: ₹{totalPrice}</h3>
+        {/* ---------- PAYMENT ---------- */}
+        <div className="checkout-section">
+          <h3>Payment Method</h3>
+          <div className="payment-options">
+            <label>
+              <input
+                type="radio"
+                checked={paymentMethod === "COD"}
+                onChange={() => setPaymentMethod("COD")}
+              />
+              Cash On Delivery
+            </label>
+            <label>
+              <input
+                type="radio"
+                checked={paymentMethod === "ONLINE"}
+                onChange={() => setPaymentMethod("ONLINE")}
+              />
+              Online Payment
+            </label>
+          </div>
+        </div>
+
+        {/* ---------- SUMMARY ---------- */}
+        <div className="checkout-section summary">
+          <h3>Order Summary</h3>
+
+          {cartItems.map((item) => (
+            <div key={item._id} className="summary-row">
+              <span>
+                {item.name} × {item.qty}
+              </span>
+              <span>₹{item.price * item.qty}</span>
+            </div>
+          ))}
+
+          <div className="summary-total">
+            <p>Items: ₹{itemsPrice}</p>
+            <p>Shipping: ₹{shippingPrice}</p>
+            <p>Tax: ₹{taxPrice}</p>
+            <h3>Total: ₹{totalPrice}</h3>
+          </div>
+        </div>
+
+        {/* ---------- BUTTON ---------- */}
+        <div className="place-order-wrapper">
+          <button
+            className="place-order-btn"
+            disabled={loading}
+            onClick={placeOrderHandler}
+          >
+            {loading ? "Processing..." : "Proceed to Payment"}
+          </button>
         </div>
       </div>
-
-      {/* ---------- PLACE ORDER ---------- */}
-      <button
-        className="place-order-btn"
-        disabled={loading}
-        onClick={placeOrderHandler}
-      >
-        {loading ? "Processing..." : "Place Order"}
-      </button>
-    </div>
     </div>
   );
 };

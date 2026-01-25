@@ -1,14 +1,68 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Cart.css";
 
+// ================= TOAST COMPONENT =================
+const Toast = ({ message, type }) => {
+  if (!message) return null;
+  return <div className={`toast ${type}`}>{message}</div>;
+};
+
+// ================= CART ITEM COMPONENT =================
+const CartItem = ({ item, onQtyChange, onRemove }) => {
+  return (
+    <div className="cart-item">
+      <img
+        src={`http://localhost:5000/uploads/${item.image}`}
+        alt={item.name}
+      />
+      <div className="cart-item-info">
+        <h3>{item.name}</h3>
+        <p className="item-price">₹{item.price}</p>
+        <p className="item-subtotal">Subtotal: ₹{item.price * item.qty}</p>
+
+        <div className="qty-control">
+          <button
+            aria-label="Decrease quantity"
+            disabled={item.qty === 1}
+            onClick={() => onQtyChange(item._id, item.qty - 1)}
+          >
+            −
+          </button>
+          <input
+            type="number"
+            min="1"
+            max={item.stock || 10}
+            value={item.qty}
+            onChange={(e) =>
+              onQtyChange(item._id, Math.min(Math.max(1, e.target.value), item.stock || 10))
+            }
+          />
+          <button
+            aria-label="Increase quantity"
+            disabled={item.qty >= (item.stock || 10)}
+            onClick={() => onQtyChange(item._id, item.qty + 1)}
+          >
+            +
+          </button>
+        </div>
+
+        <button className="remove-btn" onClick={() => onRemove(item._id)}>
+          Remove
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ================= MAIN CART COMPONENT =================
 function Cart() {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [toast, setToast] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Load cart from localStorage
   useEffect(() => {
     setTimeout(() => {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -17,20 +71,24 @@ function Cart() {
     }, 700);
   }, []);
 
-  const showToast = (message) => {
-    setToast(message);
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
     setTimeout(() => setToast(""), 2000);
   };
 
-  const handleQuantityChange = (id, qty, stock = 10) => {
+  const handleQuantityChange = (id, qty) => {
+    const item = cartItems.find((i) => i._id === id);
+    const stock = item?.stock || 10;
+
     if (qty > stock) {
-      showToast(`Only ${stock} items in stock`);
+      showToast(`Only ${stock} items in stock`, "error");
       return;
     }
+
     if (qty < 1) return;
 
-    const updatedCart = cartItems.map(item =>
-      item._id === id ? { ...item, qty } : item
+    const updatedCart = cartItems.map((i) =>
+      i._id === id ? { ...i, qty } : i
     );
 
     setCartItems(updatedCart);
@@ -38,16 +96,16 @@ function Cart() {
   };
 
   const handleRemove = (id) => {
-    const updatedCart = cartItems.filter(item => item._id !== id);
+    const updatedCart = cartItems.filter((item) => item._id !== id);
     setCartItems(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
-    showToast("Item removed from cart");
+    showToast("Item removed from cart", "error");
   };
 
   const handleClearCart = () => {
     localStorage.removeItem("cart");
     setCartItems([]);
-    showToast("Cart cleared");
+    showToast("Cart cleared", "error");
   };
 
   const totalPrice = cartItems.reduce(
@@ -65,7 +123,7 @@ function Cart() {
         </p>
 
         <div className="cart-skeleton">
-          {[1, 2].map(i => (
+          {[1, 2].map((i) => (
             <div key={i} className="skeleton-item">
               <div className="skeleton-img"></div>
               <div className="skeleton-lines">
@@ -87,78 +145,35 @@ function Cart() {
         Almost there — review your items before checkout ✨
       </p>
 
-      {toast && <div className="toast">{toast}</div>}
+      {toast && <Toast message={toast.message || toast} type={toast.type} />}
 
       {cartItems.length === 0 ? (
         <div className="empty-cart">
-          <img src="/empty-cart.png" alt="Empty cart" />
-          <p>Your cart is empty</p>
-          <Link to="/products" className="shop-btn">
-            Continue Shopping
-          </Link>
+          <h2>Uh-oh! Your cone is empty 🍦</h2>
+          <p>
+            Looks like you haven’t picked any sweet delights yet. Let’s fix
+            that!
+          </p>
+          <div className="empty-cart-buttons">
+            <Link to="/products" className="shop-btn">
+              Browse Flavors
+            </Link>
+          </div>
         </div>
       ) : (
-        <>
+        <div className="cart-content">
           <div className="cart-items">
-            {cartItems.map(item => (
-              <div key={item._id} className="cart-item">
-                <img
-                  src={`http://localhost:5000/uploads/${item.image}`}
-                  alt={item.name}
-                />
-
-                <div className="cart-item-info">
-                  <h3>{item.name}</h3>
-                  <p className="item-price">₹{item.price}</p>
-
-                  <p className="item-subtotal">
-                    Subtotal: ₹{item.price * item.qty}
-                  </p>
-
-                  {/* QUANTITY CONTROLS */}
-                  <div className="qty-control">
-                    <button
-                      disabled={item.qty === 1}
-                      onClick={() =>
-                        handleQuantityChange(
-                          item._id,
-                          item.qty - 1,
-                          item.stock || 10
-                        )
-                      }
-                    >
-                      −
-                    </button>
-
-                    <span className="qty-animate">{item.qty}</span>
-
-                    <button
-                      disabled={item.qty >= (item.stock || 10)}
-                      onClick={() =>
-                        handleQuantityChange(
-                          item._id,
-                          item.qty + 1,
-                          item.stock || 10
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  <button
-                    className="remove-btn"
-                    onClick={() => handleRemove(item._id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
+            {cartItems.map((item) => (
+              <CartItem
+                key={item._id}
+                item={item}
+                onQtyChange={handleQuantityChange}
+                onRemove={handleRemove}
+              />
             ))}
           </div>
 
-          {/* ORDER SUMMARY */}
-          <div className="cart-summary">
+          <aside className="cart-summary">
             <div className="summary-details">
               <p>Items: {cartItems.length}</p>
               <p>
@@ -167,22 +182,23 @@ function Cart() {
               <h2>Total: ₹{totalPrice}</h2>
             </div>
 
-            <button  className="checkout-btn"  
+            <button
+              className="checkout-btn"
               disabled={cartItems.length === 0}
-              onClick={() => navigate("/checkout")}>
+              onClick={() => navigate("/checkout")}
+            >
               Checkout
             </button>
 
-
             <p className="checkout-info">
-              🔒 Secure checkout · 🚚 Fast delivery · 💳 Easy payments
+              🔒 Secure checkout · 💳 Easy payments
             </p>
 
             <button className="clear-cart-btn" onClick={handleClearCart}>
               Clear Cart
             </button>
-          </div>
-        </>
+          </aside>
+        </div>
       )}
     </div>
   );
