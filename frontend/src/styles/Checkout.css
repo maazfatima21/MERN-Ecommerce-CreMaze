@@ -1,192 +1,186 @@
 .checkout-container {
+  padding: 30px 40px;
   min-height: 100vh;
-  padding: 40px 20px;
-  background: linear-gradient(135deg, #eaf7ee, #f1fbff);
-  display: flex;
-  flex-direction: column;   
-  align-items: center;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #e8f6ef, #f4fbf7);
+  font-family: "Segoe UI", sans-serif;
 }
 
 .checkout-container h2 {
   text-align: center;
-  margin-bottom: 25px;
-  font-size: 30px;
+  color: #1f7a4f;
+  font-size: 34px;
   font-weight: 700;
-  color: #0f7520;
+  margin-bottom: 35px;
 }
-.checkout-box {
-  background: linear-gradient(180deg, #ffffff, #eef7fb);
-  border-radius: 16px;
-  width: 550px;
-  padding: 34px;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
-  border: 1px solid #dceaf2;
+
+.checkout-card {
+  max-width: 500px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  box-shadow: 0 20px 45px rgba(0, 128, 0, 0.15);
 }
-.checkout-box h3 {
-  margin-top: 22px;
+
+.checkout-section {
+  margin-bottom: 3px;
+}
+
+.checkout-section h3 {
+  color: #1f7a4f;
+  font-size: 20px;
   margin-bottom: 12px;
-  font-size: 19px;
-  font-weight: 600;
-  color: #1b262c;
-  border-left: 4px solid #068317;
-  padding-left: 10px;
+  padding-left: 12px;
+  border-left: 4px solid #1f7a4f;
 }
-.checkout-box textarea {
-  width: 100%;
-  max-width: 100%;
-  min-height: 60px;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #cfdde6;
-  background: #ffffff;
+
+/* ---------- INPUTS ---------- */
+.checkout-section input,
+.checkout-section textarea {
+  width: 90%;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid #cde9dc;
   font-size: 15px;
+  margin-bottom: 14px;
   outline: none;
-  resize: vertical;
-  margin-left: 12px;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-
-.checkout-box textarea:focus {
-  border-color: #037e15;
-  box-shadow: 0 0 0 3px #e0fbe2;
-}
-
-.payment-method {
-  display: flex;
-  gap: 80px;
-  margin-bottom: 18px;
-  
-}
-
-.payment-method label {
-  display: flex;
-  margin-left: 12px;
-  width: 200px;
-  align-items: center;
-  gap: 15px;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #dcf2de;
   background: #ffffff;
+}
+
+.checkout-section textarea {
+  resize: none;
+  min-height: 90px;
+}
+
+.checkout-section input:focus,
+.checkout-section textarea:focus {
+  border-color: #1f7a4f;
+  box-shadow: 0 0 0 2px rgba(31, 122, 79, 0.15);
+}
+.two-col {
+  width: 95%;
+  display: flex;
+  gap: 15px;
+}
+
+.two-col input {
+  flex: 1;
+}
+
+/* ---------- PAYMENT METHOD ---------- */
+.payment-options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #cde9dc;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 15px;
-  color: #1b2c1e;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: 0.2s ease;
+}
+.payment-options {
+  display: flex;
+  gap: 20px;
 }
 
-.payment-method label:hover {
-  border-color: #329452;
-  background: #effdf4;
+.payment-options label {
+  flex: 1;
+  justify-content: center;
+}
+.payment-options label:hover{
+  background: #f2fbf6;
 }
 
-.payment-method input[type="radio"] {
-  accent-color: #b3deb7;
+.checkout-section input[type="radio"] {
+  accent-color: #1f7a4f;
 }
 
-.checkout-item {
+/* ---------- ORDER SUMMARY ---------- */
+.summary {
+  background: #f8fdfb;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #cde9dc;
+}
+
+.summary-row {
   display: flex;
   justify-content: space-between;
-  padding: 12px 0;
+  padding: 10px 0;
+  border-bottom: 1px dashed #cde9dc;
   font-size: 15px;
-  border-bottom: 1px dashed #b3deb7;
-  color: #1b2c1e;
 }
 
-.price-box {
-  margin-top: 18px;
-  background: #effdf4;
-  padding: 16px;
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+/* ---------- TOTAL BOX ---------- */
+.summary-total {
+  margin-top: 15px;
+  background: #ecfbf2;
+  padding: 18px;
   border-radius: 12px;
-  border: 1px solid #b3deb7;
+  border: 1px solid #bfe5d2;
 }
 
-.price-box p {
+.summary-total p {
   display: flex;
   justify-content: space-between;
   margin: 6px 0;
-  font-size: 15px;
-  color: #336846;
+  color: #1f7a4f;
 }
 
-.price-box h3 {
+.summary-total h3 {
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
-  margin-top: 12px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #075d1c;
-}
-.parent-container {
-  display: flex;
-  justify-content: center; 
-  align-items: center;     
-  margin-top: 20px;
-  margin-bottom: 20px;
+  color: #145c3a;
 }
 
+/* ---------- BUTTON ---------- */
 .place-order-btn {
-  width: 40%;
-  margin-top: 22px;
-  padding: 15px;
-  border-radius: 10px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
   border: none;
-  background: linear-gradient(135deg, #06570b, #65b177);
-  color: #ffffff;
+  background: linear-gradient(135deg, #1f7a4f, #2fa772);
+  color: white;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: 0.25s ease;
 }
 
 .place-order-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(0, 216, 94, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(31, 122, 79, 0.3);
 }
 
 .place-order-btn:disabled {
-  background: #b0bec5;
-  box-shadow: none;
+  background: #9bcbb6;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
+/* ---------- ERROR ---------- */
 .error {
+  background: #ffecec;
+  color: #c0392b;
+  padding: 12px;
+  border-radius: 10px;
   text-align: center;
-  margin-bottom: 16px;
-  color: #b00020;
-  background: #fde7ea;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #f5c2c7;
+  margin-bottom: 20px;
 }
 
-.success {
-  text-align: center;
-  margin-bottom: 16px;
-  color: #2e7d32;
-  background: #e8f5e9;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #c8e6c9;
-  font-weight: 500;
-}
-
-
+/* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
-  .checkout-container {
-    margin: 20px;
-    padding: 16px;
+  .checkout-card {
+    padding: 25px;
   }
 
-  .checkout-box {
-    padding: 20px;
-  }
-
-  .checkout-container h2 {
-    font-size: 24px;
-  }
-
-  .price-box h3 {
-    font-size: 18px;
+  .two-col {
+    flex-direction: column;
   }
 }

@@ -7,32 +7,38 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   const [cartItems, setCartItems] = useState([]);
-  const [address, setAddress] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("COD");
-  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
 
-  /* ---------- LOAD CART + ADDRESS ---------- */
+  /* ---------- CUSTOMER DETAILS ---------- */
+  const [customer, setCustomer] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
+
+  /* ---------- SHIPPING ADDRESS ---------- */
+  const [address, setAddress] = useState({
+    street: "",
+    city: "",
+    state: "",
+    pincode: "",
+    country: "India",
+  });
+
+  const [paymentMethod, setPaymentMethod] = useState("COD");
+
+  /* ---------- LOAD CART ---------- */
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
     if (cart.length === 0) {
       navigate("/cart");
       return;
     }
-
     setCartItems(cart);
-
-    const savedAddress = localStorage.getItem("address");
-    if (savedAddress) setAddress(savedAddress);
   }, [navigate]);
 
-  /* ---------- SAVE ADDRESS ---------- */
-  useEffect(() => {
-    localStorage.setItem("address", address);
-  }, [address]);
-
-  /* ---------- PRICE CALCULATIONS ---------- */
+  /* ---------- PRICE CALCULATION ---------- */
   const itemsPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.qty,
     0
@@ -44,27 +50,29 @@ const Checkout = () => {
 
   /* ---------- PLACE ORDER ---------- */
   const placeOrderHandler = async () => {
-    if (address.trim().length < 10) {
-      setStatus("Please enter a valid delivery address.");
+    if (
+      !customer.name ||
+      !customer.phone ||
+      !address.street ||
+      !address.city ||
+      !address.pincode
+    ) {
+      setStatus("Please fill all required fields.");
       return;
     }
 
-    /* ---------- ONLINE PAYMENT ---------- */
     if (paymentMethod === "ONLINE") {
       navigate("/payment", {
         state: {
           cartItems,
+          customer,
           address,
-          itemsPrice,
-          shippingPrice,
-          taxPrice,
           totalPrice,
         },
       });
       return;
     }
 
-    /* ---------- CASH ON DELIVERY ---------- */
     try {
       setLoading(true);
       setStatus("");
@@ -81,6 +89,7 @@ const Checkout = () => {
             product: item._id,
           })),
           shippingAddress: address,
+          customerDetails: customer,
           paymentMethod: "Cash On Delivery",
           taxPrice,
           shippingPrice,
@@ -95,10 +104,10 @@ const Checkout = () => {
 
       localStorage.removeItem("cart");
       alert("Order placed successfully 🎉");
-      navigate("/");
+      navigate("/myorders");
     } catch (err) {
       console.error(err);
-      setStatus("Failed to place order. Try again.");
+      setStatus("Failed to place order.");
     } finally {
       setLoading(false);
     }
@@ -106,26 +115,95 @@ const Checkout = () => {
 
   return (
     <div className="checkout-container">
-      <h2>Checkout</h2>
+      <h2>Secure Checkout</h2>
+      <div className="checkout-card">
 
       {status && <p className="error">{status}</p>}
 
-      <div className="checkout-box">
-        {/* ---------- ADDRESS ---------- */}
-        <h3>Shipping Address</h3>
-        <textarea
-          placeholder="Enter your delivery address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
+      {/* ---------- CUSTOMER DETAILS ---------- */}
+      <div className="checkout-section">
+        <h3>Customer Information</h3>
+
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={customer.name}
+          onChange={(e) =>
+            setCustomer({ ...customer, name: e.target.value })
+          }
         />
 
-        {/* ---------- PAYMENT METHOD ---------- */}
+        <input
+          type="tel"
+          placeholder="Phone Number"
+          value={customer.phone}
+          onChange={(e) =>
+            setCustomer({ ...customer, phone: e.target.value })
+          }
+        />
+
+        <input
+          type="email"
+          placeholder="Email (optional)"
+          value={customer.email}
+          onChange={(e) =>
+            setCustomer({ ...customer, email: e.target.value })
+          }
+        />
+      </div>
+
+      {/* ---------- SHIPPING ADDRESS ---------- */}
+      <div className="checkout-section">
+        <h3>Shipping Address</h3>
+
+        <textarea
+          placeholder="Street Address"
+          value={address.street}
+          onChange={(e) =>
+            setAddress({ ...address, street: e.target.value })
+          }
+        />
+
+        <div className="two-col">
+          <input
+            type="text"
+            placeholder="City"
+            value={address.city}
+            onChange={(e) =>
+              setAddress({ ...address, city: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="State"
+            value={address.state}
+            onChange={(e) =>
+              setAddress({ ...address, state: e.target.value })
+            }
+          />
+        </div>
+
+        <div className="two-col">
+          <input
+            type="text"
+            placeholder="Pincode"
+            value={address.pincode}
+            onChange={(e) =>
+              setAddress({ ...address, pincode: e.target.value })
+            }
+          />
+          <input type="text" value="India" disabled />
+        </div>
+      </div>
+
+      {/* ---------- PAYMENT ---------- */}
+      <div className="checkout-section">
         <h3>Payment Method</h3>
-        <div className="payment-method">
+
+        <div className="payment-options">
           <label>
             <input
               type="radio"
-              value="COD"
               checked={paymentMethod === "COD"}
               onChange={() => setPaymentMethod("COD")}
             />
@@ -135,19 +213,21 @@ const Checkout = () => {
           <label>
             <input
               type="radio"
-              value="ONLINE"
               checked={paymentMethod === "ONLINE"}
               onChange={() => setPaymentMethod("ONLINE")}
             />
             Online Payment
           </label>
         </div>
+      </div>
 
-        {/* ---------- ORDER SUMMARY ---------- */}
+
+      {/* ---------- ORDER SUMMARY ---------- */}
+      <div className="checkout-section summary">
         <h3>Order Summary</h3>
 
         {cartItems.map((item) => (
-          <div key={item._id} className="checkout-item">
+          <div key={item._id} className="summary-row">
             <span>
               {item.name} × {item.qty}
             </span>
@@ -155,28 +235,25 @@ const Checkout = () => {
           </div>
         ))}
 
-        <div className="price-box">
+        <div className="summary-total">
           <p>Items: ₹{itemsPrice}</p>
           <p>Shipping: ₹{shippingPrice}</p>
-          <p>Tax (5%): ₹{taxPrice}</p>
-          <h3>Grand Total: ₹{totalPrice}</h3>
-        </div>
-
-        {/* ---------- PLACE ORDER ---------- */}
-        <div class="parent-container">
-        <button
-          className="place-order-btn"
-          disabled={loading || cartItems.length === 0 || address.trim() === ""}
-          onClick={placeOrderHandler}
-        >
-          {loading ? "Placing Order..." : "Place Order"}
-        </button>
+          <p>Tax: ₹{taxPrice}</p>
+          <h3>Total: ₹{totalPrice}</h3>
         </div>
       </div>
+
+      {/* ---------- PLACE ORDER ---------- */}
+      <button
+        className="place-order-btn"
+        disabled={loading}
+        onClick={placeOrderHandler}
+      >
+        {loading ? "Processing..." : "Place Order"}
+      </button>
+    </div>
     </div>
   );
 };
 
 export default Checkout;
-
-
