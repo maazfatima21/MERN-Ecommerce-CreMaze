@@ -29,7 +29,7 @@ router.post("/send", async (req, res) => {
         `
         <div style="font-family: Arial, sans-serif;">
           <h2>Hi ${name},</h2>
-          <p>Thanks for contacting <b>CreMaze</b> 🍨</p>
+          <p>“Yum! CreMaze got your scoop 🍨 <b>CreMaze</b> 🍨</p>
           <p>We'll reply within <b>24 hours</b>.</p>
           <hr/>
           <p><b>Your message:</b><br/>"${message}"</p>

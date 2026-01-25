@@ -51,7 +51,7 @@ const Contact = () => {
 
       setFormData({ name: "", email: "", phone: "", message: "" });
       setScoopSuccess(
-        "Thanks! Your message has been sent. We’ll get back to you shortly."
+        "Yum! CreMaze got your scoop 🍨"
       );
       setSubmitted(true);
 
