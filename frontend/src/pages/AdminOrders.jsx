@@ -8,7 +8,10 @@ const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [filter, setFilter] = useState("all"); // all, pending, delivered, cancelled
+  const [filter, setFilter] = useState("all"); 
+  const [actionLoading, setActionLoading] = useState({});
+  const [confirmModal, setConfirmModal] = useState({ show: false, orderId: null });
+  const [toast, setToast] = useState({ show: false, message: "", orderId: null });
 
   const token = localStorage.getItem("token");
 
@@ -30,11 +33,12 @@ const AdminOrders = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
+    if (token) fetchOrders();
   }, [token]);
 
   /* ---------------- MARK DELIVERED ---------------- */
   const markDelivered = async (id) => {
+    setActionLoading((prev) => ({ ...prev, [id]: true }));
     try {
       await API.put(
         `/orders/${id}/deliver`,
@@ -44,11 +48,21 @@ const AdminOrders = () => {
       fetchOrders();
     } catch (err) {
       console.error("Deliver failed", err);
+    } finally {
+      setActionLoading((prev) => ({ ...prev, [id]: false }));
     }
   };
 
   /* ---------------- CANCEL ORDER ---------------- */
   const cancelOrder = async (id) => {
+    setConfirmModal({ show: true, orderId: id });
+  };
+
+  const confirmCancelOrder = async () => {
+    const id = confirmModal.orderId;
+    setConfirmModal({ show: false, orderId: null });
+
+    setActionLoading((prev) => ({ ...prev, [id]: true }));
     try {
       await API.put(
         `/orders/${id}/cancel`,
@@ -56,8 +70,43 @@ const AdminOrders = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchOrders();
+      setToast({ show: true, message: "Order cancelled successfully", orderId: id });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      
+      setTimeout(() => {
+        setToast({ show: false, message: "", orderId: null });
+      }, 5000);
     } catch (err) {
       console.error("Cancel failed", err);
+    } finally {
+      setActionLoading((prev) => ({ ...prev, [id]: false }));
+    }
+  };
+
+  /* ---------------- UNDO CANCEL ORDER ---------------- */
+  const undoCancelOrder = async () => {
+    const id = toast.orderId;
+    setToast({ show: false, message: "", orderId: null });
+    setActionLoading((prev) => ({ ...prev, [id]: true }));
+
+    try {
+      const response = await API.put(
+        `/orders/${id}/restore`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log("Restore response:", response.data);
+      fetchOrders();
+      setToast({ show: true, message: "Order restored successfully", orderId: null });
+      setTimeout(() => {
+        setToast({ show: false, message: "", orderId: null });
+      }, 3000);
+    } catch (err) {
+      console.error("Undo failed:", err.response?.data || err.message);
+      const errorMsg = err.response?.data?.message || "Failed to restore order";
+      setToast({ show: true, message: errorMsg, orderId: null });
+    } finally {
+      setActionLoading((prev) => ({ ...prev, [id]: false }));
     }
   };
 
@@ -129,7 +178,7 @@ const AdminOrders = () => {
     doc.text(addressText, 14, startY + 52);
 
     /* ---------------- GST & TAX ---------------- */
-    const taxRate = 0.05; // 5% GST
+    const taxRate = 0.05; 
     const taxAmount = order.totalPrice * taxRate;
     const totalWithTax = order.totalPrice + taxAmount;
 
@@ -179,9 +228,6 @@ const AdminOrders = () => {
   }
 };
 
-
-
-
   /* ---------------- FILTERED ORDERS ---------------- */
   const filteredOrders = orders.filter((order) => {
     if (filter === "all") return true;
@@ -212,7 +258,7 @@ const AdminOrders = () => {
         <p>View, deliver, cancel orders and generate invoices</p>
       </header>
 
-      {/* ---------------- DASHBOARD STATS (clickable for filter) ---------------- */}
+      {/* ---------------- DASHBOARD STATS  ---------------- */}
       <section className="admin-stats">
         <div onClick={() => setFilter("all")}>Total Orders: <strong>{totalOrders}</strong></div>
         <div onClick={() => setFilter("pending")}>Pending: <strong>{pendingOrders}</strong></div>
@@ -227,6 +273,7 @@ const AdminOrders = () => {
           <div key={order._id} className="admin-order-card">
             <h4>Order #{order._id.slice(-6)}</h4>
             <p><strong>User:</strong> {order.user?.email || "Guest"}</p>
+            <p><strong>Items:</strong> {order.orderItems?.length || 0}</p>
             <p><strong>Total:</strong> ₹{order.totalPrice}</p>
             <p><strong>Payment:</strong> {order.paymentMethod}</p>
             <p
@@ -255,10 +302,10 @@ const AdminOrders = () => {
 
               <button
                 className="admin-deliver-btn"
-                disabled={order.isDelivered || order.isCancelled}
+                disabled={order.isDelivered || order.isCancelled || actionLoading[order._id]}
                 onClick={() => markDelivered(order._id)}
               >
-                Deliver
+                {actionLoading[order._id] ? "Loading..." : "Deliver"}
               </button>
 
               <button
@@ -271,10 +318,10 @@ const AdminOrders = () => {
 
               <button
                 className="admin-cancel-btn"
-                disabled={order.isDelivered || order.isCancelled}
+                disabled={order.isDelivered || order.isCancelled || actionLoading[order._id]}
                 onClick={() => cancelOrder(order._id)}
               >
-                Cancel
+                {actionLoading[order._id] ? "Loading..." : "Cancel"}
               </button>
             </div>
           </div>
@@ -312,6 +359,57 @@ const AdminOrders = () => {
               Close
             </button>
           </div>
+        </div>
+      )}
+
+      {/* ---------------- CANCEL CONFIRMATION MODAL ---------------- */}
+      {confirmModal.show && (
+        <div
+          className="admin-modal-overlay"
+          onClick={() => setConfirmModal({ show: false, orderId: null })}
+        >
+          <div
+            className="admin-confirm-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3>Cancel this order?</h3>
+            <p>Are you sure you want to cancel this order? This action cannot be undone.</p>
+            <div className="admin-confirm-actions">
+              <button
+                className="admin-confirm-cancel-btn"
+                onClick={() => setConfirmModal({ show: false, orderId: null })}
+              >
+                No, Keep it
+              </button>
+              <button
+                className="admin-confirm-delete-btn"
+                onClick={confirmCancelOrder}
+              >
+                Yes, Cancel Order
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ---------------- TOAST NOTIFICATION ---------------- */}
+      {toast.show && (
+        <div className="admin-toast">
+          <span>{toast.message}</span>
+          {toast.orderId && (
+            <button
+              className="admin-toast-undo-btn"
+              onClick={undoCancelOrder}
+            >
+              Undo
+            </button>
+          )}
+          <button
+            className="admin-toast-close-btn"
+            onClick={() => setToast({ show: false, message: "", orderId: null })}
+          >
+            ✕
+          </button>
         </div>
       )}
     </div>

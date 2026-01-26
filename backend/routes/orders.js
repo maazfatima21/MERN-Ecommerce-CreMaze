@@ -61,31 +61,6 @@ router.get("/", protect, admin, async (req, res) => {
   }
 });
 
-/* ================= ORDER DETAILS ================= */
-router.get("/:id", protect, async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id).populate(
-      "user",
-      "name email"
-    );
-
-    if (!order) {
-      return res.status(404).json({ message: "Order not found" });
-    }
-
-    if (
-      order.user._id.toString() !== req.user._id.toString() &&
-      !req.user.isAdmin
-    ) {
-      return res.status(403).json({ message: "Not authorized" });
-    }
-
-    res.json(order);
-  } catch (error) {
-    res.status(500).json({ message: "Failed to load order" });
-  }
-});
-
 /* ================= ADMIN: MARK DELIVERED ================= */
 router.put("/:id/deliver", protect, admin, async (req, res) => {
   try {
@@ -133,6 +108,56 @@ router.put("/:id/cancel", protect, admin, async (req, res) => {
     res.json(updatedOrder);
   } catch (error) {
     res.status(500).json({ message: "Cancel failed" });
+  }
+});
+
+/* ================= ADMIN: RESTORE CANCELLED ORDER ================= */
+router.put("/:id/restore", protect, admin, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (!order.isCancelled) {
+      return res
+        .status(400)
+        .json({ message: "Only cancelled orders can be restored" });
+    }
+
+    order.isCancelled = false;
+    order.cancelledAt = null;
+
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } catch (error) {
+    res.status(500).json({ message: "Restore failed" });
+  }
+});
+
+/* ================= ORDER DETAILS ================= */
+router.get("/:id", protect, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id).populate(
+      "user",
+      "name email"
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (
+      order.user._id.toString() !== req.user._id.toString() &&
+      !req.user.isAdmin
+    ) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to load order" });
   }
 });
 

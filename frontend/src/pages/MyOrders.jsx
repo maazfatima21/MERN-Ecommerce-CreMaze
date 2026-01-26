@@ -31,7 +31,7 @@ function MyOrders() {
         setOrders(data);
       } catch (err) {
         console.error(err);
-        setError("Failed to load orders. Please try again later.");
+        setError("Failed to load your delicious orders. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -40,16 +40,20 @@ function MyOrders() {
     fetchMyOrders();
   }, [navigate]);
 
-  if (loading) return <h2 className="orders-loading">Loading orders...</h2>;
-
+  if (loading) return <h2 className="orders-loading">Loading your sweet treats...</h2>;
   if (error) return <p className="orders-error">{error}</p>;
 
   return (
     <div className="orders-page">
-      <h1>My Orders</h1>
+      <div className="orders-header">
+        <h1>Your Sweet Orders</h1>
+        <p className="orders-subtitle">
+          Check out your recent scoops and their delivery status
+        </p>
+      </div>
 
       {orders.length === 0 ? (
-        <p className="no-orders">No orders yet</p>
+        <p className="no-orders">No orders yet. Let’s add some flavor to your day!</p>
       ) : (
         <table className="orders-table">
           <thead>
@@ -61,13 +65,10 @@ function MyOrders() {
               <th>Delivery</th>
             </tr>
           </thead>
+
           <tbody>
             {orders.map((order) => (
-              <tr
-                key={order._id}
-                className="order-row"
-                onClick={() => navigate(`/order/${order._id}`)}
-              >
+              <tr key={order._id}>
                 <td>{order._id.slice(-6)}</td>
 
                 <td>

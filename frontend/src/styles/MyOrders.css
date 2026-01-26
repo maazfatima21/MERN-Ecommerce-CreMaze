@@ -1,90 +1,164 @@
+/* ===== PAGE WRAPPER ===== */
 .orders-page {
-  max-width: 1100px;
-  min-height: 500px;
-  margin: 40px auto;
-  padding: 0 20px;
+  padding: 30px 40px;
+  min-height: 100vh;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fee2f5,#f6f5e5, #e4fee2);
+  font-family: "Segoe UI", sans-serif;
 }
 
-.orders-page h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #3a1f04;
+/* ===== HEADER ===== */
+.orders-header {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
+.orders-header h1 {
+  font-size: 34px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #55320f;
+}
+
+.orders-subtitle {
+  font-size: 14px;
+  color: #55320fc0;
+  margin-top: 10px;
+}
+
+/* ===== STATES ===== */
 .orders-loading {
   text-align: center;
-  margin-top: 60px;
-  font-size: 1.3rem;
+  font-size: 18px;
+  margin-top: 80px;
+  color: #4b2908;
 }
 
 .orders-error {
   text-align: center;
-  margin-top: 50px;
-  color: #d9534f;
-  font-weight: 500;
+  color: #ac0404;
+  background: #ffffff;
+  padding: 14px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 40px auto;
 }
 
 .no-orders {
   text-align: center;
-  font-size: 1.1rem;
-  color: #343333;
+  font-size: 16px;
+  color: #6b7280;
   margin-top: 40px;
 }
 
+/* ===== TABLE ===== */
 .orders-table {
-  width: 100%;
+  width: 75%;
+  margin: 0 auto;
   border-collapse: collapse;
-  background: #fff;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
+/* ===== TABLE HEADER ===== */
 .orders-table thead {
-  background: linear-gradient(135deg, #5d3911, #b36902);
+  background: linear-gradient(90deg, #4a034b, #700246);
 }
 
 .orders-table th {
-  padding: 14px;
-  color: #fff;
-  font-weight: 600;
+  padding: 14px 12px;
   text-align: left;
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+/* ===== TABLE BODY ===== */
+.orders-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.orders-table tbody tr:hover {
+  background: #f8e2f7;
 }
 
 .orders-table td {
-  padding: 14px;
-  border-bottom: 1px solid #59585853;
-  font-size: 16px;
-  color: #343333;
+  padding: 14px 12px;
+  font-size: 14px;
+  color: #4b3751;
+  border-bottom: 1px solid #f1f1f1;
 }
 
-.order-row {
-  cursor: pointer;
-  transition: background 0.25s ease, transform 0.15s ease;
-}
-
-.order-row:hover {
-  background: #fff6ec;
-  transform: scale(1.01);
-}
-
-.paid {
-  color: #28a745;
+/* ===== STATUS BADGES ===== */
+.orders-table td.paid {
+  color: #047830;
   font-weight: 600;
 }
 
-.unpaid {
-  color: #dc3545;
+.orders-table td.unpaid {
+  color: #c00505;
   font-weight: 600;
 }
 
-.delivered {
-  color: #28a745;
+.orders-table td.delivered {
+  color: #038b0d;
   font-weight: 600;
 }
 
-.pending {
-  color: #f0ad4e;
+.orders-table td.pending {
+  color: #c88903;
   font-weight: 600;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .orders-table {
+    font-size: 13px;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 10px 8px;
+  }
+
+  .orders-header h1 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 520px) {
+  .orders-table thead {
+    display: none;
+  }
+
+  .orders-table,
+  .orders-table tbody,
+  .orders-table tr,
+  .orders-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .orders-table tr {
+    margin-bottom: 16px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  }
+
+  .orders-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .orders-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6b7280;
+  }
 }

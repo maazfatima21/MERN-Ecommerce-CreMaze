@@ -221,7 +221,138 @@
   background: black;
 }
 
-/* ================= RESPONSIVE ================= */
+.admin-confirm-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 380px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.admin-confirm-modal h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #b83b2f;
+}
+
+.admin-confirm-modal p {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.admin-confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.admin-confirm-cancel-btn,
+.admin-confirm-delete-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.admin-confirm-cancel-btn {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.admin-confirm-cancel-btn:hover {
+  background: #d0d0d0;
+  transform: translateY(-2px);
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.admin-confirm-delete-btn {
+  background: linear-gradient(135deg, #700b02, #d11803);
+  color: #fff;
+}
+
+.admin-confirm-delete-btn:hover {
+  background: linear-gradient(135deg, #be1603, #d46c5c);
+  transform: translateY(-2px);
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.admin-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: linear-gradient(135deg, #013e1b, #018f3c);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: slideInUp 0.3s ease-out;
+  z-index: 2000;
+  max-width: 400px;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.admin-toast span {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-toast-undo-btn {
+  background: #e6f6ec;
+  color: #027833;
+  border: 1px solid #8fd7ac;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-toast-undo-btn:hover {
+  background: #d1f0dd;
+  border-color: #8fd7ac;
+}
+
+.admin-toast-close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.admin-toast-close-btn:hover {
+  transform: scale(1.2);
+}
+
 @media (max-width: 600px) {
   .admin-card-actions button {
     flex: 100%;
