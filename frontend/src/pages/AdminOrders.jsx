@@ -46,6 +46,10 @@ const AdminOrders = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchOrders();
+      setToast({ show: true, message: "Order delivered ✓" });
+      setTimeout(() => {
+        setToast({ show: false, message: "", orderId: null });
+      }, 3000);
     } catch (err) {
       console.error("Deliver failed", err);
     } finally {
