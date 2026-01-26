@@ -1,57 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import API from "../api/axios";
 import "../styles/ProductCard.css";
 
-function ProductCard({ product, onDelete }) {
+function ProductCard({ product, onAddToCart, onDeleteClick }) {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
-  const [deleting, setDeleting] = useState(false);
-  const [toast, setToast] = useState({ show: false, message: "" });
-
-  // 🛒 ADD TO CART
-  const handleAddToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    const exists = cart.find((item) => item._id === product._id);
-
-    if (exists) {
-      exists.qty += 1;
-    } else {
-      cart.push({ ...product, qty: 1 });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    setToast({ show: true, message: "Added to cart !" });
-    
-    setTimeout(() => {
-      setToast({ show: false, message: "" });
-    }, 3000);
-  };
-  // 🗑️ DELETE PRODUCT
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
-
-    try {
-      setDeleting(true);
-      const token = localStorage.getItem("token");
-
-      await API.delete(`/products/${product._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      onDelete(product._id);
-    } catch (err) {
-      console.error(err);
-      setToast({ show: true, message: "Failed to delete product" });
-      setTimeout(() => {
-        setToast({ show: false, message: "" });
-      }, 4000);
-    } finally {
-      setDeleting(false);
-    }
-  };
 
   return (
     <div className="product-card">
@@ -73,7 +25,7 @@ function ProductCard({ product, onDelete }) {
           View
         </Link>
 
-        <button className="cart-btn" onClick={handleAddToCart}>
+        <button className="cart-btn" onClick={() => onAddToCart(product)}>
           Add to Cart
         </button>
       </div>
@@ -89,23 +41,10 @@ function ProductCard({ product, onDelete }) {
 
           <button
             type="button"
-            onClick={handleDelete}
+            onClick={() => onDeleteClick(product)}
             className="delete-btn"
-            disabled={deleting}
           >
-            {deleting ? "Deleting..." : "Delete"}
-          </button>
-        </div>
-      )}
-
-      {toast.show && (
-        <div className="product-toast">
-          <span>{toast.message}</span>
-          <button
-            className="product-toast-close"
-            onClick={() => setToast({ show: false, message: "" })}
-          >
-            ✕
+            Delete
           </button>
         </div>
       )}

@@ -11,6 +11,8 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("");
+  const [toast, setToast] = useState("");
+  const [deleteProduct, setDeleteProduct] = useState(null);
 
   const isAdmin = localStorage.getItem("isAdmin") === "true";
 
@@ -28,8 +30,39 @@ const Products = () => {
     fetchProducts();
   }, []);
 
-  const handleDelete = (id) =>
-    setProducts(products.filter((p) => p._id !== id));
+  // 🛒 ADD TO CART
+  const handleAddToCart = (product) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const exists = cart.find((p) => p._id === product._id);
+
+    if (exists) {
+      exists.qty += 1;
+    } else {
+      cart.push({ ...product, qty: 1 });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    setToast("Added to cart!");
+    setTimeout(() => setToast(""), 3000);
+  };
+
+  // 🗑️ DELETE PRODUCT
+  const confirmDelete = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await API.delete(`/products/${deleteProduct._id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setProducts((prev) => prev.filter((p) => p._id !== deleteProduct._id));
+      setToast("Product Deleted Successfully!");
+    } catch (err) {
+      console.error(err);
+      setToast("Delete failed");
+    } finally {
+      setDeleteProduct(null);
+    }
+  };
 
   const filteredProducts = [...products]
     .filter((p) =>
@@ -80,12 +113,38 @@ const Products = () => {
             <ProductCard
               key={product._id}
               product={product}
-              onDelete={handleDelete}
+              onAddToCart={handleAddToCart}
+              onDeleteClick={setDeleteProduct}
             />
           ))}
         </div>
       ) : (
         <p className="products-status">No products found</p>
+      )}
+
+      {/* GLOBAL TOAST */}
+      {toast && (
+        <div className="global-toast">
+          {toast}
+        </div>
+      )}
+
+      {/* DELETE MODAL */}
+      {deleteProduct && (
+        <div className="delete-overlay" onClick={() => setDeleteProduct(null)}>
+          <div className="delete-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Delete Product?</h3>
+            <p>Are you sure? This cannot be undone.</p>
+            <div className="delete-actions">
+              <button className="delete-cancel" onClick={() => setDeleteProduct(null)}>
+                Cancel
+              </button>
+              <button className="delete-confirm" onClick={confirmDelete}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
