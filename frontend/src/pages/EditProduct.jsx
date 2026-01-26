@@ -7,6 +7,7 @@ const EditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ name: "", price: "", description: "" });
+  const [toast, setToast] = useState({ show: false, message: "" });
 
   useEffect(() => {
     const isAdmin = localStorage.getItem("isAdmin") === "true";
@@ -28,8 +29,11 @@ const EditProduct = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    alert("Product updated");
-    navigate("/products");
+    setToast({ show: true, message: "Product updated successfully" });
+    
+    setTimeout(() => {
+      navigate("/products");
+    }, 1500);
   };
 
   return (
@@ -48,6 +52,18 @@ const EditProduct = () => {
         </div>
       </form>
     </div>
+
+    {toast.show && (
+      <div className="edit-product-toast">
+        <span>{toast.message}</span>
+        <button
+          className="edit-product-toast-close"
+          onClick={() => setToast({ show: false, message: "" })}
+        >
+          ✕
+        </button>
+      </div>
+    )}
   </div>
 );
 

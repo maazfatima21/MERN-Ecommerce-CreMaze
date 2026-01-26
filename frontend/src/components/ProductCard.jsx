@@ -6,6 +6,7 @@ import "../styles/ProductCard.css";
 function ProductCard({ product, onDelete }) {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
   const [deleting, setDeleting] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: "" });
 
   // 🛒 ADD TO CART
   const handleAddToCart = () => {
@@ -20,7 +21,11 @@ function ProductCard({ product, onDelete }) {
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Added to cart 🛒");
+    setToast({ show: true, message: "Added to cart !" });
+    
+    setTimeout(() => {
+      setToast({ show: false, message: "" });
+    }, 3000);
   };
   // 🗑️ DELETE PRODUCT
   const handleDelete = async () => {
@@ -39,7 +44,10 @@ function ProductCard({ product, onDelete }) {
       onDelete(product._id);
     } catch (err) {
       console.error(err);
-      alert("Failed to delete product");
+      setToast({ show: true, message: "Failed to delete product" });
+      setTimeout(() => {
+        setToast({ show: false, message: "" });
+      }, 4000);
     } finally {
       setDeleting(false);
     }
@@ -86,6 +94,18 @@ function ProductCard({ product, onDelete }) {
             disabled={deleting}
           >
             {deleting ? "Deleting..." : "Delete"}
+          </button>
+        </div>
+      )}
+
+      {toast.show && (
+        <div className="product-toast">
+          <span>{toast.message}</span>
+          <button
+            className="product-toast-close"
+            onClick={() => setToast({ show: false, message: "" })}
+          >
+            ✕
           </button>
         </div>
       )}

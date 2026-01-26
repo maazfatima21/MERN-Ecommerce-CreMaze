@@ -224,7 +224,10 @@ const AdminOrders = () => {
     doc.save(`invoice-${order._id.slice(-6)}.pdf`);
   } catch (error) {
     console.error("Invoice error:", error);
-    alert("Failed to generate invoice");
+    setToast({ show: true, message: "Failed to generate invoice" });
+    setTimeout(() => {
+      setToast({ show: false, message: "", orderId: null });
+    }, 4000);
   }
 };
 

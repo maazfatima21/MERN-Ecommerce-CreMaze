@@ -16,13 +16,13 @@ const AddProduct = () => {
   const [preview, setPreview] = useState(null);
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: "" });
 
-  // 🔐 Admin check
   useEffect(() => {
     const isAdmin = localStorage.getItem("isAdmin") === "true";
     if (!isAdmin) {
-      alert("Access denied! Admins only.");
-      navigate("/");
+      setToast({ show: true, message: "Access denied! Admins only." });
+      setTimeout(() => navigate("/"), 1500);
     }
   }, [navigate]);
 
@@ -123,6 +123,18 @@ const AddProduct = () => {
           </button>
         </form>
       </div>
+
+      {toast.show && (
+        <div className="add-product-toast">
+          <span>{toast.message}</span>
+          <button
+            className="add-product-toast-close"
+            onClick={() => setToast({ show: false, message: "" })}
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </div>
   );
 };

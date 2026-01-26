@@ -11,6 +11,7 @@ const Checkout = () => {
   const [status, setStatus] = useState("");
   const [showRequired, setShowRequired] = useState(false);
   const [shake, setShake] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: "" });
 
   /* ---------- REFS FOR AUTO SCROLL ---------- */
   const nameRef = useRef(null);
@@ -126,8 +127,11 @@ const Checkout = () => {
       );
 
       localStorage.removeItem("cart");
-      alert("Order placed successfully 🎉");
-      navigate("/myorders");
+      setToast({ show: true, message: "Order placed successfully 🎉" });
+      
+      setTimeout(() => {
+        navigate("/myorders");
+      }, 1500);
     } catch (err) {
       console.error(err);
       setStatus("Failed to place order.");
@@ -303,6 +307,18 @@ const Checkout = () => {
           </button>
         </div>
       </div>
+
+      {toast.show && (
+        <div className="checkout-toast">
+          <span>{toast.message}</span>
+          <button
+            className="checkout-toast-close"
+            onClick={() => setToast({ show: false, message: "" })}
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </div>
   );
 };

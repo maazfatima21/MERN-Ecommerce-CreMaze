@@ -14,7 +14,8 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [scoopSuccess, setScoopSuccess] = useState(""); 
+  const [scoopSuccess, setScoopSuccess] = useState("");
+  const [toast, setToast] = useState({ show: false, message: "" }); 
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -66,7 +67,11 @@ const Contact = () => {
           ?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 100);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to send message ❌");
+      const errorMsg = err.response?.data?.message || "Failed to send message ❌";
+      setToast({ show: true, message: errorMsg });
+      setTimeout(() => {
+        setToast({ show: false, message: "" });
+      }, 4000);
     } finally {
       setLoading(false);
     }
@@ -254,6 +259,18 @@ const Contact = () => {
           ))}
         </div>
       </div>
+
+      {toast.show && (
+        <div className="contact-toast">
+          <span>{toast.message}</span>
+          <button
+            className="contact-toast-close"
+            onClick={() => setToast({ show: false, message: "" })}
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </div>
   );
 };
