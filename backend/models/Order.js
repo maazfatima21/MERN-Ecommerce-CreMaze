@@ -47,7 +47,10 @@ const orderSchema = new mongoose.Schema(
     isDelivered: { type: Boolean, default: false },
     deliveredAt: { type: Date },
 
-    
+    paidAt: Date,
+    paymentResult: {  razorpay_payment_id: String,
+    razorpay_order_id: String,  razorpay_signature: String,},
+        
     isCancelled: { type: Boolean, default: false },
     cancelledAt: { type: Date },
   },

@@ -11,12 +11,21 @@ const paymentSchema = new mongoose.Schema(
     order: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Order",
+      required: true,
     },
 
-    stripePaymentIntentId: {
+    razorpay_order_id: {
       type: String,
       required: true,
       unique: true,
+    },
+
+    razorpay_payment_id: {
+      type: String,
+    },
+
+    razorpay_signature: {
+      type: String,
     },
 
     amount: {
@@ -31,7 +40,7 @@ const paymentSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["created", "succeeded", "failed"],
+      enum: ["created", "paid", "failed"],
       default: "created",
     },
   },

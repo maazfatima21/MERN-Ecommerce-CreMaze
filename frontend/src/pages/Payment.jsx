@@ -1,133 +1,158 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import API from "../api/axios";
-import "../styles/Payment.css";
 
 const Payment = () => {
-  const location = useLocation();
-  const orderData = location.state;
+  const navigate = useNavigate();
+  const { state } = useLocation();
+
+  const { cartItems, customer, address, totalPrice } = state || {};
+
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    // Load Razorpay script
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
+    if (!cartItems || cartItems.length === 0) {
+      navigate("/cart");
+    }
+  }, [cartItems, navigate]);
 
-  if (!orderData) {
-    return (
-      <div className="payment-page">
-        <p>
-          No order data found. <a href="/checkout">Go back to checkout</a>
-        </p>
-      </div>
-    );
-  }
+  /* ================= LOAD RAZORPAY SCRIPT ================= */
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
 
-  const { totalPrice, customer } = orderData;
-
-  const handlePayment = async (method = "card") => {
-    setLoading(true);
-    setError("");
+  /* ================= START PAYMENT ================= */
+  const startPayment = async () => {
     try {
-      // 1️⃣ Create order in backend
-      const { data: order } = await API.post("/payment/create-order", {
-        amount: totalPrice,
-      });
+      setLoading(true);
+      setError("");
 
-      // 2️⃣ Razorpay options
+      const razorpayLoaded = await loadRazorpay();
+      if (!razorpayLoaded) {
+        setError("Razorpay SDK failed to load");
+        return;
+      }
+
+      /* ---------- CREATE ORDER IN DB ---------- */
+      const orderRes = await API.post(
+        "/orders",
+        {
+          orderItems: cartItems.map((item) => ({
+            name: item.name,
+            qty: item.qty,
+            price: item.price,
+            product: item._id,
+          })),
+          shippingAddress: address,
+          customerDetails: customer,
+          paymentMethod: "Razorpay",
+          totalPrice,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const orderId = orderRes.data._id;
+
+      /* ---------- CREATE RAZORPAY ORDER ---------- */
+      const paymentRes = await API.post(
+        "/payment/create-order",
+        { amount: totalPrice, orderId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const { razorpayOrder } = paymentRes.data;
+
+      /* ---------- RAZORPAY OPTIONS ---------- */
       const options = {
-        key: process.env.REACT_APP_PAYMENT_KEY_ID,
-        amount: order.amount,
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: razorpayOrder.amount,
         currency: "INR",
-        name: "CreMaze Ice Cream",
-        description: "Order Payment",
-        order_id: order.id,
-        handler: async (response) => {
-          try {
-            // 3️⃣ Verify payment
-            const verify = await API.post("/payment/verify", {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            });
+        name: "CreMaze Ice Creams",
+        description: "Premium Ice Cream Order",
+        order_id: razorpayOrder.id,
 
-            if (verify.data.success) {
-              setSuccess(true);
-            } else {
-              setError("Payment verification failed.");
-            }
+        handler: async function (response) {
+          try {
+            await API.post(
+              "/payment/verify",
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                orderId,
+              },
+              { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            localStorage.removeItem("cart");
+            navigate("/order-success", { state: { orderId } });
           } catch (err) {
-            setError("Payment verification failed.");
+            console.error(err);
+            setError("Payment verification failed");
           }
         },
+
+        modal: {
+          ondismiss: async () => {
+            await API.post(
+              "/payment/failed",
+              { razorpay_order_id: razorpayOrder.id },
+              { headers: { Authorization: `Bearer ${token}` } }
+            );
+            navigate("/checkout");
+          },
+        },
+
         prefill: {
           name: customer.name,
-          email: customer.email,
+          email: customer.email || "",
           contact: customer.phone,
         },
-        theme: { color: "#6a11cb" },
+
+        theme: {
+          color: "#5c2d91",
+        },
+
         method: {
-          card: true,
           upi: true,
-          netbanking: false,
-          wallet: false,
+          card: true,
+          netbanking: true,
+          wallet: true,
         },
       };
 
-      // If user clicks card, Razorpay automatically shows card input fields
-      const paymentObject = new window.Razorpay(options);
-
-      // For UPI payment, open modal
-      paymentObject.open();
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (err) {
       console.error(err);
-      setError("Payment failed. Please try again.");
+      setError("Payment initiation failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="payment-page">
+    <div>
       <h2>Secure Payment</h2>
 
-      <div className="payment-summary">
-        <span>Total Amount:</span>
-        <strong>₹{totalPrice}</strong>
-      </div>
+      <p>Total Amount: ₹{totalPrice}</p>
 
-      {success ? (
-        <div className="payment-success">
-          <h3>✅ Payment Successful!</h3>
-          <p>Thank you for your order. You can stay on this page.</p>
-        </div>
-      ) : (
-        <div className="payment-methods">
-          <h3>Select Payment Method</h3>
-          <button
-            className="payment-btn upi"
-            onClick={() => handlePayment("upi")}
-            disabled={loading}
-          >
-            Pay via UPI (Google Pay / PhonePe)
-          </button>
-          <button
-            className="payment-btn card"
-            onClick={() => handlePayment("card")}
-            disabled={loading}
-          >
-            Pay via Card
-          </button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-          {error && <p className="payment-error">{error}</p>}
-          {loading && <p className="payment-loading">Processing...</p>}
-        </div>
-      )}
+      <button onClick={startPayment} disabled={loading}>
+        {loading ? "Processing..." : "Pay with Razorpay"}
+      </button>
     </div>
   );
 };
