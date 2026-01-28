@@ -303,13 +303,8 @@ const Checkout = () => {
             disabled={loading}
             onClick={placeOrderHandler}
           >
-            {loading
-              ? "Processing..."
-              : paymentMethod === "ONLINE"
-              ? "Continue to Secure Payment"
-              : "Place Order"}
+            {loading ? "Processing..." : "Proceed to Payment"}
           </button>
-
         </div>
       </div>
 
