@@ -10,6 +10,9 @@ const ordersRoute = require('./routes/orders');
 const usersRoute = require('./routes/users');
 const contactRoute = require('./routes/contact');
 
+// ---------------- Middleware ----------------
+const errorHandler = require('./middleware/errorHandler');
+
 const app = express();
 
 // ---------------- Middleware ----------------
@@ -36,14 +39,15 @@ app.get('/', (req, res) => {
   res.send('CREMAZE Backend is running');
 });
 
+app.get('/api/health', (req, res) => {
+  res.json({ message: "CreMaze API running" });
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Server error", error: err.message });
-});
+app.use(errorHandler);
 
 mongoose
   .connect(process.env.MONGO_URI)
