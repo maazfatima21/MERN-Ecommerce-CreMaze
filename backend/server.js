@@ -9,6 +9,7 @@ const productsRoute = require('./routes/products');
 const ordersRoute = require('./routes/orders');
 const usersRoute = require('./routes/users');
 const contactRoute = require('./routes/contact');
+const paymentRoutes = require('./routes/payment');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/api/products', productsRoute);
 app.use('/api/orders', ordersRoute);
 app.use('/api/users', usersRoute);
 app.use('/api/contact', contactRoute);
+app.use('/api/payment', paymentRoutes);
 
 app.get('/', (req, res) => {
   res.send('CREMAZE Backend is running');
