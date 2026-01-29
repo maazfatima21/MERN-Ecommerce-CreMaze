@@ -95,6 +95,7 @@ function ProductPage() {
         </button>
       </div>
     </div>
+    </Layout>
   );
 }
 
