@@ -1,6 +1,6 @@
 .home-container {
   font-family: "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, #f5f5f5, #faf7f3);
+  background: linear-gradient(135deg, #faf8f6, #f5efe8);
 }
 .home-container .hero {
   display: grid;
@@ -13,14 +13,14 @@
 .home-container .hero-left .brand-tag {
   font-size: 12px;
   letter-spacing: 0.25em;
-  color: #9a6b40;
+  color: #c8956a;
   margin-bottom: 18px;
   display: inline-block;
 }
 
 .home-container .hero-left h1 {
   font-size: 48px;
-  color: #1c1c1c;
+  color: #2d2416;
   line-height: 1.1;
   margin-bottom: 22px;
 }
@@ -29,7 +29,7 @@
   font-size: 16px;
   line-height: 1.7;
   max-width: 450px;
-  color: #444;
+  color: #5a4f47;
   margin-bottom: 32px;
 }
 
@@ -40,7 +40,7 @@
 
 .home-container .primary-btn {
   padding: 12px 28px;
-  background: #1c1c1c;
+  background: #6d4423;
   color: #fff;
   border: none;
   border-radius: 30px;
@@ -50,21 +50,22 @@
 }
 
 .home-container .primary-btn:hover {
-  background: #4b4a4a;
+  background: #8b5a2b;
 }
 
 .home-container .secondary-btn {
   padding: 12px 28px;
   background: transparent;
-  border: 1px solid #1c1c1c;
+  border: 1px solid #6d4423;
   border-radius: 30px;
   font-size: 14px;
   cursor: pointer;
   transition: 0.3s;
+  color: #6d4423;
 }
 
 .home-container .secondary-btn:hover {
-  background: #dfdddd;
+  background: #f5efe8;
 }
 
 .home-container .hero-right img {
@@ -72,6 +73,57 @@
   max-width: 520px;
   margin-left: auto;
   border-radius: 12px;
+}
+
+
+
+/* =====================
+   SIGNATURE
+===================== */
+.home-container .signature {
+  padding: 90px 8%;
+  text-align: center;
+}
+
+.home-container .signature h2 {
+  font-size: 35.2px;
+  margin-bottom: 10px;
+}
+
+.home-container .signature-sub {
+  color: #5a4f47;
+  margin-bottom: 50px;
+}
+
+.home-container .signature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 28px;
+}
+
+.home-container .signature-card {
+  background: #fff;
+  border: 1px solid #e8dcd3;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(109, 68, 35, 0.06);
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.home-container .signature-card:hover {
+  transform: scale(1.05);
+}
+
+.home-container .signature-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.home-container .signature-card h4 {
+  padding: 16px;
+  font-size: 15.2px;
 }
 
 /* =====================
@@ -91,14 +143,14 @@
   max-width: 620px;
   margin: 0 auto;
   line-height: 1.8;
-  color: #484646;
+  color: #5a4f47;
 }
 
 /* =====================
    FLAVOUR MAZE (FIXED)
 ===================== */
 .home-container .flavour-maze {
-  padding: 40px 8%;
+  padding: 40px 12%;
 }
 
 .home-container .section-title {
@@ -106,7 +158,7 @@
   font-size: 36.8px;
   margin-bottom: 70px;
   font-weight: 600;
-  color: #1c1c1c;
+  color: #2d2416;
 }
 
 .home-container .maze-grid {
@@ -121,16 +173,11 @@
 .home-container .maze-card {
   background: #fff;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(109, 68, 35, 0.08);
   transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-}
-
-.home-container .maze-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
 }
 
 .home-container .maze-card img {
@@ -183,54 +230,6 @@
 }
 
 
-/* =====================
-   SIGNATURE
-===================== */
-.home-container .signature {
-  padding: 90px 8%;
-  text-align: center;
-}
-
-.home-container .signature h2 {
-  font-size: 35.2px;
-  margin-bottom: 10px;
-}
-
-.home-container .signature-sub {
-  color: #4b4a4a;
-  margin-bottom: 50px;
-}
-
-.home-container .signature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 28px;
-}
-
-.home-container .signature-card {
-  background: #fff;
-  border: #1c1c1c24 1px solid;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.07);
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-.home-container .signature-card:hover {
-  transform: scale(1.05);
-}
-
-.home-container .signature-card img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
-
-.home-container .signature-card h4 {
-  padding: 16px;
-  font-size: 15.2px;
-}
 
 /* =====================
    STATEMENT
@@ -242,7 +241,7 @@
 }
 
 .home-container .statement-box {
-  background: #1c1c1c;
+  background: #2d2416e2;
   color: #fff;
   padding: 60px;
   border-radius: 16px;
@@ -262,13 +261,12 @@
 }
 
 .home-container .secondary-btn.light {
-  border-color: #fff;
-  color: #fff;
+  background: #915523;
+  color: #ffffff;
 }
 
 .home-container .secondary-btn.light:hover {
-  background: #333;
-  color: #fff;
+  background: #883a03;
 }
 
 /* =====================
