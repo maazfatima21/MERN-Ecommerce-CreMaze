@@ -37,8 +37,6 @@ const Checkout = () => {
     pincode: "",
   });
 
-  const [paymentMethod, setPaymentMethod] = useState("COD");
-
   /* ---------- LOAD CART ---------- */
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -94,20 +92,13 @@ const Checkout = () => {
       return;
     }
 
-    if (paymentMethod === "ONLINE") {
-      navigate("/payment", {
-        state: { cartItems, customer, address, totalPrice },
-      });
-      return;
-    }
-
     try {
       setLoading(true);
       setStatus("");
 
       const token = localStorage.getItem("token");
 
-      await API.post(
+      const orderRes = await API.post(
         "/orders",
         {
           orderItems: cartItems.map((item) => ({
@@ -130,7 +121,7 @@ const Checkout = () => {
       setToast({ show: true, message: "Order placed successfully 🎉" });
       
       setTimeout(() => {
-        navigate("/myorders");
+        navigate("/order-placed", { state: { orderId: orderRes.data._id } });
       }, 1500);
     } catch (err) {
       console.error(err);
@@ -252,29 +243,6 @@ const Checkout = () => {
           </div>
         </div>
 
-        {/* ---------- PAYMENT ---------- */}
-        <div className="checkout-section">
-          <h3>Payment Method</h3>
-          <div className="payment-options">
-            <label>
-              <input
-                type="radio"
-                checked={paymentMethod === "COD"}
-                onChange={() => setPaymentMethod("COD")}
-              />
-              Cash On Delivery
-            </label>
-            <label>
-              <input
-                type="radio"
-                checked={paymentMethod === "ONLINE"}
-                onChange={() => setPaymentMethod("ONLINE")}
-              />
-              Online Payment
-            </label>
-          </div>
-        </div>
-
         {/* ---------- SUMMARY ---------- */}
         <div className="checkout-section summary">
           <h3>Order Summary</h3>
@@ -303,11 +271,7 @@ const Checkout = () => {
             disabled={loading}
             onClick={placeOrderHandler}
           >
-            {loading
-              ? "Processing..."
-              : paymentMethod === "ONLINE"
-              ? "Pay Securely"
-              : "Place Order"}
+            {loading ? "Processing..." : "Place Order"}
           </button>
 
         </div>

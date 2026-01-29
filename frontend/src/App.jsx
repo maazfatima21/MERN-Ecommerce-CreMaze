@@ -13,7 +13,7 @@ import Contact from "./pages/Contact";
 import AddProduct from "./pages/AddProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import Payment from "./pages/Payment";
+import OrderPlaced from "./pages/OrderPlaced";
 import AdminOrders from "./pages/AdminOrders";
 import AdminMessages from "./pages/AdminMessages";
 import ProductProvider from "./context/ProductContext";
@@ -40,7 +40,7 @@ function App() {
           {/* Protected */}
           <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
           <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-          <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+          <Route path="/order-placed" element={<ProtectedRoute><OrderPlaced /></ProtectedRoute>} />
           <Route path="/my-orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
 
           {/* Admin only */}

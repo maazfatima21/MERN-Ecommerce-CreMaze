@@ -9,14 +9,21 @@ router.post("/", protect, async (req, res) => {
     const {
       orderItems,
       shippingAddress,
+      customerDetails,
       paymentMethod,
       taxPrice,
       shippingPrice,
       totalPrice,
     } = req.body;
 
+    console.log("📝 Creating order with data:", { orderItems, shippingAddress, paymentMethod, totalPrice });
+
     if (!orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: "No order items" });
+    }
+
+    if (!totalPrice || totalPrice <= 0) {
+      return res.status(400).json({ message: "Invalid total price" });
     }
 
     const order = new Order({
@@ -24,15 +31,17 @@ router.post("/", protect, async (req, res) => {
       orderItems,
       shippingAddress,
       paymentMethod,
-      taxPrice,
-      shippingPrice,
+      taxPrice: taxPrice || 0,
+      shippingPrice: shippingPrice || 0,
       totalPrice,
     });
 
     const createdOrder = await order.save();
+    console.log("✅ Order created successfully:", createdOrder._id);
     res.status(201).json(createdOrder);
   } catch (error) {
-    res.status(500).json({ message: "Order creation failed" });
+    console.error("❌ Order creation error:", error.message || error);
+    res.status(500).json({ message: "Order creation failed", error: error.message });
   }
 });
 
