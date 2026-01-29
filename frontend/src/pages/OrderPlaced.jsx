@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/OrderPlaced.css";
-import logo from "/logo.png"; 
+import "../styles/OrderPlaced.css"; 
 
 const OrderPlaced = () => {
   const navigate = useNavigate();

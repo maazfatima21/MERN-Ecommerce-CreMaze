@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/Home.css";
+import Layout from "../components/Layout";
 
 const slidesData = [
   {
@@ -72,7 +73,8 @@ function Home() {
   };
 
   return (
-    <div className="home-container">
+    <Layout>
+      <div className="home-container">
       <div className="home-carousel">
         {slidesData.map((slide, index) => (
           <div
@@ -206,7 +208,8 @@ function Home() {
 
 
   </div>
-</div>
+      </div>
+    </Layout>
   );
 }
 

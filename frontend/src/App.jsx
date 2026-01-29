@@ -1,8 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -21,37 +18,40 @@ import ProtectedRoute from "./pages/ProtectedRoute";
 import EditProduct from "./pages/EditProduct";
 import MyOrders from "./pages/MyOrders";
 
+// Component to protect login page from logged-in users
+const PublicLoginRoute = () => {
+  const token = localStorage.getItem("token");
+  return token ? <Navigate to="/" replace /> : <Login />;
+};
 
 function App() {
   return (
     <ProductProvider>
       <Router>
-        <Navbar />
-       
        <Routes>
-          {/* Public */}
-          <Route path="/login" element={<Login />} />        
+          {/* ===== PUBLIC ROUTES ===== */}
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<ProductPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          
+          {/* Login/Signup - Redirect if already logged in */}
+          <Route path="/login" element={<PublicLoginRoute />} />
 
-          {/* Protected */}
+          {/* ===== PROTECTED ROUTES (Requires Login) ===== */}
           <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
           <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
           <Route path="/order-placed" element={<ProtectedRoute><OrderPlaced /></ProtectedRoute>} />
           <Route path="/my-orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
 
-          {/* Admin only */}
+          {/* ===== ADMIN ONLY ROUTES ===== */}
           <Route path="/add-product" element={<ProtectedRoute adminOnly><AddProduct /></ProtectedRoute>} />
           <Route path="/edit-product/:id" element={<ProtectedRoute adminOnly><EditProduct /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute adminOnly><AdminOrders /></ProtectedRoute>} />
-          <Route path="/admin/messages" element={<ProtectedRoute adminOnly><AdminMessages /></ProtectedRoute>}/>
+          <Route path="/admin/messages" element={<ProtectedRoute adminOnly><AdminMessages /></ProtectedRoute>} />
           
         </Routes>
-
-        <Footer />
       </Router>
     </ProductProvider>
   );

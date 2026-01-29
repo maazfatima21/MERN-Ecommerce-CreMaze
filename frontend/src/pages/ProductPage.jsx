@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Layout from "../components/Layout";
 import API from "../api/axios";
 import "../styles/ProductPage.css";
 
@@ -49,7 +50,8 @@ function ProductPage() {
   if (!product) return <p className="product-page-message">Product not found.</p>;
 
   return (
-    <div className="product-page">
+    <Layout>
+      <div className="product-page">
       <div className="product-page-card">
         <h2>{product.name}</h2>
 

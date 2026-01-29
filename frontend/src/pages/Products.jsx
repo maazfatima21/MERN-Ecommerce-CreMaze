@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import ProductCard from "../components/ProductCard";
+import Layout from "../components/Layout";
 import "../styles/Products.css";
 import { ProductContext } from "../context/ProductContext";
 
@@ -76,7 +77,8 @@ const Products = () => {
     });
 
   return (
-    <div className="products-page">
+    <Layout>
+      <div className="products-page">
       <div className="products-header">
         <h1>All Products</h1>
 
@@ -146,7 +148,8 @@ const Products = () => {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </Layout>
   );
 };
 

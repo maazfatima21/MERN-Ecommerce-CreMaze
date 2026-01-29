@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Layout from "../components/Layout";
 import API from "../api/axios";
 import "../styles/MyOrders.css";
 
@@ -44,7 +45,8 @@ function MyOrders() {
   if (error) return <p className="orders-error">{error}</p>;
 
   return (
-    <div className="orders-page">
+    <Layout>
+      <div className="orders-page">
       <div className="orders-header">
         <h1>Your Sweet Orders</h1>
         <p className="orders-subtitle">
@@ -91,7 +93,8 @@ function MyOrders() {
           </tbody>
         </table>
       )}
-    </div>
+      </div>
+    </Layout>
   );
 }
 

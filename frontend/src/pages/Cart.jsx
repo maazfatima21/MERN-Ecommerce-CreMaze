@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Layout from "../components/Layout";
 import "../styles/Cart.css";
 
 // ================= TOAST COMPONENT =================
@@ -139,7 +140,8 @@ function Cart() {
   }
 
   return (
-    <div className="cart-page">
+    <Layout>
+      <div className="cart-page">
       <h1>Your Cart</h1>
       <p className="cart-tagline">
         Almost there — review your items before checkout ✨
@@ -200,7 +202,8 @@ function Cart() {
           </aside>
         </div>
       )}
-    </div>
+      </div>
+    </Layout>
   );
 }
 

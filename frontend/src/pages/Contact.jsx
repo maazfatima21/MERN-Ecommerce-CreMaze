@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import API from "../api/axios";
+import Layout from "../components/Layout";
 import "../styles/Contact.css";
 import { FaMapMarkerAlt,  FaPhone,  FaEnvelope,  FaClock,  FaInstagram,  FaFacebook,  FaTwitter,  FaLinkedin, } from "react-icons/fa";
 
@@ -78,7 +79,8 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-container">
+    <Layout>
+      <div className="contact-container">
       
       {/* HEADER */}
       <header className="contact-header">
@@ -272,6 +274,7 @@ const Contact = () => {
         </div>
       )}
     </div>
+    </Layout>
   );
 };
 

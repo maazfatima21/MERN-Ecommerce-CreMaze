@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Layout from "../components/Layout";
 import API from "../api/axios";
 import "../styles/Checkout.css";
 
@@ -132,7 +133,8 @@ const Checkout = () => {
   };
 
   return (
-    <div className="checkout-container">
+    <Layout>
+      <div className="checkout-container">
       <h2>Checkout</h2>
 
       <div className={`checkout-card ${shake ? "shake" : ""}`}>
@@ -288,7 +290,8 @@ const Checkout = () => {
           </button>
         </div>
       )}
-    </div>
+      </div>
+    </Layout>
   );
 };
 

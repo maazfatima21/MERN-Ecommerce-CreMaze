@@ -1,10 +1,12 @@
 import React from "react";
+import Layout from "../components/Layout";
 import "../styles/About.css";
 import { FaIceCream, FaHeart, FaLeaf, FaSmile } from "react-icons/fa";
 
 function About() {
   return (
-    <div className="about-container">
+    <Layout>
+      <div className="about-container">
 
       {/* ABOUT + CAROUSEL SECTION */}
       <div className="about-carousel-section">
@@ -173,7 +175,8 @@ function About() {
 </div>
  
 </div>
-    </div>
+      </div>
+    </Layout>
   );
 }
 
