@@ -31,7 +31,7 @@ const Home = () => {
         </div>
 
         <div className="hero-right">
-          <img src="H1.png" alt="CreMaze Signature Creation" />
+          <img src="Home.png" alt="CreMaze Signature Creation" />
         </div>
       </section>
 
@@ -82,7 +82,7 @@ const Home = () => {
 
         <div className="maze-grid">
           <div className="maze-card tall">
-            <img src="/H1.png" alt="Crimson Rose Berry" />
+            <img src="/H1.jpg" alt="Crimson Rose Berry" />
           </div>
 
           <div className="maze-card">
@@ -105,19 +105,15 @@ const Home = () => {
             <img src="/H1.png" alt="Vanilla Bean Reverie" />
           </div>
         </div>
-      </section>
-
-
-
-      
+      </section>    
 
       {/* STATEMENT */}
       <section className="statement">
         <div className="statement-box">
           <h2>Moments That Last</h2>
           <p>
-            We slow-churn. We source thoughtfully. We create without shortcuts.
-            Because indulgence should feel effortless — and rare.
+            Time is our ingredient. Balance is our signature.
+            What remains is a moment you carry with you.
           </p>
           <button className="secondary-btn light" onClick={() => navigate("/about")}>
             Discover CreMaze
