@@ -44,25 +44,37 @@ const Home = () => {
         </p>
 
         <div className="signature-grid">
-          <div className="signature-card">
-            <img src="111.jpeg" alt="Strawberry splash" />
-            <h4>Strawberry splash</h4>
+        <div className="signature-card">
+          <img src="111.jpeg" alt="Strawberry Splash" />
+          <div className="signature-overlay">
+            <h4>Strawberry Splash</h4>
+            <span>Bright · Silken</span>
           </div>
+        </div>
 
-          <div className="signature-card">
-            <img src="112.jpg" alt="Emerald Scoop" />
+        <div className="signature-card">
+          <img src="112.jpg" alt="Emerald Scoop" />
+          <div className="signature-overlay">
             <h4>Emerald Scoop</h4>
+            <span>Herbal · Calm</span>
           </div>
+        </div>
 
-          <div className="signature-card">
-            <img src="113.png" alt="Indigo Mist" />
+        <div className="signature-card">
+          <img src="113.png" alt="Indigo Mist" />
+          <div className="signature-overlay">
             <h4>Indigo Mist</h4>
+            <span>Floral · Velvet</span>
           </div>
+        </div>
 
-          <div className="signature-card">
-            <img src="114.png" alt="Dark Secret Scoop" />
-            <h4>Dark Secret Scoop</h4>
+        <div className="signature-card">
+          <img src="114.png" alt="Dark Secret Scoop" />
+          <div className="signature-overlay">
+            <h4>Dark Secret</h4>
+            <span>Deep · Decadent</span>
           </div>
+        </div>
           
         </div>
       </section>
@@ -82,27 +94,45 @@ const Home = () => {
 
         <div className="maze-grid">
           <div className="maze-card tall">
-            <img src="/H1.jpg" alt="Crimson Rose Berry" />
+            <img src="/H1.jpg" alt="Exquisite" />
+            <div className="maze-text">
+              <h4>Exquisite</h4>              
+            </div>
           </div>
 
           <div className="maze-card">
-            <img src="/H2.jpg" alt="Pistachio Matcha Reserve" />
+            <img src="/H2.jpg" alt="Botanical" />
+            <div className="maze-text">
+              <h4>Botanical</h4>              
+            </div>
           </div>
 
           <div className="maze-card">
-            <img src="/H4.jpg" alt="Golden Fig Mascarpone" />
+            <img src="/H4.jpg" alt="Pure Bliss" />
+            <div className="maze-text">
+              <h4>Pure Bliss</h4>
+            </div>
           </div>
 
           <div className="maze-card">
-            <img src="/H3.jpg" alt="Salted Caramel Symphony" />
+            <img src="/H3.jpg" alt="Unforgettable Moments" />
+            <div className="maze-text">
+              <h4>Unforgettable Moments</h4>              
+            </div>
           </div>
 
           <div className="maze-card wide">
-            <img src="/H5.jpg" alt="Midnight Cascade" />
+            <img src="/H5.jpg" alt="Legacy" />
+            <div className="maze-text">
+              <h4>Legacy</h4>
+            </div>
           </div>
 
           <div className="maze-card wide">
-            <img src="/H6.jpg" alt="Vanilla Bean Reverie" />
+            <img src="/H6.jpg" alt="Perfection" />
+            <div className="maze-text">
+              <h4>Perfection</h4>              
+            </div>
           </div>
         </div>
       </section>    
