@@ -86,23 +86,23 @@ const Home = () => {
           </div>
 
           <div className="maze-card">
-            <img src="/H2.png" alt="Pistachio Matcha Reserve" />
+            <img src="/H2.jpg" alt="Pistachio Matcha Reserve" />
           </div>
 
           <div className="maze-card">
-            <img src="/H4.png" alt="Golden Fig Mascarpone" />
+            <img src="/H4.jpg" alt="Golden Fig Mascarpone" />
           </div>
 
           <div className="maze-card">
-            <img src="/H3.png" alt="Salted Caramel Symphony" />
+            <img src="/H3.jpg" alt="Salted Caramel Symphony" />
           </div>
 
           <div className="maze-card wide">
-            <img src="/H5.png" alt="Midnight Cascade" />
+            <img src="/H5.jpg" alt="Midnight Cascade" />
           </div>
 
           <div className="maze-card wide">
-            <img src="/H1.png" alt="Vanilla Bean Reverie" />
+            <img src="/H6.jpg" alt="Vanilla Bean Reverie" />
           </div>
         </div>
       </section>    
