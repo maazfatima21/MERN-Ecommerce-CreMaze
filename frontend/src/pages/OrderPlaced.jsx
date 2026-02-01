@@ -1,94 +1,91 @@
+// OrderPlaced.jsx
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/OrderPlaced.css"; 
+import Layout from "../components/Layout";
+import "../styles/OrderPlaced.css";
 
-const OrderPlaced = () => {
+const CreMazeOrderPlaced = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
+  const orderId = state?.orderId;
+
   useEffect(() => {
-    if (!state?.orderId) {
+    if (!orderId) {
       navigate("/");
     }
-  }, [state, navigate]);
-
-  const handleViewOrders = () => navigate("/my-orders");
-  const handleShopMore = () => navigate("/products");
-
-  if (!state?.orderId) return null;
+  }, [orderId, navigate]);
 
   return (
-    <div className="op-container">
-      <div className="op-card">
+    <Layout minimal>
+      <div className="cmop-page">
+        <div className="cmop-card">
 
-        {/* Logo */}
-        <div className="op-logo">
-          <img src={logo} alt="CreMaze Logo" />
-        </div>
+          {/* SUCCESS ICON */}
+          <div className="cmop-success-circle">✓</div>
 
-        {/* Success Icon */}
-        <div className="op-success-icon">
-          <svg
-            className="op-success-svg"
-            viewBox="0 0 120 120"
-            aria-hidden="true"
-          >
-            <circle className="op-success-circle" cx="60" cy="60" r="55" />
-            <path
-              className="op-success-check"
-              d="M40 60 L55 75 L85 45"
-            />
-          </svg>
-        </div>
+          <h1 className="cmop-title">Order Successful</h1>
 
-        {/* Heading */}
-        <h1 className="op-title">Order Placed Successfully!</h1>
+          {/* ORDER ID */}
+          <div className="cmop-order-info">
+            <span>Order ID</span>
+            <strong>{orderId}</strong>
+          </div>
 
-        {/* Order ID */}
-        <div className="op-order-details">
-          <p className="op-order-label">Order ID</p>
-          <p className="op-order-value">{state.orderId}</p>
-        </div>
-
-        {/* Message */}
-        <div className="op-message-box">
-          <p>Thank you for shopping with CreMaze!</p>
-          <p>Your order is being processed and will be delivered soon.</p>
-          <p className="op-shipping-info">
-            📦 Delivery within 60–90 minutes
+          <p className="cmop-thank-you">
+            Thank you for choosing <strong>CreMaze</strong>
           </p>
-        </div>
 
-        {/* Next Steps */}
-        <div className="op-next-steps">
-          <h3 className="op-next-title">Next Steps</h3>
-          <ul className="op-steps-list">
-            <li>🔄 Made fresh at our nearest CreMaze outlet</li>
-            <li>📞 Delivery partner will contact you shortly</li>
-            <li>❄️ Enjoy your order chilled & fresh</li>
-          </ul>
-        </div>
+          {/* IMAGE + MESSAGE SIDE BY SIDE */}
+          <div className="cmop-content-row">
+            <div className="cmop-image-wrapper">
+              <img
+                src="OS-pg.png"
+                alt="Order confirmed"
+                className="cmop-order-image"
+              />
+            </div>
 
-        {/* Actions */}
-        <div className="op-actions">
-          <button className="op-btn op-btn-primary" onClick={handleViewOrders}>
-            View My Orders
-          </button>
-          <button className="op-btn op-btn-secondary" onClick={handleShopMore}>
-            Continue Shopping
-          </button>
-        </div>
+            <div className="cmop-message-wrapper">
+              <p className="cmop-message-title">
+                An experience worth savoring
+              </p>
+              <p className="cmop-message-text">
+                Where indulgence meets perfection.
+              </p>
+            </div>
+          </div>
 
-        {/* Support */}
-        <div className="op-support">
-          <p>Need assistance?</p>
-          <p>📞 +91 98765 43210</p>
-          <p>📧 hello@cremaze.com</p>
-        </div>
+          {/* ACTIONS */}
+          <div className="cmop-actions">
+            <button
+              className="cmop-primary-btn"
+              onClick={() => navigate("/")}
+            >
+              Back to Home
+            </button>
 
+            <button
+              className="cmop-secondary-btn"
+              onClick={() => navigate("/my-orders")}
+            >
+              View My Orders
+            </button>
+          </div>
+
+          {/* FOOTER NOTE */}
+          <div className="cmop-footer-note">
+            <p>Need help? Reach us at{" "}
+              <a href="mailto:hello@cremaze.com">hello@cremaze.com</a>
+            </p>
+            <p>Or reach us at{" "}
+              <a href="tel:+919876543210">+91 98765 43210</a>
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
-export default OrderPlaced;
+export default CreMazeOrderPlaced;

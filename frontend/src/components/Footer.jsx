@@ -22,7 +22,7 @@ function Footer() {
             <img src="/logo.png" alt="CreMaze Logo" className="logo" />
             <h2>Where Every Scoop <br /> is a Delight!</h2>
           </div>
-          <p>"Dive into a world of creamy flavors and endless happiness!"</p>
+          <p>Dive into a world of creamy flavors and endless happiness!</p>
         </div>
 
         {/* Quick Links */}

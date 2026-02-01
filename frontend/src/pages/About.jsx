@@ -1,183 +1,203 @@
 import React from "react";
 import Layout from "../components/Layout";
+import { Link } from "react-router-dom";
 import "../styles/About.css";
-import { FaIceCream, FaHeart, FaLeaf, FaSmile } from "react-icons/fa";
 
-function About() {
+const About = () => {
   return (
     <Layout>
-      <div className="about-container">
+      <div className="about-page">
 
-      {/* ABOUT + CAROUSEL SECTION */}
-      <div className="about-carousel-section">
-        
-        <div className="about-text-section">
-          <h1 className="about-title">About Cremaze</h1>
-          <p className="about-text">
-            Cremaze is your perfect destination for premium handcrafted ice-creams. <br />
-            We blend rich flavors, fresh ingredients, and creative recipes to bring <br />
-            you a delightful frozen experience in every scoop.
-          </p>
-          <p className="about-text">
-            Whether you're craving something classic, fruity, chocolatey, <br />
-            completely unique — Cremaze has something to melt your heart.
-          </p>
-        </div>
-
-        <div className="carousel">
-          <div className="carousel-track">
-            <img src="ice1.png" alt="ice cream" />
-            <img src="ice2.png" alt="ice cream" />
-            <img src="ice3.png" alt="ice cream" />
-            <img src="ice4.png" alt="ice cream" />
-            <img src="ice5.png" alt="ice cream" />
-            <img src="ice6.png" alt="ice cream" />
-
-            <img src="ice1.png" alt="ice cream" />
-            <img src="ice2.png" alt="ice cream" />
-            <img src="ice3.png" alt="ice cream" />
-            <img src="ice4.png" alt="ice cream" />
-            <img src="ice5.png" alt="ice cream" />
-            <img src="ice6.png" alt="ice cream" />
+        {/* HERO */}
+        <section className="about-hero">
+          <div className="about-hero-content">
+            <p className="about-tag">OUR STORY</p>
+            <h1>
+              Crafted Slowly,<br />Remembered Always.
+            </h1>
+            <p>
+              Step into a realm of rich flavors and pure delight. Every bite sparks a moment of joy. 
+              Experience a world where each creation is a celebration of taste.
+            </p>
           </div>
-        </div>
+        </section>
 
-      </div>
+        <div className="about-divider" />
 
-      {/* WHY CHOOSE US */}
-      <h2 className="section-title why-title">What Makes Cremaze Special?</h2>
-      <div className="why-us-grid">
-        <div className="why-card why-card-1">
-          <FaIceCream className="why-icon" />
-          <h3>Premium Quality</h3>
-          <p>We use the finest ingredients for rich and creamy scoops.</p>
-        </div>
+        {/* CRAFT CAROUSEL */}
+        <section className="about-carousel">
+          <div className="about-carousel-container">
+            <h2>The Beginning</h2>
+            <p>
+              CreMaze was born from a desire to slow things down. In a world of
+              instant indulgence, we chose patience — believing that time is the
+              most important ingredient of all.
+            </p>
+            <p className="origin-line">
+              Intention over trends. Taste beyond time.
+            </p>
+          </div>
 
-        <div className="why-card why-card-2">
-          <FaLeaf className="why-icon" />
-          <h3>Fresh Ingredients</h3>
-          <p>Every batch is made with love, freshness, and zero shortcuts.</p>
-        </div>
+          <div className="about-carousel-track">
+            <div className="about-carousel-slide">
+            <img src="ice1.png" alt="ice cream" loading="lazy" />
+            <img src="ice2.png" alt="ice cream" loading="lazy" />
+            <img src="ice3.png" alt="ice cream" loading="lazy" />
+            <img src="ice4.png" alt="ice cream" loading="lazy" />
+            <img src="ice5.png" alt="ice cream" loading="lazy" />
+            <img src="ice6.png" alt="ice cream" loading="lazy" />
 
-        <div className="why-card why-card-3">
-          <FaHeart className="why-icon" />
-          <h3>Made with Love</h3>
-          <p>Each flavor is crafted with passion and creativity.</p>
-        </div>
+            <img src="ice1.png" alt="ice cream" loading="lazy" />
+            <img src="ice2.png" alt="ice cream" loading="lazy" />
+            <img src="ice3.png" alt="ice cream" loading="lazy" />
+            <img src="ice4.png" alt="ice cream" loading="lazy" />
+            <img src="ice5.png" alt="ice cream" loading="lazy" />
+            <img src="ice6.png" alt="ice cream" loading="lazy" />
+            </div>
+          </div>
+        </section>
 
-        <div className="why-card why-card-4">
-          <FaSmile className="why-icon" />
-          <h3>Customer Happiness</h3>
-          <p>Your smile is our biggest reward — always serving joy!</p>
-        </div>
-      </div>
+        <div className="about-divider" />
 
+        {/* PHILOSOPHY */}
+        <section className="about-philosophy">
+          <div className="about-container">
+            <h2>Our Philosophy</h2>
+
+            <div className="philosophy-grid">
+              <div className="philosophy-card">
+                <h4>Art in Every Bite</h4>
+                <p>
+                  We transform ingredients into edible masterpieces, where flavor meets finesse.
+                </p>
+              </div>
+
+              <div className="philosophy-card">
+                <h4>Sourced with Integrity</h4>
+                <p>
+                  Only the finest, ethically chosen ingredients make it into our creations.
+                </p>
+              </div>
+
+              <div className="philosophy-card">
+                <h4>Crafted with Heart</h4>
+                <p>
+                  Each dessert is a labor of love, from concept to presentation.
+                </p>
+              </div>
+
+              <div className="philosophy-card">
+                <h4>Excellence, Always</h4>
+                <p>
+                  No shortcuts, no compromises—just unforgettable taste in every scoop.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* MAKERS */}
+        <section className="about-makers">
+          <div className="about-container">
+            <h2>The Makers Behind CreMaze</h2>
+            <p className="makers-intro">
+              At CreMaze, dessert is craft—each creation shaped by artisans, not assembly lines.
+            </p>
+
+            <div className="makers-grid">
+              <div className="maker-card">
+                <img src="/M1.png" alt="image" loading="lazy" />
+                <h4>Flavor Curator</h4>
+                <span>Vision · Direction · Taste</span>
+              </div>
+
+              <div className="maker-card">
+                <img src="/M2.png" alt="image" loading="lazy" />
+                <h4>Master Artisan</h4>
+                <span>Texture · Technique · Precision</span>
+              </div>
+
+              <div className="maker-card">
+                <img src="/M3.png" alt="image" loading="lazy" />
+                <h4>Ingredient Specialist</h4>
+                <span>Sourcing · Integrity</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      <div className="about-divider" />
       
+        {/* EXPERIENCE + VALUES */}
+        <section className="about-experience">
+          <div className="about-container narrow experience-intro">
+            <h2>The CreMaze Experience</h2>
+            <p>
+              Every scoop is designed to unfold — first impression,
+              middle note, and a finish that stays with you long after.
+            </p>
+            <p>
+              This is indulgence without urgency. Dessert, at its most refined.
+            </p>
+          </div>
 
-      {/* TEAM MEMBERS */}
-     
-      <h2 className="section-title team-title">Meet Our Makers</h2>
-      <div className="team-grid">
-        <div className="team-card">
-          <img src="M1.png" alt="Maria" />
-          <h3>Maria</h3>
-          <p>Master Ice-Cream Crafter</p>
-        </div>
+          <div className="experience-values">
+            <div className="values-grid">
+              <div className="value-card">
+                <h3>Craft Over Scale</h3>
+                <p>
+                  We create in limited quantities, ensuring every batch
+                  meets our uncompromising standards.
+                </p>
+              </div>
 
-        <div className="team-card">
-          <img src="M2.png" alt="John" />
-          <h3>John</h3>
-          <p>Flavor Scientist</p>
-        </div>
+              <div className="value-card">
+                <h3>Respect for Ingredients</h3>
+                <p>
+                  Real cream. Real fruit. No unnecessary additions.
+                </p>
+              </div>
 
-        <div className="team-card">
-          <img src="M3.png" alt="Eva" />
-          <h3>Eva</h3>
-          <p>Creative Designer</p>
-        </div>
-
-        <div className="team-card">
-          <img src="M4.png" alt="Sarah" />
-          <h3>David</h3>
-          <p>Quality Expert</p>
-        </div>
-        
-      </div>
-
-      {/* CUSTOMER REVIEWS */}
-      <h2 className="section-title review-title">What Our Customers Say</h2>
-
-      <div className="review-grid">
-
-     <div className="review-track">
-    {/* Original Reviews */}
-    <div className="review-card">
-      <p>“Best ice cream I’ve had in years! The texture is unbelievably smooth.”</p>
-      <span>⭐⭐⭐⭐⭐</span>
-      <h4 className="customer-name">— Ayesha Khan</h4>
-    </div>
-
-    <div className="review-card">
-      <p>“Super creamy and delicious. Loved it! I can’t stop buying this flavor.”</p>
-      <span>⭐⭐⭐⭐</span>
-      <h4 className="customer-name">— Rohit Sharma</h4>
-    </div>
-
-    <div className="review-card">
-      <p>“Caramel swirl is my new addiction 😍 The richness is just perfect.”</p>
-      <span>⭐⭐⭐</span>
-      <h4 className="customer-name">— Sneha Patel</h4>
-    </div>
-
-    <div className="review-card">
-      <p>“Fresh flavors and perfect sweetness. Highly recommended! Every scoop tastes premium.”</p>
-      <span>⭐⭐⭐⭐⭐</span>
-      <h4 className="customer-name">— Arjun Mehta</h4>
-    </div>
+              <div className="value-card">
+                <h3>Designed for Moments</h3>
+                <p>
+                  CreMaze is meant to be savored — not rushed.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
 
-    <div className="review-card">
-      <p>“Smooth, rich, and melts in the mouth — amazing quality! Truly worth every bite.”</p>
-      <span>⭐⭐⭐</span>
-      <h4 className="customer-name">— Daniel Joseph</h4>
-    </div>
+  {/* CLOSING */}
+        <section className="about-closing">
+          <h2>Where Flavor Meets Art.</h2>
+          <p>
+            Crafted to delight, made to be remembered. Every scoop is a journey of flavor, designed to spark joy in every moment.
+          </p>
 
-    {/* Duplicate Reviews for Infinite Loop */}
-    <div className="review-card">
-      <p>“Best ice cream I’ve had in years! The texture is unbelievably smooth.”</p>
-      <span>⭐⭐⭐⭐⭐</span>
-      <h4 className="customer-name">— Ayesha Khan</h4>
-    </div>
+          {/* Optional ultra-soft CTA */}
+          <Link to="/products" className="about-cta">
+            Explore Our Flavors
+          </Link>
+        </section>
 
-    <div className="review-card">
-      <p>“Super creamy and delicious. Loved it! I can’t stop buying this flavor.”</p>
-      <span>⭐⭐⭐⭐</span>
-      <h4 className="customer-name">— Rohit Sharma</h4>
-    </div>
+        {/* SIGNATURE */}
+        <section className="about-signature">
+          <div className="about-container narrow">
+            <p className="signature-text">
+              “CreMaze is our idea of indulgence done right.
+              Nothing more. Nothing less.”
+            </p>
+            <span className="signature-author">— Founder, CreMaze</span>
+          </div>
+        </section>
 
-    <div className="review-card">
-      <p>“Caramel swirl is my new addiction 😍 The richness is just perfect.”</p>
-      <span>⭐⭐⭐</span>
-      <h4 className="customer-name">— Sneha Patel</h4>
-    </div>
+       
 
-    <div className="review-card">
-      <p>“Fresh flavors and perfect sweetness. Highly recommended! Every scoop tastes premium.”</p>
-      <span>⭐⭐⭐⭐⭐</span>
-      <h4 className="customer-name">— Arjun Mehta</h4>
-    </div>
-
-    <div className="review-card">
-      <p>“Smooth, rich, and melts in the mouth — amazing quality! Truly worth every bite.”</p>
-      <span>⭐⭐⭐</span>
-      <h4 className="customer-name">— Daniel Joseph</h4>
-    </div>
-</div>
- 
-</div>
       </div>
     </Layout>
   );
-}
+};
 
 export default About;

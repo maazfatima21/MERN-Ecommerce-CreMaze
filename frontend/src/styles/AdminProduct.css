@@ -1,0 +1,264 @@
+.admin-product-page {
+  position: relative;
+  padding: 60px 20px 100px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #efeeec, #e8e7e2);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.admin-product-page::before {
+  content: "";
+  position: absolute;
+  left: 80px;
+  width: 400px;
+  height: 700px;
+  background: url("/Ed-bg1.jpg") no-repeat center / contain;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.admin-product-card {
+  width: 100%;
+  max-width: 420px;
+  background: #faf7f5;
+  border: 1px solid #45222f44;
+  border-radius: 18px;
+  padding: 40px 50px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+  z-index: 1;
+}
+
+.admin-product-card h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #45222f;
+  margin-bottom: 6px;
+  letter-spacing: 0.4px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: #7a7a7a;
+  margin-bottom: 22px;
+}
+
+/* ===============================
+   STATUS MESSAGE
+================================ */
+.status-msg {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: #45222f;
+}
+
+/* ===============================
+   FORM
+================================ */
+.admin-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-product-form input,
+.admin-product-form textarea {
+  padding: 12px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #45222f44;
+  background: #ffffff;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.admin-product-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.admin-product-form input:focus,
+.admin-product-form textarea:focus {
+  border-color: #45222f44;
+  box-shadow: 0 0 0 2px rgba(31, 31, 31, 0.1);
+}
+
+/* ===============================
+   IMAGE PREVIEW
+================================ */
+.image-preview,
+.current-image {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  margin-top: 6px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.current-image-container label {
+  font-size: 13px;
+  color: #7a7a7a;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ===============================
+   FILE INPUT (CUSTOM)
+================================ */
+.file-input {
+  display: none;
+}
+
+.file-label {
+  display: inline-block;
+  text-align: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px dashed #45222f44;
+  font-size: 13px;
+  cursor: pointer;
+  color: #2a1f23;
+  transition: all 0.25s ease;
+}
+
+.file-label:hover {
+  background: #f3f1ed;
+}
+
+/* ===============================
+   FORM ACTIONS
+================================ */
+.form-actions {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.submit-btn {
+  padding: 12px;
+  flex: 1;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  background: linear-gradient(135deg,  #000000, #4e0a23);
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #45222f44;
+  background: #ffffff;
+  color: #1f1f1f;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #faf9f5;
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   TOAST
+================================ */
+.admin-product-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: linear-gradient(135deg, #1f1f1f, #000000);
+  color: #ffffff;
+  padding: 14px 18px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  animation: slideInUp 0.3s ease-out;
+  z-index: 2000;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-product-toast-close {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.admin-product-toast-close:hover {
+  transform: scale(1.2);
+}
+
+/* ===============================
+   ANIMATION
+================================ */
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 1024px) {
+  .admin-product-page::before {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-product-page {
+    padding: 40px 12px;
+  }
+
+  .admin-product-card {
+    padding: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-product-card {
+    max-width: 340px;
+    padding: 22px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .submit-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+}

@@ -7,7 +7,7 @@ import ProductPage from "./pages/ProductPage";
 import Login from "./pages/Login";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import AddProduct from "./pages/AddProduct";
+import ProductManagement from "./pages/AdminProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderPlaced from "./pages/OrderPlaced";
@@ -15,7 +15,6 @@ import AdminOrders from "./pages/AdminOrders";
 import AdminMessages from "./pages/AdminMessages";
 import ProductProvider from "./context/ProductContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import EditProduct from "./pages/EditProduct";
 import MyOrders from "./pages/MyOrders";
 
 // Component to protect login page from logged-in users
@@ -46,8 +45,8 @@ function App() {
           <Route path="/my-orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
 
           {/* ===== ADMIN ONLY ROUTES ===== */}
-          <Route path="/add-product" element={<ProtectedRoute adminOnly><AddProduct /></ProtectedRoute>} />
-          <Route path="/edit-product/:id" element={<ProtectedRoute adminOnly><EditProduct /></ProtectedRoute>} />
+          <Route path="/add-product" element={<ProtectedRoute adminOnly><ProductManagement /></ProtectedRoute>} />
+          <Route path="/edit-product/:id" element={<ProtectedRoute adminOnly><ProductManagement /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute adminOnly><AdminOrders /></ProtectedRoute>} />
           <Route path="/admin/messages" element={<ProtectedRoute adminOnly><AdminMessages /></ProtectedRoute>} />
           

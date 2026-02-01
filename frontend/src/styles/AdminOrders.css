@@ -1,360 +1,366 @@
+/* ================= ROOT ================= */
 .admin-orders-container {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #dbf9dd, #d9e5f9);
-  border-radius: 18px;
-  color: #1e1d1d;
-  padding: 20px;
+  padding: 40px 6%;
+  background: linear-gradient(135deg, #f4f1ee, #ebe6e1);
   min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  color: #3b2b20;
 }
 
-.admin-loading {
-  text-align: center;
-  margin-top: 100px;
-  font-size: 24px;
-  color: #06570b;
-}
-
+/* ================= HEADER ================= */
 .admin-header {
+  margin-bottom: 35px;
   text-align: center;
-  margin-bottom: 30px;
 }
 
 .admin-header h1 {
-  margin: 0;
-  font-size: 30px;
-  color: #06570b;
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .admin-header p {
-  margin: 5px 0 0 0;
-  color: #2f2e2e;
+  color: #7a5c45;
+  margin-top: 6px;
 }
 
+/* ================= STATS ================= */
 .admin-stats {
-  display: flex;
-  gap: 25px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
 }
 
 .admin-stats div {
   background: #ffffff;
-  padding: 10px 25px;
-  border: 1px solid #0f522379;
-  border-radius: 10px;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-  font-weight: 600;
-  min-width: 140px;
-  cursor: pointer;
+  padding: 18px;
+  border-radius: 6px;
+  border: 1px solid #3b2b203f;
   text-align: center;
+  font-weight: 500;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+.admin-stats div:hover {
+  transform: translateY(-4px);
+  background: #f2e1d1;
+}
+
+/* ================= ORDERS GRID ================= */
 .admin-orders-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 26px;
 }
 
+/* ================= ORDER CARD ================= */
 .admin-order-card {
-  background: white;
-  padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease;
+  background: #ffffff;
+  border: 1px solid #3b2b203f;
+  border-radius: 6px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .admin-order-card:hover {
-  transform: translateY(-3px);
+  transform: translatey(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
 }
 
 .admin-order-card h4 {
-  margin-bottom: 10px;
+  font-size: 18px;
+  margin: 0 auto 30px auto;
+  color: #663411;
 }
 
 .admin-order-card p {
-  margin: 4px 0;
   font-size: 14px;
+  margin: 4px 0;
+  color: #4a3424;
 }
 
+/* ================= STATUS ================= */
 .admin-status {
-  margin: 10px 0;
-  font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 6px;
-  display: inline-block;
+  margin-top: 10px;
+  font-weight: 600;
   font-size: 13px;
 }
 
 .admin-pending {
-  color: #e6a700;
+  color: #c28b00;
 }
 
 .admin-delivered {
-  color: #2ecc71;
+  color: #2e8b57;
 }
 
 .admin-cancelled {
-  color: #e53935;
+  color: #b22222;
 }
 
-.admin-order-card:hover .admin-status {
-  opacity: 0.9;
-}
-
+/* ================= CARD ACTIONS ================= */
 .admin-card-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 10px;
+  margin-top: 16px;
 }
 
 .admin-card-actions button {
   flex: 1;
-  padding: 7px;
+  padding: 8px 12px;
+  border-radius: 8px;
   border: none;
-  border-radius: 6px;
   font-size: 13px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
-.admin-card-actions button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
+/* Buttons */
 .admin-view-btn {
-  background: linear-gradient(135deg,  #011a40, #0356a8);
+  background: #735540;
   color: #ffffff;
 }
-.admin-view-btn:hover {
-  background: linear-gradient(135deg, #023178, #1381da);
-}
+
 .admin-deliver-btn {
-  background: linear-gradient(135deg, #025a27, #04b84e);
-  color: #fff;
+  background: #3c7c4b;
+  color: #ffffff;
 }
-.admin-deliver-btn:hover {
-  background: linear-gradient(135deg, #04933f, #1cdf6d);
-}
+
 .admin-invoice-btn {
-  background: linear-gradient(135deg, #3a054f, #7d3c98);
-  color: #fff;
-}
-.admin-invoice-btn:hover {
-  background: linear-gradient(135deg, #5e0584, #ba70d7);
+  background: #b2825f;
+  color: #ffffff;
 }
 
 .admin-cancel-btn {
-  background: linear-gradient(135deg, #7a0402, #b83b2f);
-  color: #fff;
-}
-.admin-cancel-btn:hover {
-  background: linear-gradient(135deg, #b50805, #e16456);
-}
-.admin-card-actions button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+  background: #f4babf;
 }
 
+.admin-card-actions button:hover:not(:disabled) {
+  filter: brightness(0.9);
+  transform: translateY(-2px);
+}
+.admin-card-actions button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* ================= MODAL ================= */
 .admin-modal-overlay {
-  position: fixed;
+   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(1px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
-.admin-modal-content {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
+.admin-confirm-modal {
+  background: #fffcfa;
+  padding: 24px 36px;
   width: 90%;
-  max-width: 420px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  max-width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: scaleIn 0.25s ease;
 }
 
-.admin-modal-content h3 {
-  margin-bottom: 10px;
+.admin-modal-content {
+  background: #fffcfa;
+  padding: 24px 36px;
+  width: 90%;
+  max-width: 350px;
+  border-radius: 12px;
+  animation: scaleIn 0.25s ease;
 }
 
-.admin-modal-content h4 {
-  margin-top: 15px;
-  font-size: 16px;
-  color: #06570b;
-}
-
-.admin-modal-content p,
-.admin-modal-content strong {
-  font-size: 14px;
-  margin: 5px 0;
+.admin-modal-content h3,
+.admin-confirm-modal h3 {
+  color: #3b2b20;
+  text-align: center;
 }
 
 .admin-modal-content ul {
+  margin-top: 10px;
   padding-left: 20px;
-  margin: 18px;
-  max-height: 200px;
-  overflow-y: auto;
+  text-align: left;
 }
 
 .admin-modal-content li {
-  margin-bottom: 4px;
   font-size: 14px;
+  margin-bottom: 6px;
+  text-align: left;
 }
 
 .admin-close-btn {
   margin-top: 20px;
   width: 100%;
-  padding: 10px;
-  background: #333;
+  background: #663411;
   color: white;
   border: none;
+  padding: 10px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.admin-close-btn:hover {
-  background: black;
-}
-
-.admin-confirm-modal {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 380px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  text-align: center;
-}
-
-.admin-confirm-modal h3 {
-  margin-bottom: 10px;
-  font-size: 20px;
-  color: #b83b2f;
-}
-
-.admin-confirm-modal p {
-  margin-bottom: 20px;
-  font-size: 14px;
-  color: #555;
 }
 
 .admin-confirm-actions {
   display: flex;
-  gap: 12px;
-  justify-content: center;
-}
-
-.admin-confirm-cancel-btn,
-.admin-confirm-delete-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex: 1;
+  gap: 30px;
+  margin-top: 40px;
 }
 
 .admin-confirm-cancel-btn {
-  background: #e0e0e0;
-  color: #333;
-}
-
-.admin-confirm-cancel-btn:hover {
-  background: #d0d0d0;
-  transform: translateY(-2px);
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  flex: 1;
+  background: #f1ddca;
+  border-radius: 8px;
+  padding: 10px;
+  border: none;
 }
 
 .admin-confirm-delete-btn {
-  background: linear-gradient(135deg, #700b02, #d11803);
-  color: #fff;
+  flex: 1;
+  background: #b22222;
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+  border: none;
 }
 
-.admin-confirm-delete-btn:hover {
-  background: linear-gradient(135deg, #be1603, #d46c5c);
-  transform: translateY(-2px);
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
-}
-
+/* ================= TOAST ================= */
 .admin-toast {
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background: linear-gradient(135deg, #06570b, #0d8f16);
-  color: white;
-  padding: 16px 20px;
-  border-radius: 8px;
+  bottom: 25px;
+  right: 25px;
+  background: #3b2b20;
+  color: #ffffff;
+  padding: 14px 18px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
-  gap: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  animation: slideInUp 0.3s ease-out;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   z-index: 2000;
-  max-width: 400px;
+  animation: slideIn 0.4s ease;
 }
 
-@keyframes slideInUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.admin-toast span {
-  flex: 1;
+.admin-toast button {
+  background: transparent;
+  border: none;
+  color: #ffd6a5;
+  cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
 }
 
 .admin-toast-undo-btn {
-  background: #e6f6ec;
-  color: #027833;
-  border: 1px solid #8fd7ac;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 12px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.admin-toast-undo-btn:hover {
-  background: #d1f0dd;
-  border-color: #8fd7ac;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.admin-toast-close-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
+/* ================= LOADING ================= */
+.admin-loading {
+  text-align: center;
+  padding: 80px;
+  font-size: 22px;
+  color: #6b3e1e;
 }
 
-.admin-toast-close-btn:hover {
-  transform: scale(1.2);
+@media (max-width: 1200px) {
+  .admin-orders-container {
+    padding: 40px 4%;
+  }
+
+  .admin-header h1 {
+    font-size: 28px;
+  }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 992px) {
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-orders-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-orders-container {
+    padding: 30px 4%;
+  }
+
+  .admin-header h1 {
+    font-size: 24px;
+  }
+
+  .admin-header p {
+    font-size: 14px;
+  }
+
+  .admin-stats {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .admin-order-card {
+    padding: 18px;
+  }
+
+  .admin-card-actions {
+    flex-direction: column;
+  }
+
   .admin-card-actions button {
-    flex: 100%;
+    width: 100%;
+  }
+
+  .admin-modal-content,
+  .admin-confirm-modal {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-header h1 {
+    font-size: 22px;
+  }
+
+  .admin-order-card h4 {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .admin-order-card p {
+    font-size: 13px;
+  }
+
+  .admin-toast {
+    right: 15px;
+    left: 15px;
+    bottom: 15px;
+    justify-content: space-between;
+  }
+
+  .admin-confirm-actions {
+    flex-direction: column;
+    gap: 14px;
   }
 }

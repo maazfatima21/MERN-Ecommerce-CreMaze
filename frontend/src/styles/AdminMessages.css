@@ -1,6 +1,6 @@
 .admin-messages-page {
   padding: 24px;
-  background: linear-gradient(135deg, #f0dcfb, #fbd9d9, #efdcfa);
+  background: linear-gradient(135deg, #eeeae7, #eee6df);
   border-radius: 12px;
   min-height: 100vh;
 }
@@ -8,7 +8,7 @@
 .admin-messages {
   padding: 0 100px 20px 100px;
   font-family: "Inter", sans-serif;
-  color: #500723;
+  color: #4a2c37;
 }
 
 .admin-messages h1 {
@@ -34,12 +34,12 @@
 
 .filter-buttons button {
   background: #fff;
-  border: 1px solid #46093360;
+  border: 1px solid #2a1f2356;
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  color: #2d0325;
+  color: #2a1f23;
   transition: all 0.2s ease;
 }
 
@@ -48,12 +48,12 @@
 }
 
 .filter-buttons button.active {
-  background: #5a0a47;
+  background: #44061d;
   color: #fff;
 }
 
 .admin-messages-page .badge {
-  background: #5a0a47;
+  background: #44061d;
   color: #ffffff;
   padding: 2px 2px;
   border-radius: 12px;
@@ -71,21 +71,21 @@
   right: 12px;
   top: 50%;
   transform: translateY(-40%);
-  color: #999;
+  color: #44061ddb;
   font-size: 14px;
 }
 
 .contact-search-input {
   padding: 8px 0 8px 16px;
   border-radius: 8px;
-  border: 1px solid #f0d0de;
+  border: 1px solid #44061d5b;
   font-size: 14px;
   width: 210px;
   outline: none;
 }
 
 .contact-search-input:focus {
-  border-color: #711035b0;
+  border-color: #44061d;
 }
 
 .admin-messages-page .loading,
@@ -98,14 +98,14 @@
 
 .admin-messages-page .error {
   background: #ffe2f3;
-  color: #900c0c;
+  color: #890202;
   padding: 10px 14px;
   border-radius: 8px;
   margin-bottom: 16px;
 }
 
 .admin-messages-page .toast {
-  background: #c42e88;
+  background: #44061d;
   color: #fff;
   padding: 10px 14px;
   border-radius: 8px;
@@ -121,7 +121,7 @@
   border-radius: 12px;
   padding: 35px 50px 10px 20px;
   margin-bottom: 16px;
-  border: 1px solid #f2e6d8;
+  border: 1px solid #44061d33;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
   transition: transform 0.15s ease, opacity 0.2s ease;
   position: relative;
@@ -132,7 +132,7 @@
 }
 
 .admin-messages-page .message-card.unread {
-  border-left: 6px solid #b60357;
+  border-left: 6px solid #651e38;;
 }
 
 .admin-messages-page .message-card.read {
@@ -158,9 +158,9 @@
 }
 
 .admin-messages-page .status-dot {
-  width: 10px;
-  height: 10px;
-  background: #da2241;
+  width: 14px;
+  height: 14px;
+  background: #b30f2b;
   border-radius: 50%;
 }
 
@@ -191,7 +191,7 @@
 
 .admin-messages-page .actions button {
   background: #fff;
-  border: 1px solid #4203306b;
+  border: 1px solid #44061d6d;
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 13px;
@@ -200,7 +200,7 @@
 }
 
 .admin-messages-page .actions button:hover {
-  background: #79014f;
+  background: #44061d;
   color: #fff;
 }
 
@@ -241,55 +241,81 @@
   transform: scale(0.98);
 }
 
-.modal-backdrop {
+.admin-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+  z-index: 1200;
 }
 
-.modal {
+.admin-modal {
   background: #ffffff;
-  padding: 24px;
-  border-radius: 12px;
-  max-width: 360px;
+  padding: 24px 36px;
+  border-radius: 14px;
   width: 100%;
+  max-width: 340px;
   text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  animation: adminModalFade 0.25s ease;
 }
 
-.modal h3 {
-  margin-bottom: 10px;
-  color: #500723;
+.admin-modal h3 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #4a2c37; 
 }
 
-.modal p {
+.admin-modal p {
   font-size: 14px;
   color: #555;
+  margin-bottom: 28px;
 }
 
-.modal-actions {
+.admin-modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 14px;
 }
 
-.modal-actions button {
-  padding: 6px 14px;
-  border-radius: 6px;
+.admin-modal-actions button {
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
   cursor: pointer;
-  border: 1px solid #ccc;
-  background: #fff;
+  border: none;
+  transition: all 0.2s ease;
 }
 
-.modal-actions .danger {
-  background: #910101;
-  color: #fff;
-  border-color: #910101;
+.admin-modal-actions button:first-child {
+  background: #857f7f;
+  color: #ffffff;
 }
+
+.admin-modal-actions .danger {
+  background: #8b0000;
+  color: #ffffff;
+}
+
+.admin-modal-actions button:hover {
+  filter: brightness(0.9);
+  transform: translateY(-4px);
+}
+
+/* ---------- ANIMATION ---------- */
+@keyframes adminModalFade {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 
 .toast button {
   background: transparent;
@@ -298,4 +324,126 @@
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
+}
+
+@media (max-width: 1200px) {
+  .admin-messages {
+    padding: 0 40px 20px 40px;
+  }
+
+  .contact-search-input {
+    width: 180px;
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-messages {
+    padding: 0 24px 20px 24px;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-buttons {
+    flex-wrap: wrap;
+  }
+
+  .contact-search-wrapper {
+    width: 100%;
+  }
+
+  .contact-search-input {
+    width: 100%;
+  }
+
+  .admin-messages-page .message-card {
+    padding: 28px 20px 14px 20px;
+  }
+
+  .admin-messages-page .message-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .admin-messages-page .status-dot {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-messages-page {
+    padding: 16px;
+  }
+
+  .admin-messages h1 {
+    font-size: 24px;
+  }
+
+  .filter-buttons button {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .admin-messages-page .message-card {
+    padding: 26px 16px 12px 16px;
+  }
+
+  .admin-messages-page .sender-name {
+    font-size: 15px;
+  }
+
+  .admin-messages-page .sender-email {
+    font-size: 12px;
+  }
+
+  .admin-messages-page .message-text {
+    font-size: 13px;
+  }
+
+  .admin-messages-page .message-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .admin-messages-page .actions {
+    width: 100%;
+  }
+
+  .admin-messages-page .actions button {
+    flex: 1;
+    text-align: center;
+  }
+
+  .bulk-checkbox {
+    top: 12px;
+    left: 12px;
+  }
+
+  .bulk-delete {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .admin-messages h1 {
+    font-size: 22px;
+  }
+
+  .admin-modal {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .admin-modal-actions {
+    flex-direction: column;
+  }
+
+  .admin-modal-actions button {
+    width: 100%;
+  }
 }

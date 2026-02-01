@@ -9,7 +9,6 @@ router.post("/", protect, async (req, res) => {
     const {
       orderItems,
       shippingAddress,
-      customerDetails,
       paymentMethod,
       taxPrice,
       shippingPrice,
@@ -26,9 +25,24 @@ router.post("/", protect, async (req, res) => {
       return res.status(400).json({ message: "Invalid total price" });
     }
 
+    const sanitizedItems = orderItems.map((item) => {
+  if (!item.name || !item.price || !item.qty) {
+    throw new Error("Invalid order item data");
+  }
+
+  return {
+    name: item.name,
+    image: item.image || item.product?.image || "/placeholder.png",
+    qty: item.qty,
+    price: item.price,
+    product: item.product || item._id,
+  };
+});
+
+
     const order = new Order({
       user: req.user._id,
-      orderItems,
+      orderItems: sanitizedItems,
       shippingAddress,
       paymentMethod,
       taxPrice: taxPrice || 0,
@@ -48,9 +62,9 @@ router.post("/", protect, async (req, res) => {
 /* ================= USER ORDERS ================= */
 router.get("/myorders", protect, async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id }).sort({
-      createdAt: -1,
-    });
+    const orders = await Order.find({ user: req.user._id })
+    .sort({createdAt: -1 })
+    .select("orderItems totalPrice isPaid isDelivered createdAt orderStatus");
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch orders" });
@@ -87,6 +101,7 @@ router.put("/:id/deliver", protect, admin, async (req, res) => {
 
     order.isDelivered = true;
     order.deliveredAt = Date.now();
+    order.orderStatus = "Delivered";
 
     const updatedOrder = await order.save();
     res.json(updatedOrder);
@@ -112,6 +127,7 @@ router.put("/:id/cancel", protect, admin, async (req, res) => {
 
     order.isCancelled = true;
     order.cancelledAt = Date.now();
+    order.orderStatus = "Cancelled";
 
     const updatedOrder = await order.save();
     res.json(updatedOrder);
@@ -137,6 +153,7 @@ router.put("/:id/restore", protect, admin, async (req, res) => {
 
     order.isCancelled = false;
     order.cancelledAt = null;
+    order.orderStatus = "Placed";
 
     const updatedOrder = await order.save();
     res.json(updatedOrder);

@@ -13,8 +13,8 @@ const Checkout = () => {
   const [showRequired, setShowRequired] = useState(false);
   const [shake, setShake] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "" });
+  const [confirmChecked, setConfirmChecked] = useState(false);
 
-  /* ---------- REFS FOR AUTO SCROLL ---------- */
   const nameRef = useRef(null);
   const phoneRef = useRef(null);
   const houseRef = useRef(null);
@@ -22,14 +22,12 @@ const Checkout = () => {
   const cityRef = useRef(null);
   const pincodeRef = useRef(null);
 
-  /* ---------- CUSTOMER ---------- */
   const [customer, setCustomer] = useState({
     name: "",
     phone: "",
     email: "",
   });
 
-  /* ---------- ADDRESS ---------- */
   const [address, setAddress] = useState({
     houseNo: "",
     street: "",
@@ -38,14 +36,25 @@ const Checkout = () => {
     pincode: "",
   });
 
-  /* ---------- LOAD CART ---------- */
+  useEffect(() => {
+    if (toast.show) {
+      const t = setTimeout(() => {
+        setToast({ show: false, message: "" });
+      }, 2000);
+      return () => clearTimeout(t);
+    }
+  }, [toast.show]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     if (cart.length === 0) navigate("/cart");
     else setCartItems(cart);
   }, [navigate]);
 
-  /* ---------- PRICE ---------- */
   const itemsPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.qty,
     0
@@ -62,7 +71,6 @@ const Checkout = () => {
     address.city.trim() &&
     address.pincode.trim();
 
-  /* ---------- SCROLL TO FIRST ERROR ---------- */
   const scrollToFirstError = () => {
     const fields = [
       { value: customer.name, ref: nameRef },
@@ -83,9 +91,10 @@ const Checkout = () => {
     }
   };
 
-  /* ---------- PLACE ORDER ---------- */
   const placeOrderHandler = async () => {
-    if (!isFormValid) {
+    if (loading) return;
+
+    if (!isFormValid || !confirmChecked) {
       setShowRequired(true);
       setShake(true);
       scrollToFirstError();
@@ -98,6 +107,11 @@ const Checkout = () => {
       setStatus("");
 
       const token = localStorage.getItem("token");
+      if (!token) {
+        setStatus("Please login to place an order.");
+        setLoading(false);
+        return;
+      }
 
       const orderRes = await API.post(
         "/orders",
@@ -120,10 +134,10 @@ const Checkout = () => {
 
       localStorage.removeItem("cart");
       setToast({ show: true, message: "Order placed successfully 🎉" });
-      
+
       setTimeout(() => {
         navigate("/order-placed", { state: { orderId: orderRes.data._id } });
-      }, 1500);
+      }, 1000);
     } catch (err) {
       console.error(err);
       setStatus("Failed to place order.");
@@ -133,166 +147,155 @@ const Checkout = () => {
   };
 
   return (
+    
     <Layout>
-      <div className="checkout-container">
-      <h2>Checkout</h2>
-
-      <div className={`checkout-card ${shake ? "shake" : ""}`}>
-        {status && <p className="error">{status}</p>}
-
-        {/* ---------- CUSTOMER ---------- */}
-        <div className="checkout-section">
-          <h3>Customer Information</h3>
-
-          <input
-            ref={nameRef}
-            type="text"
-            className={showRequired && !customer.name ? "invalid" : ""}
-            placeholder={`Full Name${showRequired && !customer.name ? " *" : ""}`}
-            value={customer.name}
-            onChange={(e) =>
-              setCustomer({ ...customer, name: e.target.value })
-            }
-          />
-
-          <input
-            ref={phoneRef}
-            type="tel"
-            className={showRequired && !customer.phone ? "invalid" : ""}
-            placeholder={`Phone Number${
-              showRequired && !customer.phone ? " *" : ""
-            }`}
-            value={customer.phone}
-            onChange={(e) =>
-              setCustomer({ ...customer, phone: e.target.value })
-            }
-          />
-
-          <input
-            type="email"
-            placeholder="Email (optional)"
-            value={customer.email}
-            onChange={(e) =>
-              setCustomer({ ...customer, email: e.target.value })
-            }
-          />
+      <div className="cm-checkout-page">
+        <div className="cm-checkout-header"><h1>Checkout</h1>
+          <p className="cm-checkout-subtitle">Almost Yours! One Last Step.</p>
         </div>
 
-        {/* ---------- ADDRESS ---------- */}
-        <div className="checkout-section">
-          <h3>Shipping Address</h3>
+        <div className="cm-checkout-container">
 
-          <input
-            ref={houseRef}
-            type="text"
-            className={showRequired && !address.houseNo ? "invalid" : ""}
-            placeholder={`House / Flat No.${
-              showRequired && !address.houseNo ? " *" : ""
-            }`}
-            value={address.houseNo}
-            onChange={(e) =>
-              setAddress({ ...address, houseNo: e.target.value })
-            }
-          />
+          {status && <p className="cm-error">{status}</p>}
 
-          <textarea
-            ref={streetRef}
-            className={showRequired && !address.street ? "invalid" : ""}
-            placeholder={`Street / Area${
-              showRequired && !address.street ? " *" : ""
-            }`}
-            value={address.street}
-            onChange={(e) =>
-              setAddress({ ...address, street: e.target.value })
-            }
-          />
+          <div className="cm-checkout-form">
+            <div className="cm-details">
+              <h3>Customer Details</h3>
 
-          <input
-            type="text"
-            placeholder="Landmark (optional)"
-            value={address.landmark}
-            onChange={(e) =>
-              setAddress({ ...address, landmark: e.target.value })
-            }
-          />
+              <input
+                ref={nameRef}
+                className={showRequired && !customer.name ? "invalid" : ""}
+                placeholder="Full Name *"
+                value={customer.name}
+                onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
+              />
 
-          <div className="two-col">
-            <input
-              ref={cityRef}
-              type="text"
-              className={showRequired && !address.city ? "invalid" : ""}
-              placeholder={`City${showRequired && !address.city ? " *" : ""}`}
-              value={address.city}
-              onChange={(e) =>
-                setAddress({ ...address, city: e.target.value })
-              }
-            />
+              <input
+                ref={phoneRef}
+                className={showRequired && !customer.phone ? "invalid" : ""}
+                placeholder="Phone Number *"
+                value={customer.phone}
+                onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
+              />
 
-            <input
-              ref={pincodeRef}
-              type="text"
-              inputMode="numeric"
-              maxLength={6}
-              className={showRequired && !address.pincode ? "invalid" : ""}
-              placeholder={`Pincode${
-                showRequired && !address.pincode ? " *" : ""
-              }`}
-              value={address.pincode}
-              onChange={(e) =>
-                setAddress({ ...address, pincode: e.target.value })
-              }
-            />
-          </div>
-        </div>
-
-        {/* ---------- SUMMARY ---------- */}
-        <div className="checkout-section summary">
-          <h3>Order Summary</h3>
-
-          {cartItems.map((item) => (
-            <div key={item._id} className="summary-row">
-              <span>
-                {item.name} × {item.qty}
-              </span>
-              <span>₹{item.price * item.qty}</span>
+              <input
+                placeholder="Email (optional)"
+                value={customer.email}
+                onChange={(e) => setCustomer({ ...customer, email: e.target.value })}
+              />
             </div>
-          ))}
 
-          <div className="summary-total">
-            <p>Items: ₹{itemsPrice}</p>
-            <p>Shipping: ₹{shippingPrice}</p>
-            <p>Tax: ₹{taxPrice}</p>
-            <h3>Total: ₹{totalPrice}</h3>
+            <div className="cm-address">
+              <h3>Shipping Address</h3>
+
+              <input
+                ref={houseRef}
+                className={showRequired && !address.houseNo ? "invalid" : ""}
+                placeholder="House / Flat No *"
+                value={address.houseNo}
+                onChange={(e) => setAddress({ ...address, houseNo: e.target.value })}
+              />
+
+              <textarea
+                ref={streetRef}
+                className={showRequired && !address.street ? "invalid" : ""}
+                placeholder="Street / Area *"
+                value={address.street}
+                onChange={(e) => setAddress({ ...address, street: e.target.value })}
+              />
+
+              <input
+                placeholder="Landmark (optional)"
+                value={address.landmark}
+                onChange={(e) => setAddress({ ...address, landmark: e.target.value })}
+              />
+
+              <div className="cm-row">
+                <input
+                  ref={cityRef}
+                  className={showRequired && !address.city ? "invalid" : ""}
+                  placeholder="City *"
+                  value={address.city}
+                  onChange={(e) => setAddress({ ...address, city: e.target.value })}
+                />
+
+                <input
+                  ref={pincodeRef}
+                  maxLength={6}
+                  className={showRequired && !address.pincode ? "invalid" : ""}
+                  placeholder="Pincode *"
+                  value={address.pincode}
+                  onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
+                />
+              </div>
+            </div>
+
           </div>
+
+          <div className="cm-summary">
+            <div className="cm-payment">
+              <h3>Payment Method</h3>
+              <div className="cm-payment-card">
+                <h1>💵 Cash on Delivery</h1>
+                <p>Pay when your ice cream arrives</p>
+              </div>
+            </div>
+
+            <div className="cm-summary-card">
+              <h3>Your Order</h3>
+
+              <div className="cm-items">
+                {cartItems.map(item => (
+                  <div key={item._id} className="cm-item">
+                    <span>{item.name} × {item.qty}</span>
+                    <span>₹{item.price * item.qty}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="cm-pricing">
+                <div><span>Items</span><span>₹{itemsPrice}</span></div>
+                <div><span>Shipping</span><span>₹{shippingPrice}</span></div>
+                <div><span>Tax</span><span>₹{taxPrice}</span></div>
+              </div>
+
+              <div className="cm-total">
+                <span>Total</span>
+                <span>₹{totalPrice}</span>
+              </div>
+
+              <label className="cm-confirm">
+                <input
+                  type="checkbox"
+                  checked={confirmChecked}
+                  onChange={(e) => setConfirmChecked(e.target.checked)}
+                />
+                I confirm my details are correct
+              </label>
+
+              <button
+                className="cm-place-order"
+                disabled={loading}
+                onClick={placeOrderHandler}
+              >
+                {loading ? "Placing Order..." : "Place Order"}
+              </button>
+
+              <p className="cm-edit" onClick={() => navigate("/cart")}>
+                ← Back to Cart
+              </p>
+
+            </div>
+          </div>
+
         </div>
 
-        {/* ---------- BUTTON ---------- */}
-        <div className="place-order-wrapper">
-          <button
-            className="place-order-btn"
-            disabled={loading}
-            onClick={placeOrderHandler}
-          >
-            {loading ? "Processing..." : "Place Order"}
-          </button>
-
-        </div>
-      </div>
-
-      {toast.show && (
-        <div className="checkout-toast">
-          <span>{toast.message}</span>
-          <button
-            className="checkout-toast-close"
-            onClick={() => setToast({ show: false, message: "" })}
-          >
-            ✕
-          </button>
-        </div>
-      )}
+        {toast.show && (
+          <div className="cm-toast">{toast.message}</div>
+        )}
       </div>
     </Layout>
-  );
+  );   
 };
 
 export default Checkout;

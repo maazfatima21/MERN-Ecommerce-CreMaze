@@ -79,17 +79,15 @@ const Home = () => {
         </div>
       </section>
 
-      {/* MANIFESTO */}
-      <section className="manifesto">
-        <h2>Flavors That Stay.</h2>
+      {/* FLAVOUR MAZE */}
+      <section className="flavour-maze">
+        <h1 className="section-maze">Flavors That Stay.</h1>
         <p>
           CreMaze is where every detail matters — from the first smooth bite to the subtle interplay of flavors and textures, 
           each creation is meant to linger on your palate and in your memory.
         </p>
-      </section>
 
       {/* FLAVOUR MAZE */}
-      <section className="flavour-maze">
         <h2 className="section-title">Enter the Cre-Maze</h2>
 
         <div className="maze-grid">

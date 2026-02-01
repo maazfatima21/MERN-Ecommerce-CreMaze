@@ -11,6 +11,7 @@ const orderSchema = new mongoose.Schema(
     orderItems: [
       {
         name: { type: String, required: true },
+        image: { type: String },
         qty: { type: Number, required: true },
         price: { type: Number, required: true },
         product: {
@@ -47,12 +48,14 @@ const orderSchema = new mongoose.Schema(
     isDelivered: { type: Boolean, default: false },
     deliveredAt: { type: Date },
 
-    paidAt: Date,
-    paymentResult: {  razorpay_payment_id: String,
-    razorpay_order_id: String,  razorpay_signature: String,},
-        
     isCancelled: { type: Boolean, default: false },
     cancelledAt: { type: Date },
+
+    orderStatus: {
+      type: String,
+      enum: ["Placed", "Preparing", "Out for Delivery", "Delivered", "Cancelled"],
+      default: "Placed",
+    },
   },
   {
     timestamps: true,

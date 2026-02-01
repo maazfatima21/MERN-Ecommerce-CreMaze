@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/axios";
+import Layout from "../components/Layout";
 import { FaSearch } from "react-icons/fa";
 import "../styles/AdminMessages.css";
 
@@ -158,6 +159,7 @@ const AdminMessages = () => {
   if (loading) return <p className="loading">Loading messages...</p>;
 
   return (
+    <Layout>
     <div className="admin-messages-page">
       <div className="admin-messages">
         <h1>Contact Messages</h1>
@@ -272,11 +274,11 @@ const AdminMessages = () => {
 
       {/* DELETE MODAL */}
       {showDeleteModal && (
-        <div className="modal-backdrop">
-          <div className="modal">
+        <div className="admin-modal-backdrop">
+          <div className="admin-modal">
             <h3>Confirm Delete</h3>
             <p>This action cannot be undone.</p>
-            <div className="modal-actions">
+            <div className="admin-modal-actions">
               <button onClick={() => setShowDeleteModal(false)}>Cancel</button>
               <button className="danger" onClick={confirmDelete}>Delete</button>
             </div>
@@ -292,6 +294,7 @@ const AdminMessages = () => {
         </div>
       )}
     </div>
+  </Layout>
   );
 };
 

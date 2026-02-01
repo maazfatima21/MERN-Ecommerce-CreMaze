@@ -3,6 +3,7 @@ import API from "../api/axios";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import "../styles/AdminOrders.css";
+import Layout from "../components/Layout";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -117,11 +118,16 @@ const AdminOrders = () => {
   /* ---------------- PDF INVOICE ---------------- */
   const downloadInvoice = async (order) => {
   try {
+    if (!order || !Array.isArray(order.orderItems)) {
+      throw new Error("Invalid order data");
+    }
+
     const doc = new jsPDF({ unit: "mm", format: "a4" });
     let startY = 20;
 
     const brandBrown = [139, 69, 19];
     const lightBeige = [245, 240, 235];
+    const GST_RATE = 0.05;
 
     /* ---------------- LOGO ---------------- */
     try {
@@ -131,7 +137,6 @@ const AdminOrders = () => {
 
       await new Promise((resolve) => {
         reader.onload = () => {
-          
           doc.addImage(reader.result, "PNG", 14, 10, 25, 12);
           resolve();
         };
@@ -154,12 +159,19 @@ const AdminOrders = () => {
     doc.setTextColor(0);
 
     /* ---------------- ORDER INFO ---------------- */
-    doc.text(`Order ID: ${order._id}`, 14, startY + 12);
-    doc.text(`Customer: ${order.user?.email || "Guest"}`, 14, startY + 20);
-    doc.text(`Payment: ${order.paymentMethod}`, 14, startY + 28);
-    doc.text(`Total: Rs. ${order.totalPrice}`, 14, startY + 36);
+    doc.text(`Order ID: ${order._id || "-"}`, 14, startY + 12);
+    doc.text(
+      `Customer: ${order.user?.email || "Guest"}`,
+      14,
+      startY + 20
+    );
+    doc.text(
+      `Payment: ${order.paymentMethod || "N/A"}`,
+      14,
+      startY + 28
+    );
 
-  // ---------------- SHIPPING ADDRESS ----------------
+    /* ---------------- SHIPPING ADDRESS ---------------- */
     let addressText = "Not provided";
 
     if (order.shippingAddress) {
@@ -167,41 +179,56 @@ const AdminOrders = () => {
         addressText = order.shippingAddress;
       } else {
         const { address, city, state, pincode } = order.shippingAddress;
-
         addressText = [address, city, state, pincode]
           .filter(Boolean)
           .join(", ");
       }
     }
 
-    doc.setFontSize(11);
     doc.setTextColor(...brandBrown);
-    doc.text("Shipping Address:", 14, startY + 44);
-
+    doc.text("Shipping Address:", 14, startY + 36);
     doc.setTextColor(0);
-    doc.text(addressText, 14, startY + 52);
+    doc.text(addressText, 14, startY + 44);
 
-    /* ---------------- GST & TAX ---------------- */
-    const taxRate = 0.05; 
-    const taxAmount = order.totalPrice * taxRate;
-    const totalWithTax = order.totalPrice + taxAmount;
+    /* ---------------- GST CALCULATION (CORRECT) ---------------- */
+    const subtotal = order.orderItems.reduce((sum, item) => {
+      const price = Number(item.price) || 0;
+      const qty = Number(item.qty) || 1;
+      return sum + price * qty;
+    }, 0);
+
+    const gstAmount = subtotal * GST_RATE;
+    const totalWithGST = subtotal + gstAmount;
 
     doc.setTextColor(...brandBrown);
-    doc.text("GST & Tax:", 140, startY + 46);
+    doc.text("GST & Tax:", 140, startY + 36);
     doc.setTextColor(0);
-    doc.text(`Subtotal: Rs. ${order.totalPrice}`, 140, startY + 54);
-    doc.text(`GST (5%): Rs. ${taxAmount.toFixed(2)}`, 140, startY + 62);
-    doc.text(`Total with GST: Rs. ${totalWithTax.toFixed(2)}`, 140, startY + 70);
+    doc.text(`Subtotal: Rs. ${subtotal.toFixed(2)}`, 140, startY + 44);
+    doc.text(`GST (5%): Rs. ${gstAmount.toFixed(2)}`, 140, startY + 52);
+    doc.text(
+      `Total with GST: Rs. ${totalWithGST.toFixed(2)}`,
+      140,
+      startY + 60
+    );
 
     /* ---------------- ITEMS TABLE ---------------- */
     autoTable(doc, {
-      startY: startY + 80,
-      head: [["Product", "Quantity", "Price"]],
-      body: order.orderItems.map((item) => [
-        item.name || "",
-        item.qty?.toString() || "1",
-        `Rs. ${item.price || 0}`,
-      ]),
+      startY: startY + 75,
+      head: [["Product", "Quantity", "Price", "Total (incl. GST)"]],
+      body: order.orderItems.map((item) => {
+        const qty = Number(item.qty) || 1;
+        const price = Number(item.price) || 0;
+        const itemSubtotal = price * qty;
+        const itemGST = itemSubtotal * GST_RATE;
+        const itemTotal = itemSubtotal + itemGST;
+
+        return [
+          item.name || "Item",
+          qty.toString(),
+          `Rs. ${price.toFixed(2)}`,
+          `Rs. ${itemTotal.toFixed(2)}`
+        ];
+      }),
       theme: "grid",
       headStyles: {
         fillColor: brandBrown,
@@ -219,13 +246,13 @@ const AdminOrders = () => {
     doc.setFontSize(9);
     doc.setTextColor(120);
     doc.text(
-      "Thank you for choosing CreMaze ",
+      "Thank you for choosing CreMaze",
       105,
       290,
       { align: "center" }
     );
 
-    doc.save(`invoice-${order._id.slice(-6)}.pdf`);
+    doc.save(`invoice-${order._id?.slice(-6) || "order"}.pdf`);
   } catch (error) {
     console.error("Invoice error:", error);
     setToast({ show: true, message: "Failed to generate invoice" });
@@ -234,6 +261,7 @@ const AdminOrders = () => {
     }, 4000);
   }
 };
+
 
   /* ---------------- FILTERED ORDERS ---------------- */
   const filteredOrders = orders.filter((order) => {
@@ -258,6 +286,7 @@ const AdminOrders = () => {
   if (loading) return <h2 className="admin-loading">Loading orders...</h2>;
 
   return (
+    <Layout>
     <div className="admin-orders-container">
       {/* ---------------- HEADER ---------------- */}
       <header className="admin-header">
@@ -420,6 +449,7 @@ const AdminOrders = () => {
         </div>
       )}
     </div>
+    </Layout>
   );
 };
 

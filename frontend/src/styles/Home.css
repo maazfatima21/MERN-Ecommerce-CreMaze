@@ -13,7 +13,7 @@
 .home-container .hero-left .brand-tag {
   font-size: 12px;
   letter-spacing: 0.25em;
-  color: #c8956a;
+  color: #c7742f;
   margin-bottom: 18px;
   display: inline-block;
 }
@@ -41,16 +41,13 @@
 .home-container .primary-btn {
   padding: 12px 28px;
   background: #4a2c37;
+  border: 1px solid #2a1f23;
   color: #fff;
   border: none;
   border-radius: 30px;
   font-size: 14px;
   cursor: pointer;
   transition: 0.3s;
-}
-
-.home-container .primary-btn:hover {
-  background: #674c57;
 }
 
 .home-container .secondary-btn {
@@ -63,10 +60,15 @@
   transition: 0.3s;
   color: #2a1f23;
 }
-
+.home-container .primary-btn:hover,
 .home-container .secondary-btn:hover {
-  background: #ffffff;
+  background: #834716;
+  color: #fff;
 }
+.home-container .secondary-btn:hover {
+  border: 1px solid #fff;
+}
+
 
 .home-container .hero-right img {
   width: 100%;
@@ -76,7 +78,7 @@
 }
 
 /* =====================
-   SIGNATURE (PREMIUM)
+   SIGNATURE 
 ===================== */
 .home-container .signature {
   padding: 80px 100px 120px 100px;
@@ -106,7 +108,6 @@
   gap: 36px;
 }
 
-/* Card */
 .home-container .signature-card {
   position: relative;
   overflow: hidden;
@@ -153,7 +154,6 @@
   opacity: 0.85;
 }
 
-/* Hover – luxury subtle */
 .home-container .signature-card:hover img {
   transform: scale(1.06);
 }
@@ -162,35 +162,30 @@
   opacity: 1;
 }
 
-
-
-.home-container .manifesto {
-  padding: 30px 8%;
+.home-container .flavour-maze {
+  padding: 40px 12%;
   text-align: center;
 }
 
-.home-container .manifesto h2 {
+.home-container .section-maze h1 {
   font-size: 34px;
   margin-bottom: 18px;
   color: #2a1f23;
 }
 
-.home-container .manifesto p {
+.home-container .flavour-maze p {
   max-width: 620px;
   margin: 0 auto;
   line-height: 1.6;
   color: #6a5a60;
 }
 
-.home-container .flavour-maze {
-  padding: 40px 12%;
-}
-
 .home-container .section-title {
   text-align: center;
-  font-size: 36.8px;
-  margin-bottom: 70px;
-  font-weight: 600;
+  font-size: 28px;
+  font-style: italic;
+  margin-bottom: 60px;
+  font-weight: 500;
   color: #2a1f23;
 }
 
@@ -296,7 +291,6 @@
   text-transform: uppercase;
   opacity: 0.85;
 }
-
 
 .home-container .statement {
   padding: 120px 8%;
