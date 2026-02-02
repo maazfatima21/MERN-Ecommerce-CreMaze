@@ -208,6 +208,7 @@
 .modal {
   background: #fff;
   width: 90%;
+  text-align: center;
   max-width: 480px;
   border-radius: 18px;
   padding: 24px;
