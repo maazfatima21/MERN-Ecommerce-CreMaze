@@ -99,7 +99,11 @@ const handleAdminKeyDown = (e) => {
   };
 
   const handleUserClick = () => {
-    if (!isLoggedIn) navigate("/login");
+    if (!isLoggedIn) {
+      navigate("/login");
+    } else {
+      navigate("/profile");
+    }
     setSidebarOpen(false);
   };
 

@@ -13,6 +13,7 @@ import Checkout from "./pages/Checkout";
 import OrderPlaced from "./pages/OrderPlaced";
 import AdminOrders from "./pages/AdminOrders";
 import AdminMessages from "./pages/AdminMessages";
+import Profile from "./pages/Profile";
 import ProductProvider from "./context/ProductContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import MyOrders from "./pages/MyOrders";
@@ -43,6 +44,7 @@ function App() {
           <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
           <Route path="/order-placed" element={<ProtectedRoute><OrderPlaced /></ProtectedRoute>} />
           <Route path="/my-orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
           {/* ===== ADMIN ONLY ROUTES ===== */}
           <Route path="/add-product" element={<ProtectedRoute adminOnly><ProductManagement /></ProtectedRoute>} />

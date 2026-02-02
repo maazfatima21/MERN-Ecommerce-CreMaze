@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import Layout from "../components/Layout";
 import "../styles/Login.css";
 
 const Login = () => {
@@ -76,117 +77,131 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h1>Login/Register</h1>
-      <div className={`auth-box ${isLogin ? "login-mode" : "register-mode"}`}>
+  <Layout>
+    <div className="login-container">
+      <div className="login-card">
 
-        <div className="tab-switch">
-          {["Login", "Register"].map((tab, idx) => (
-            <button
-              key={tab}
-              onClick={() => setIsLogin(idx === 0)}
-              className={(idx === 0 ? isLogin : !isLogin) ? "active-tab" : ""}
-            >
-              {tab}
-            </button>
-          ))}
+        {/* LEFT IMAGE SECTION */}
+        <div className="login-left">
+          <img
+            src="login.png"
+            alt="Ice Cream"
+          />
         </div>
 
-        <h2>{isLogin ? "Login" : "Register"}</h2>
+        {/* RIGHT FORM SECTION */}
+        <div className="login-right">
 
-        <form onSubmit={handleSubmit}>
-          {status && (
-            <p className={status.toLowerCase().includes("error") ? "server-error" : "success-message"}>
-              {status}
-            </p>
-          )}
+          <div className="login-tab-switch">
+            {["Login", "Register"].map((tab, idx) => (
+              <button
+                key={tab}
+                onClick={() => setIsLogin(idx === 0)}
+                className={(idx === 0 ? isLogin : !isLogin) ? "active-tab" : ""}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
 
-          {!isLogin && ["firstname", "lastname"].map((field) => (
-            <div className="input-group" key={field}>
+          <h2>
+            {isLogin
+              ? "Welcome back 🍨"
+              : "Sign up to experience the most delicious!"}
+          </h2>
+
+          <form onSubmit={handleSubmit}>
+            {status && (
+              <p className={status.toLowerCase().includes("error") ? "server-error" : "success-message"}>
+                {status}
+              </p>
+            )}
+
+            {!isLogin && (
+              <>
+                <div className="login-input-group">
+                  <input
+                    type="text"
+                    name="firstname"
+                    value={formData.firstname}
+                    onChange={handleChange}
+                    placeholder="First Name"
+                  />
+                  {errors.firstname && <span className="error">{errors.firstname}</span>}
+                </div>
+
+                <div className="login-input-group">
+                  <input
+                    type="text"
+                    name="lastname"
+                    value={formData.lastname}
+                    onChange={handleChange}
+                    placeholder="Last Name"
+                  />
+                  {errors.lastname && <span className="error">{errors.lastname}</span>}
+                </div>
+              </>
+            )}
+
+            <div className="login-input-group">
               <input
-                type="text"
-                name={field}
-                value={formData[field]}
+                type="email"
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
-                placeholder={field === "firstname" ? "First Name" : "Last Name"}
+                placeholder="Email"
               />
-              {errors[field] && <span className="error">{errors[field]}</span>}
+              {errors.email && <span className="error">{errors.email}</span>}
             </div>
-          ))}
 
-          {["email", "password"].map((field) => (
-            <div className="input-group" key={field}>
-              <input
-                type={field === "password" ? "password" : "email"}
-                name={field}
-                value={formData[field]}
-                onChange={handleChange}
-                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-              />
-              {errors[field] && <span className="error">{errors[field]}</span>}
-            </div>
-          ))}
-
-          {!isLogin && (
-            <div className="input-group">
+            <div className="login-input-group">
               <input
                 type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
+                name="password"
+                value={formData.password}
                 onChange={handleChange}
-                placeholder="Confirm Password"
+                placeholder="Password"
               />
-              {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
+              {errors.password && <span className="error">{errors.password}</span>}
             </div>
-          )}
 
-          {isLogin && (
-            <label className="remember-label">
-              <input
-                type="checkbox"
-                name="rememberMe"
-                checked={formData.rememberMe}
-                onChange={handleChange}
-              /> 
-              Remember Me
-            </label>
-          )}
+            {!isLogin && (
+              <div className="login-input-group">
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Confirm Password"
+                />
+                {errors.confirmPassword && (
+                  <span className="error">{errors.confirmPassword}</span>
+                )}
+              </div>
+            )}
 
-          <button type="submit" className={isLogin ? "login-btn" : "register-btn"}>
-            {isLogin ? "Login" : "Register"}
-          </button>
-        </form>
+            {isLogin && (
+              <label className="remember-login">
+                <input
+                  type="checkbox"
+                  name="rememberMe"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
+                />
+                Remember me
+              </label>
+            )}
+
+            <button type="submit" className="login-btn">
+              {isLogin ? "Login" : "Register"}
+            </button>
+          </form>
+        </div>
       </div>
-
-      <svg
-        className="wave" 
-        viewBox="0 0 1400 320"
-        preserveAspectRatio="none"
-      >
-        <path
-          className="wave-path"
-            d="M 0,320  L 26.7,309.3 C 53.3,299,107,277,160,250.7 C 213.3,224,267,192,320,192 C 373.3,192,427,224,480,245.3 C 533.3,267,587,277,640,256
-              C 693.3,235,747,181,800,170.7 C 853.3,160,907,192,960,170.7 C 1013.3,149,1067,75,1120,90.7 C 1173.3,107,1227,213,1280,261.3
-              C 1333.3,309,1387,299,1413,293.3 L 1440,288 L 1440,0 L 1413.3,0 C 1386.7,0,1333,0,1280,0 C 1226.7,0,1173,0,1120,0 C 1066.7,0,1013,0,960,0
-              C 906.7,0,853,0,800,0 C 746.7,0,693,0,640,0 C 586.7,0,533,0,480,0 C 426.7,0,373,0,320,0 C 266.7,0,213,0,160,0 C 106.7,0,53,0,27,0
-              L 0,0 Z" 
-        />
-      </svg>
-        
-      <img src="login-bg2.png" alt="" className="bottom-cone" />
-      
-      <div className="fun-facts">
-        <h3>🍨 Did You Know?</h3>
-          <ul>
-            <li>Ice cream was first invented over 2,000 years ago.</li>
-            <li>The most popular ice-cream flavor in the world is Vanilla.</li>
-            <li>Such as from Cremaze, smooth texture comes from slow churning.</li>
-            <li>Brain freeze happens when something cold touches the roof of your mouth!</li>
-          </ul>
-      </div>
-      
     </div>
-  );
+  </Layout>
+);
+
 };
 
 export default Login;

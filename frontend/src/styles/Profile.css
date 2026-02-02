@@ -1,0 +1,316 @@
+.profile-container {
+  background: #fbf8f3;
+  padding: 60px 80px;
+  min-height: 80vh;
+  font-family: "Poppins", sans-serif;
+  animation: pageFade 0.9s ease forwards;
+}
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.profile-header h1 {
+  font-size: 36px;
+  font-weight: 600;
+  color: #3e232d;
+  margin-bottom: 8px;
+}
+
+.profile-header p {
+  font-size: 16px;
+  color: #7b6b72;
+}
+
+.profile-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-message {
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.profile-message.success {
+  background: #d5f4e6;
+  color: #27ae60;
+  border-left: 4px solid #27ae60;
+}
+
+.profile-message.error {
+  background: #fadbd8;
+  color: #e74c3c;
+  border-left: 4px solid #e74c3c;
+}
+
+.profile-card {
+  background: #ffffff;
+  border: 1px solid #3e232d20;
+  border-radius: 12px;
+  padding: 40px 36px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #c7742f, #8a5c3a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #fff;
+  margin: 0 auto 30px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7b6b72;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-group label svg {
+  color: #c7742f;
+  font-size: 14px;
+}
+
+.info-group p {
+  font-size: 16px;
+  color: #3e232d;
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-badge {
+  background: linear-gradient(135deg, #f8e8d8, #f0dcc8);
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 4px solid #c7742f;
+}
+
+.admin-badge span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #8a5c3a;
+}
+
+.edit-btn {
+  margin-top: 20px;
+  padding: 12px 28px;
+  background: #3e232d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.edit-btn:hover {
+  background: #652a3a;
+  transform: translateY(-2px);
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3e232d;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px 14px;
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  transition: border 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3e232d;
+  box-shadow: 0 0 0 3px rgba(62, 35, 45, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.error {
+  font-size: 12px;
+  color: #e74c3c;
+  margin-top: -4px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.save-btn,
+.cancel-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.save-btn {
+  background: #3e232d;
+  color: #fff;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: #652a3a;
+  transform: translateY(-2px);
+}
+
+.save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: #e0e0e0;
+  color: #3e232d;
+}
+
+.cancel-btn:hover {
+  background: #d0d0d0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .profile-container {
+    padding: 40px 40px;
+  }
+
+  .profile-header h1 {
+    font-size: 28px;
+  }
+
+  .profile-card {
+    padding: 32px 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 30px 16px;
+    min-height: 60vh;
+  }
+
+  .profile-header h1 {
+    font-size: 24px;
+  }
+
+  .profile-header p {
+    font-size: 14px;
+  }
+
+  .profile-card {
+    padding: 24px 16px;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+
+  .info-group label {
+    font-size: 12px;
+  }
+
+  .info-group p {
+    font-size: 14px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .edit-btn {
+    width: 100%;
+  }
+}
