@@ -26,22 +26,19 @@ router.post("/", protect, async (req, res) => {
     }
 
     const sanitizedItems = orderItems.map((item) => {
-      if (!item.name || !item.price || !item.qty) {
-        throw new Error("Invalid order item data");
-      }
+  if (!item.name || !item.price || !item.qty) {
+    throw new Error("Invalid order item data");
+  }
 
-    return {
-      name: item.name,
-      image: item.image?.startsWith("/")
-        ? item.image
-        : item.image || "placeholder.png",
-      qty: item.qty,
-      price: item.price,
-      product: typeof item.product === "object"
-        ? item.product._id
-        : item.product,
-    };
-  });
+  return {
+    name: item.name,
+    image: item.image || item.product?.image || "/placeholder.png",
+    qty: item.qty,
+    price: item.price,
+    product: item.product || item._id,
+  };
+});
+
 
     const order = new Order({
       user: req.user._id,

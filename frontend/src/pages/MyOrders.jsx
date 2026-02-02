@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
-import API, { IMAGE_BASE_URL } from "../api/axios";
+import API from "../api/axios";
 import "../styles/MyOrders.css";
 
 function MyOrders() {
@@ -10,12 +10,6 @@ function MyOrders() {
   const [error, setError] = useState("");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
-
-  const resolveImage = (image) => {
-    if (!image) return "/placeholder.png";
-    if (image.startsWith("/")) return image;
-    return `${import.meta.env.VITE_API_URL}/uploads/${image}`;
-  };
 
   const navigate = useNavigate();
 
@@ -44,19 +38,9 @@ function MyOrders() {
   }, [navigate]);
 
   const handleReorder = (order) => {
-    const cartItems = order.orderItems.map((item) => ({
-      _id: item.product,      
-      name: item.name,
-      image: item.image,
-      price: item.price,
-      qty: item.qty,
-    }));
-
-    localStorage.setItem("cart", JSON.stringify(cartItems));
+    localStorage.setItem("reorderItems", JSON.stringify(order.orderItems));
     navigate("/cart");
   };
-
-
 
   const formatDate = (date) =>
     new Date(date).toLocaleDateString("en-IN", {
@@ -64,16 +48,6 @@ function MyOrders() {
       month: "long",
       year: "numeric",
     });
-
-  const getImageUrl = (image) => {
-    if (!image) return "/placeholder.png";
-
-    if (image.startsWith("/")) {
-      return image;
-    }
-    return `${IMAGE_BASE_URL}/${image}`;
-  };
-
 
   return (
     <Layout>
@@ -108,24 +82,15 @@ function MyOrders() {
                 
                 {/* LEFT — PRODUCT IMAGES */}
                 <div className="order-row-image">
-                  {order.orderItems.slice(0, 2).map((item, i) => {
-                    console.log("IMAGE VALUE FROM DB", item.image);
-
-                    return (
-                      item.image && (
-                        <img
-                          key={i}
-                          src={
-                            item.image?.startsWith("/")
-                              ? item.image
-                              : `${import.meta.env.VITE_API_URL}/uploads/${item.image}`
-                          }
-                          alt={item.name}
-                          onError={(e) => (e.target.src = "/placeholder.png")}
-                        />
-                      )
-                    );
-                  })}
+                  {order.orderItems.slice(0, 2).map((item, i) => (
+                    item.image && (
+                      <img
+                        key={i}
+                        src={item.image}
+                        alt={item.name}
+                      />
+                    )
+                  ))}
 
                   {order.orderItems.length > 2 && (
                     <span className="more-items">
@@ -210,11 +175,7 @@ function MyOrders() {
                   <div key={i} className="modal-item">
                     {item.image && (
                       <img
-                        src={
-                          item.image?.startsWith("/")
-                            ? item.image
-                            : `${import.meta.env.VITE_API_URL}/uploads/${item.image}`
-                        }
+                        src={item.image}
                         alt={item.name}
                         className="modal-item-image"
                       />
