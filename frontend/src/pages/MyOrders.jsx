@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
-import API from "../api/axios";
+import API, { IMAGE_BASE_URL } from "../api/axios";
 import "../styles/MyOrders.css";
 
 function MyOrders() {
@@ -49,6 +49,16 @@ function MyOrders() {
       year: "numeric",
     });
 
+  const getImageUrl = (image) => {
+    if (!image) return "/placeholder.png";
+
+    if (image.startsWith("/")) {
+      return image;
+    }
+    return `${IMAGE_BASE_URL}/${image}`;
+  };
+
+
   return (
     <Layout>
       <div className="orders-page">
@@ -82,15 +92,22 @@ function MyOrders() {
                 
                 {/* LEFT — PRODUCT IMAGES */}
                 <div className="order-row-image">
-                  {order.orderItems.slice(0, 2).map((item, i) => (
-                    item.image && (
-                      <img
-                        key={i}
-                        src={item.image}
-                        alt={item.name}
-                      />
-                    )
-                  ))}
+                  {order.orderItems.slice(0, 2).map((item, i) => {
+                    console.log("IMAGE VALUE FROM DB", item.image);
+
+                    return (
+                      item.image && (
+                        <img
+                          key={i}
+                          src={item.image
+                              ? `${import.meta.env.VITE_API_URL}/uploads/${item.image}`
+                              : "/placeholder.png"
+                          }
+                          alt={item.name}
+                        />
+                      )
+                    );
+                  })}
 
                   {order.orderItems.length > 2 && (
                     <span className="more-items">
@@ -175,7 +192,7 @@ function MyOrders() {
                   <div key={i} className="modal-item">
                     {item.image && (
                       <img
-                        src={item.image}
+                        src={getImageUrl(item.image)} 
                         alt={item.name}
                         className="modal-item-image"
                       />
