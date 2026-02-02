@@ -1,6 +1,6 @@
 .cart-page {
   padding: 40px 16px 80px;
-  min-height: 100vh;
+  min-height: 600px;
   background: linear-gradient(180deg, #fffaf6, #f4ebe3);
   font-family: "Poppins", sans-serif;
 }
