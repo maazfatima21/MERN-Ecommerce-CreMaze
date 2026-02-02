@@ -210,8 +210,7 @@
   align-items: center;
   font-size: 13px;
   color: #403f3f;
-  margin-top: 30px;
-  margin-bottom: 18px;
+  margin: 30px auto 18px;
 }
 
 .cm-place-order {
@@ -282,6 +281,31 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.cm-confirm-error {
+  background: #fff5ef;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 260px;
+}
+
+.cm-confirm-error span,
+.cm-confirm-error {
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
 }
 
 @media (max-width: 768px) {

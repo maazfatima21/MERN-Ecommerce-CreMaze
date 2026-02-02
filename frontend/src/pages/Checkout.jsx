@@ -14,6 +14,7 @@ const Checkout = () => {
   const [shake, setShake] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "" });
   const [confirmChecked, setConfirmChecked] = useState(false);
+  const [confirmError, setConfirmError] = useState(false);
 
   const nameRef = useRef(null);
   const phoneRef = useRef(null);
@@ -54,6 +55,11 @@ const Checkout = () => {
     if (cart.length === 0) navigate("/cart");
     else setCartItems(cart);
   }, [navigate]);
+
+  useEffect(() => {
+    if (confirmChecked) setConfirmError(false);
+  }, [confirmChecked]);
+
 
   const itemsPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.qty,
@@ -97,10 +103,16 @@ const Checkout = () => {
     if (!isFormValid || !confirmChecked) {
       setShowRequired(true);
       setShake(true);
+
+      if (!confirmChecked) {
+        setConfirmError(true);
+      }
+
       scrollToFirstError();
       setTimeout(() => setShake(false), 400);
       return;
     }
+
 
     try {
       setLoading(true);
@@ -137,7 +149,7 @@ const Checkout = () => {
 
       setTimeout(() => {
         navigate("/order-placed", { state: { orderId: orderRes.data._id } });
-      }, 1000);
+      }, 900);
     } catch (err) {
       console.error(err);
       setStatus("Failed to place order.");
@@ -264,7 +276,7 @@ const Checkout = () => {
                 <span>₹{totalPrice}</span>
               </div>
 
-              <label className="cm-confirm">
+              <label className={`cm-confirm ${confirmError ? "cm-confirm-error shake" : ""}`}>
                 <input
                   type="checkbox"
                   checked={confirmChecked}

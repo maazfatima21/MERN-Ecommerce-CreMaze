@@ -32,13 +32,16 @@ router.post("/", protect, async (req, res) => {
 
     return {
       name: item.name,
-      image: item.image || "placeholder.png",
+      image: item.image?.startsWith("/")
+        ? item.image
+        : item.image || "placeholder.png",
       qty: item.qty,
       price: item.price,
-      product: item.product || item._id,
+      product: typeof item.product === "object"
+        ? item.product._id
+        : item.product,
     };
   });
-
 
     const order = new Order({
       user: req.user._id,

@@ -16,10 +16,18 @@ const CartItem = ({ item, onQtyChange, onRemove }) => {
   return (
     <div className="cart-item">
       <img
-        src={`${BASE_URL}/uploads/${item.image}`}
+        src={
+          item.image?.startsWith("/")
+            ? item.image
+            : `${BASE_URL}/uploads/${item.image}`
+        }
         alt={item.name}
-        onError={(e) => (e.target.src = "/placeholder.png")}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = "/placeholder.png";
+        }}
       />
+
       <div className="cart-item-info">
         <h3>{item.name}</h3>
         <p className="item-price">₹{item.price}</p>
@@ -167,7 +175,7 @@ function Cart() {
   /* ================= PAGE ================= */
   return (
     <Layout>
-      <div className="cart-page">
+      <div className="empty-cart-page">
         {toast && <Toast message={toast.message} type={toast.type} />}
 
         {cartItems.length === 0 ? (

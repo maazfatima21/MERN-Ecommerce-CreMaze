@@ -11,6 +11,12 @@ function MyOrders() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
 
+  const resolveImage = (image) => {
+    if (!image) return "/placeholder.png";
+    if (image.startsWith("/")) return image;
+    return `${import.meta.env.VITE_API_URL}/uploads/${image}`;
+  };
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,9 +44,19 @@ function MyOrders() {
   }, [navigate]);
 
   const handleReorder = (order) => {
-    localStorage.setItem("reorderItems", JSON.stringify(order.orderItems));
+    const cartItems = order.orderItems.map((item) => ({
+      _id: item.product,      
+      name: item.name,
+      image: item.image,
+      price: item.price,
+      qty: item.qty,
+    }));
+
+    localStorage.setItem("cart", JSON.stringify(cartItems));
     navigate("/cart");
   };
+
+
 
   const formatDate = (date) =>
     new Date(date).toLocaleDateString("en-IN", {
@@ -99,11 +115,13 @@ function MyOrders() {
                       item.image && (
                         <img
                           key={i}
-                          src={item.image
-                              ? `${import.meta.env.VITE_API_URL}/uploads/${item.image}`
-                              : "/placeholder.png"
+                          src={
+                            item.image?.startsWith("/")
+                              ? item.image
+                              : `${import.meta.env.VITE_API_URL}/uploads/${item.image}`
                           }
                           alt={item.name}
+                          onError={(e) => (e.target.src = "/placeholder.png")}
                         />
                       )
                     );
@@ -192,7 +210,11 @@ function MyOrders() {
                   <div key={i} className="modal-item">
                     {item.image && (
                       <img
-                        src={getImageUrl(item.image)} 
+                        src={
+                          item.image?.startsWith("/")
+                            ? item.image
+                            : `${import.meta.env.VITE_API_URL}/uploads/${item.image}`
+                        }
                         alt={item.name}
                         className="modal-item-image"
                       />
