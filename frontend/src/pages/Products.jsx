@@ -8,14 +8,12 @@ import { ProductContext } from "../context/ProductContext";
 
 const Products = () => {
   const { search } = useContext(ProductContext);
-  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("");
   const [toast, setToast] = useState("");
   const [deleteProduct, setDeleteProduct] = useState(null);
-
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -69,6 +67,10 @@ const Products = () => {
     .filter((p) =>
       p.name.toLowerCase().includes(search.toLowerCase())
     )
+    .filter((p) =>
+      category ? p.category === category : true
+    )
+
     .sort((a, b) => {
       if (sort === "low") return a.price - b.price;
       if (sort === "high") return b.price - a.price;
@@ -82,19 +84,24 @@ const Products = () => {
       <div className="products-header">
         <h1>All Products</h1>
 
-        {isAdmin && (
-          <button
-            className="add-product-btn"
-            onClick={() => navigate("/add-product")}
-          >
-            + Add Product
-          </button>
-        )}
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="sort-select category-select"
+        >
+          <option value="">All </option>
+          <option value="Falooda & Milkshakes">Falooda & Milkshakes</option>
+          <option value="Scoops">Scoops</option>
+          <option value="Mochi">Mochi</option>
+          <option value="Cones & Bars">Cones & Bars</option>
+          <option value="Cassata">Cassata</option>
+          <option value="Creamy Rolls">Creamy Rolls</option>
+        </select>
 
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="sort-select"
+          className="sort-select sort-only"
         >
           <option value="">Sort</option>
           <option value="low">Price: Low → High</option>

@@ -17,22 +17,6 @@
   font-weight: 700;
 }
 
-.add-product-btn {
-  padding: 8px 16px;
-  border-radius: 10px;
-  border: 1px solid #480303;
-  background: #480303;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.add-product-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
 .sort-select {
   padding: 8px 12px;
   border-radius: 8px;
@@ -40,6 +24,38 @@
   background: #fff;
   cursor: pointer;
   min-width: 100px;
+}
+
+.category-select {
+  min-width: 200px;
+  background: #480303;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.sort-only {
+  min-width: 160px;
+  background: #480303;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.category-select:hover,
+.sort-only:hover {
+  border-color: #480303;
+}
+
+select option {
+  background-color: #ffffff;   
+  color: #480303;            
+}
+
+select option:hover {
+  background-color: #ffeaea;
+}
+
+select option:checked {
+  background-color: #ffeaea;
 }
 
 .products-grid {
@@ -174,7 +190,9 @@
   }
 }
 
+/* ================== RESPONSIVE ================== */
 
+/* Tablets */
 @media (max-width: 1024px) {
   .products-page {
     padding: 32px 28px 220px 28px;
@@ -185,78 +203,40 @@
   }
 
   .products-grid {
-    gap: 20px;
+    gap: 24px;
   }
 }
 
+/* Tablets & small screens */
 @media (max-width: 768px) {
   .products-page {
     padding: 28px 20px 200px 20px;
   }
 
   .products-header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 12px;
   }
 
   .products-header h1 {
+    flex: 100%;
     font-size: 24px;
   }
 
-  .add-product-btn {
+  /* Category + Sort full width */
+  .category-select,
+  .sort-only {
     width: 100%;
-    text-align: center;
-  }
-
-  .sort-select {
-    width: 100%;
+    min-width: unset;
+    padding: 12px 16px;
   }
 
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 18px;
+    gap: 20px;
   }
 
   .skeleton-card {
     height: 260px;
-  }
-}
-
-@media (max-width: 480px) {
-  .products-page {
-    padding: 24px 16px 180px 16px;
-  }
-
-  .products-header h1 {
-    font-size: 22px;
-  }
-
-  .products-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-
-  .add-product-btn {
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  .sort-select {
-    padding: 10px;
-  }
-
-  .delete-modal {
-    padding: 20px;
-  }
-
-  .delete-actions {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .delete-cancel,
-  .delete-confirm {
-    width: 100%;
   }
 }
