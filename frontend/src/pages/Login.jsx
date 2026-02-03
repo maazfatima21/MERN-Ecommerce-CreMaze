@@ -106,8 +106,8 @@ const Login = () => {
 
           <h2>
             {isLogin
-              ? "Welcome back 🍨"
-              : "Sign up to experience the most delicious!"}
+              ? "Welcome back!"
+              : "An experience defined by quality!"}
           </h2>
 
           <form onSubmit={handleSubmit}>

@@ -1,5 +1,5 @@
 .profile-container {
-  background: #fbf8f3;
+  background: linear-gradient(135deg, #fbf8f3, #fff);
   padding: 60px 80px;
   min-height: 80vh;
   font-family: "Poppins", sans-serif;
@@ -29,7 +29,7 @@
 
 .profile-header p {
   font-size: 16px;
-  color: #7b6b72;
+  color: #7a6a6a;
 }
 
 .profile-content {
@@ -46,15 +46,16 @@
 }
 
 .profile-message.success {
-  background: #d5f4e6;
-  color: #27ae60;
-  border-left: 4px solid #27ae60;
+  background: #fdecf6;
+  border: 1px solid #3e232d20;
+  color: #3e232d;
+  border-left: 4px solid #3e232d;
 }
 
 .profile-message.error {
-  background: #fadbd8;
-  color: #e74c3c;
-  border-left: 4px solid #e74c3c;
+  background: #fdecea;
+  color: #88021b;
+  border-left: 4px solid #88021b;
 }
 
 .profile-card {
@@ -62,19 +63,20 @@
   border: 1px solid #3e232d20;
   border-radius: 12px;
   padding: 40px 36px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  margin-bottom: 60px;
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.12);
 }
 
 .profile-avatar {
   width: 100px;
   height: 100px;
-  background: linear-gradient(135deg, #c7742f, #8a5c3a);
+  background: #3e232d;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 40px;
-  color: #fff;
+  color: #f6efe8;
   margin: 0 auto 30px;
 }
 
@@ -93,7 +95,7 @@
 .info-group label {
   font-size: 13px;
   font-weight: 600;
-  color: #7b6b72;
+  color: #7a6a6a;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
@@ -102,7 +104,7 @@
 }
 
 .info-group label svg {
-  color: #c7742f;
+  color: #603344;
   font-size: 14px;
 }
 
@@ -118,13 +120,13 @@
   background: linear-gradient(135deg, #f8e8d8, #f0dcc8);
   padding: 12px 16px;
   border-radius: 8px;
-  border-left: 4px solid #c7742f;
+  border-left: 4px solid #3e232d;
 }
 
 .admin-badge span {
   font-size: 14px;
   font-weight: 600;
-  color: #8a5c3a;
+  color: #794e30;
 }
 
 .edit-btn {
@@ -165,6 +167,15 @@
   font-size: 14px;
   font-weight: 600;
   color: #3e232d;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row .form-group {
+  flex: 1;
 }
 
 .form-group input,
@@ -291,7 +302,9 @@
   .form-group label {
     font-size: 13px;
   }
-
+  .form-row {
+    flex-direction: column;
+  }
   .form-group input,
   .form-group textarea {
     font-size: 13px;

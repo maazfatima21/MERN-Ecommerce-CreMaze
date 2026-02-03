@@ -146,29 +146,32 @@ const Profile = () => {
               </div>
             ) : (
               <form className="profile-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label>First Name</label>
-                  <input
-                    type="text"
-                    name="firstname"
-                    value={formData.firstname}
-                    onChange={handleChange}
-                    placeholder="First Name"
-                  />
-                  {errors.firstname && <span className="error">{errors.firstname}</span>}
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>First Name</label>
+                    <input
+                      type="text"
+                      name="firstname"
+                      value={formData.firstname}
+                      onChange={handleChange}
+                      placeholder="First Name"
+                    />
+                    {errors.firstname && <span className="error">{errors.firstname}</span>}
+                  </div>
+
+                  <div className="form-group">
+                    <label>Last Name</label>
+                    <input
+                      type="text"
+                      name="lastname"
+                      value={formData.lastname}
+                      onChange={handleChange}
+                      placeholder="Last Name"
+                    />
+                    {errors.lastname && <span className="error">{errors.lastname}</span>}
+                  </div>
                 </div>
 
-                <div className="form-group">
-                  <label>Last Name</label>
-                  <input
-                    type="text"
-                    name="lastname"
-                    value={formData.lastname}
-                    onChange={handleChange}
-                    placeholder="Last Name"
-                  />
-                  {errors.lastname && <span className="error">{errors.lastname}</span>}
-                </div>
 
                 <div className="form-group">
                   <label>Email</label>
