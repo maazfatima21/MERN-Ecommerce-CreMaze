@@ -138,7 +138,7 @@ const Profile = () => {
                 )}
 
                 <button
-                  className="edit-btn"
+                  className="profile-edit-btn"
                   onClick={() => setIsEditing(true)}
                 >
                   <FaPencilAlt /> Edit Profile
