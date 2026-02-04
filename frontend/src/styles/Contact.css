@@ -381,114 +381,76 @@
   line-height: 1.8;
   color: #5a5a5a;
 }
-
 @media (max-width: 1024px) {
   .contact-box {
-    padding: 40px 40px;
-    gap: 40px 30px;
+    padding: 40px;
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
 
   .map-box {
     width: 100%;
-    margin-left: 0;
-    height: 320px;
+    margin: 0;
+    height: 300px;
   }
 
   .contact-info {
     max-width: 100%;
+    padding: 30px;
   }
 
   .party-booking {
-    max-width: 90%;
+    grid-template-columns: 1fr;
   }
 
   .party-booking-content {
-    padding: 50px 40px;
+    padding: 40px;
   }
 }
 
-@media (max-width: 900px) {
-  .contact-box {
-    grid-template-columns: 1fr;
-    padding: 40px 24px;
-    gap: 50px;
-  }
-
+@media (max-width: 768px) {
   .contact-box h2 {
     font-size: 32px;
   }
 
-  .map-box {
-    height: 260px;
-  }
-
-  .contact-info {
-    padding: 24px;
-    margin: 0 auto;
+  .contact-tag {
+    font-size: 12px;
+    margin-bottom: -20px;
   }
 
   .contact-info h3 {
-    font-size: 24px;
+    font-size: 22px;
+  }
+
+  .info-row div {
+    font-size: 14px;
   }
 
   .contact-content h3 {
     font-size: 24px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
 
   .contact-form {
-    padding: 30px 24px 40px 24px;
+    padding: 20px 30px 40px;
   }
 
-  .contact-form h2 {
-    font-size: 22px;
-  }
-
-  .party-booking {
-    grid-template-columns: 1fr;
-  }
-
-  .party-booking-content {
-    padding: 40px 30px;
-  }
-
-  .party-booking img {
-    height: 260px;
-  }
-
-  .faq-section h2 {
-    font-size: 30px;
-  }
-}
-
-@media (max-width: 480px) {
-  .contact-box h2 {
-    font-size: 26px;
-  }
-
-  .contact-info p {
-    font-size: 18px;
-  }
-
-  .info-row div {
-    font-size: 15px;
-  }
-
-  .contact-socials {
-    justify-content: center;
+  .party-section {
+    padding: 60px 20px;
   }
 
   .party-booking-content h2 {
     font-size: 26px;
   }
 
-  .party-tagline {
-    font-size: 15px;
+  .party-tagline,
+  .party-features li {
+    font-size: 14px;
   }
 
-  .party-btn {
-    width: 100%;
-    text-align: center;
+  .faq-section h2 {
+    font-size: 30px;
+    margin-bottom: 40px;
   }
 
   .faq-box summary {
@@ -496,6 +458,71 @@
   }
 
   .faq-box p {
-    font-size: 15px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-box {
+    padding: 30px 20px;
+  }
+
+  .contact-box h2 {
+    font-size: 26px;
+  }
+
+  .map-box {
+    height: 240px;
+  }
+
+  .contact-info {
+    padding: 24px;
+  }
+
+  .contact-info h3 {
+    font-size: 20px;
+  }
+
+  .contact-socials a {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .contact-content {
+    padding: 20px 10px;
+  }
+
+  .contact-content h3 {
+    font-size: 22px;
+  }
+
+  .contact-form{
+    width: 290px;
+  }
+  .contact-form h2 {
+    font-size: 22px;
+  }
+
+  .party-booking-content {
+    padding: 30px 20px;
+  }
+
+  .party-booking-content h2 {
+    font-size: 24px;
+  }
+
+  .party-btn {
+    padding: 10px 24px;
+    font-size: 13px;
+  }
+
+  .faq-section {
+    padding: 0 16px;
+    margin-bottom: 80px;
+  }
+
+  .faq-section h2 {
+    font-size: 26px;
   }
 }

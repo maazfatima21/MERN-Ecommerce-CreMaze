@@ -191,52 +191,274 @@ select option:checked {
 }
 
 /* ================== RESPONSIVE ================== */
-
-/* Tablets */
+/* ================= TABLET (1024px and below) ================= */
 @media (max-width: 1024px) {
   .products-page {
-    padding: 32px 28px 220px 28px;
+    padding: 30px 30px 200px 30px;
   }
 
   .products-header h1 {
-    font-size: 26px;
-  }
-
-  .products-grid {
-    gap: 24px;
-  }
-}
-
-/* Tablets & small screens */
-@media (max-width: 768px) {
-  .products-page {
-    padding: 28px 20px 200px 20px;
-  }
-
-  .products-header {
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .products-header h1 {
-    flex: 100%;
     font-size: 24px;
   }
 
-  /* Category + Sort full width */
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px;
+  }
+
+  .sort-select,
   .category-select,
   .sort-only {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
+/* ================= TABLET (768px and below) ================= */
+@media (max-width: 768px) {
+  .products-page {
+    padding: 25px 20px 150px 20px;
+  }
+
+  .products-header {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .products-header h1 {
+    font-size: 22px;
     width: 100%;
-    min-width: unset;
-    padding: 12px 16px;
+    text-align: center;
+  }
+
+  .sort-select,
+  .category-select,
+  .sort-only {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .category-select,
+  .sort-only {
+    display: inline-flex;
+  }
+
+  /* Display selects side by side */
+  .products-header > .category-select,
+  .products-header > .sort-only {
+    width: 48%;
   }
 
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 20px;
   }
 
   .skeleton-card {
-    height: 260px;
+    height: 220px;
+  }
+
+  .products-status {
+    font-size: 16px;
+    margin-top: 40px;
+  }
+
+  .global-toast {
+    bottom: 15px;
+    left: 15px;
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+
+  .delete-modal {
+    max-width: 280px;
+  }
+
+  .delete-modal h3 {
+    font-size: 18px;
+  }
+
+  .delete-modal p {
+    font-size: 13px;
+  }
+
+  .delete-cancel,
+  .delete-confirm {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}
+
+/* ================= MOBILE (480px and below) ================= */
+@media (max-width: 480px) {
+  .products-page {
+    padding: 20px 12px 120px 12px;
+  }
+
+  .products-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .products-header h1 {
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .sort-select,
+  .category-select,
+  .sort-only {
+    width: 48%;
+    padding: 8px 6px;
+    font-size: 11px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .category-select,
+  .sort-only {
+    background: #480303;
+    color: #ffffff;
+    margin: 0 2%;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .skeleton-card {
+    height: 200px;
+    border-radius: 10px;
+  }
+
+  .products-status {
+    font-size: 14px;
+    margin-top: 30px;
+  }
+
+  .global-toast {
+    bottom: 12px;
+    width: 120px;
+    left: 12px;
+    right: 12px;
+    padding: 10px 14px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+
+  .delete-overlay {
+    padding: 20px;
+  }
+
+  .delete-modal {
+    max-width: 100%;
+    width: 100%;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .delete-modal h3 {
+    font-size: 17px;
+    margin-bottom: 10px;
+  }
+
+  .delete-modal p {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .delete-actions {
+    gap: 10px;
+  }
+
+  .delete-cancel,
+  .delete-confirm {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+}
+
+/* ================= SMALL MOBILE (320px and below) ================= */
+@media (max-width: 320px) {
+  .products-page {
+    padding: 16px 10px 100px 10px;
+  }
+
+  .products-header h1 {
+    font-size: 18px;
+  }
+
+  .sort-select,
+  .category-select,
+  .sort-only {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .skeleton-card {
+    height: 180px;
+  }
+
+  .global-toast {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .delete-modal {
+    padding: 16px;
+  }
+
+  .delete-modal h3 {
+    font-size: 16px;
+  }
+
+  .delete-modal p {
+    font-size: 12px;
+  }
+
+  .delete-cancel,
+  .delete-confirm {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}
+
+/* ================= LANDSCAPE MOBILE ================= */
+@media (max-height: 600px) and (max-width: 768px) {
+  .products-page {
+    padding: 20px 15px 80px 15px;
+  }
+
+  .products-header h1 {
+    font-size: 20px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+  }
+
+  .skeleton-card {
+    height: 180px;
+  }
+
+  .products-status {
+    margin-top: 20px;
   }
 }

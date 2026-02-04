@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaSearch } from "react-icons/fa";
+import { useContext } from "react";
+import { ProductContext } from "../context/ProductContext";
 import "../styles/Navbar.css";
 
 function Navbar() {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
   const user = JSON.parse(localStorage.getItem("user"));
   const isLoggedIn = !!user;
-
+  const { setSearch } = useContext(ProductContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
@@ -94,7 +96,9 @@ const handleAdminKeyDown = (e) => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+    setSearch(searchQuery);
+
+    navigate("/products");
     setSidebarOpen(false);
   };
 
@@ -242,6 +246,16 @@ const handleAdminKeyDown = (e) => {
               </Link>
             </>
           )}
+        </div>
+
+        <div className="sidebar-icons">
+          <FaUser className="sidebar-icon" onClick={handleUserClick} />
+          <div className="sidebar-cart-icon" onClick={() => { navigate("/cart"); setSidebarOpen(false); }}>
+            <FaShoppingCart className="sidebar-icon" />
+            {cartCount > 0 && (
+              <span className="sidebar-cart-badge">{cartCount}</span>
+            )}
+          </div>
         </div>
 
         {isLoggedIn && (

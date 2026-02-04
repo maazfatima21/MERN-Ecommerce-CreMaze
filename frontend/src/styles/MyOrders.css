@@ -315,27 +315,122 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .order-row {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .order-row-status {
-    text-align: center;
-  }
-
-  .order-actions {
-    justify-content: center;
+    grid-template-columns: 100px 1fr 180px;
+    gap: 16px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .orders-hero h1 {
     font-size: 32px;
   }
 
+  .orders-list {
+    gap: 16px;
+  }
+
+  .order-row {
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: auto auto;
+    align-items: flex-start;
+  }
+
+  .order-row-status {
+    grid-column: 1 / -1;
+    text-align: left;
+    margin-top: 12px;
+  }
+
+  .order-actions {
+    margin-top: -40px;
+    flex-wrap: wrap;
+  }
+
+  .modal {
+    max-width: 60%;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-page {
+    padding: 24px 14px 60px;
+  }
+
+  .orders-hero h1 {
+    font-size: 26px;
+  }
+
+  .orders-hero p {
+    font-size: 14px;
+  }
+
   .order-row {
     padding: 16px;
+    gap: 12px;
+  }
+
+  .order-row-image img {
+    border-radius: 6px;
+  }
+
+  .order-row-info h3 {
+    font-size: 15px;
+  }
+
+  .order-meta {
+    font-size: 12px;
+  }
+  .view-details{
+    font-size: 13px;
+  }
+
+  .delivery-status {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .order-total {
+    font-size: 13px;
+  }
+
+  .reorder-btn,
+  .help-btn {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+
+  .modal h3 {
+    font-size: 18px;
+  }
+
+  .modal-item {
+    gap: 14px;
+  }
+
+  .modal-item-image {
+    width: 65px;
+    height: 65px;
+  }
+
+  .modal-item-info h4 {
+    font-size: 13px;
+  }
+
+  .modal-item-info span {
+    font-size: 12px;
+  }
+
+  .modal-total {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .modal button {
+    width: 50%;
+    padding: 8px;
+    font-size: 14px;
   }
 }

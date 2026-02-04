@@ -227,38 +227,274 @@
     opacity: 1;
   }
 }
-
 /* ===============================
-   RESPONSIVE
+   RESPONSIVE DESIGN
 ================================ */
-@media (max-width: 1024px) {
+
+/* ================= TABLET (768px and below) ================= */
+@media (max-width: 768px) {
+  .admin-product-page {
+    padding: 40px 15px 80px 15px;
+  }
+
+  .admin-product-page::before {
+    left: 0;
+    width: 300px;
+    height: 500px;
+    opacity: 0.5;
+  }
+
+  .admin-product-card {
+    max-width: 100%;
+    padding: 30px 35px;
+    border-radius: 14px;
+  }
+
+  .admin-product-card h2 {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 18px;
+  }
+
+  .admin-product-form {
+    gap: 14px;
+  }
+
+  .admin-product-form input,
+  .admin-product-form textarea {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .admin-product-form textarea {
+    min-height: 80px;
+  }
+
+  .image-preview,
+  .current-image {
+    height: 160px;
+    border-radius: 10px;
+  }
+
+  .file-label {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .form-actions {
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .submit-btn,
+  .cancel-btn {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .admin-product-toast {
+    bottom: 15px;
+    left: 15px;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+}
+
+/* ================= MOBILE (480px and below) ================= */
+@media (max-width: 480px) {
+  .admin-product-page {
+    padding: 60px 20px 80px 20px;
+  }
+
   .admin-product-page::before {
     display: none;
   }
-}
-
-@media (max-width: 768px) {
-  .admin-product-page {
-    padding: 40px 12px;
-  }
 
   .admin-product-card {
-    padding: 26px;
+    width: 310px;
+    max-width: 100%;
+    padding: 24px 20px;
+    border-radius: 12px;
   }
-}
 
-@media (max-width: 480px) {
-  .admin-product-card {
-    max-width: 340px;
-    padding: 22px;
+  .admin-product-card h2 {
+    font-size: 18px;
+    margin-bottom: 4px;
+    letter-spacing: 0.2px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+    margin-bottom: 16px;
+  }
+
+  .status-msg {
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+
+  .admin-product-form {
+    gap: 12px;
+  }
+
+  .admin-product-form input,
+  .admin-product-form textarea {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .admin-product-form textarea {
+    min-height: 70px;
+    resize: none;
+  }
+
+  .image-preview,
+  .current-image {
+    height: 140px;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+
+  .current-image-container label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .file-label {
+    width: 280px;
+    padding: 10px 12px;
+    font-size: 12px;
+    border-radius: 8px;
   }
 
   .form-actions {
     flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
   }
 
   .submit-btn,
   .cancel-btn {
     width: 100%;
+    padding: 12px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .admin-product-toast {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    padding: 12px 14px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .admin-product-toast-close {
+    font-size: 16px;
+  }
+}
+
+/* ================= SMALL MOBILE (320px and below) ================= */
+@media (max-width: 320px) {
+  .admin-product-page {
+    padding: 20px 8px 50px 8px;
+  }
+
+  .admin-product-card {
+    padding: 16px 14px;
+    border-radius: 10px;
+  }
+
+  .admin-product-card h2 {
+    font-size: 16px;
+    margin-bottom: 3px;
+  }
+
+  .subtitle {
+    font-size: 10px;
+    margin-bottom: 12px;
+  }
+
+  .status-msg {
+    font-size: 11px;
+  }
+
+  .admin-product-form {
+    gap: 10px;
+  }
+
+  .admin-product-form input,
+  .admin-product-form textarea {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .admin-product-form textarea {
+    min-height: 60px;
+  }
+
+  .image-preview,
+  .current-image {
+    height: 120px;
+  }
+
+  .file-label {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .form-actions {
+    gap: 8px;
+  }
+
+  .submit-btn,
+  .cancel-btn {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .admin-product-toast {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+}
+
+/* ================= LANDSCAPE MOBILE ================= */
+@media (max-height: 600px) and (max-width: 768px) {
+  .admin-product-page {
+    padding: 20px 15px 40px 15px;
+  }
+
+  .admin-product-card {
+    padding: 20px 30px;
+  }
+
+  .admin-product-card h2 {
+    font-size: 18px;
+  }
+
+  .image-preview,
+  .current-image {
+    height: 120px;
+    margin-top: 5px;
+  }
+
+  .admin-product-form {
+    gap: 10px;
+  }
+
+  .form-actions {
+    gap: 10px;
+    margin-top: 10px;
   }
 }

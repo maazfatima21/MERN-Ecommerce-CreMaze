@@ -142,7 +142,6 @@ nav .logo {
   transform: scale(1.05);
 }
 
-/* ===== ADMIN DROPDOWN ===== */
 .admin-menu {
   position: relative;
   z-index: 3000;
@@ -315,8 +314,57 @@ nav .logo {
   margin-left: 10px;
 }
 
+.sidebar-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px; 
+  margin-top: 10px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+
+.sidebar-icon {
+  font-size: 22px;
+  color: #45222f;
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.sidebar-icon:hover {
+  color: #a85e04;
+  transform: scale(1.15);
+}
+
+.sidebar-cart-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.sidebar-cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  background: #cc792b;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-logout-wrapper {
+  display: flex;
+  justify-content: center; 
+}
+
 .sidebar-logout {
-  margin-top: auto;
   padding: 10px 14px;
   border-radius: 8px;
   border: none;

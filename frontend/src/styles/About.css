@@ -317,135 +317,49 @@
   color: #9f8b5a;
 }
 
-/* ================= RESPONSIVE ================= */
-
-@media (max-width: 1024px) {
-
-  .about-container {
-    padding: 60px 24px;
-  }
-
-  .about-hero h1 {
-    font-size: 42px;
-  }
-
-  .about-carousel {
-    padding: 20px 40px;
-  }
-
-  .values-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .maker-card img {
-    width: 220px;
-    height: 220px;
-  }
-}
-
+/* RESPONSIVE */
 @media (max-width: 768px) {
-
-  .about-hero {
-    min-height: 480px;
-  }
-
   .about-hero h1 {
-    font-size: 36px;
-  }
-
-  .about-hero p {
-    font-size: 16px;
-  }
-
-  .about-carousel-slide img {
-    height: 220px;
-  }
-
-  .philosophy-grid {
-    gap: 28px;
-  }
-
-  .makers-grid {
-    gap: 36px;
-  }
-
-  .experience-values {
-    padding: 36px;
-  }
-
-  .values-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .value-card {
-    margin-top: 0;
-  }
-
-  .about-closing h2 {
     font-size: 32px;
-  }
-}
-
-@media (max-width: 480px) {
-
-  .about-container {
-    padding: 48px 20px;
-  }
-
-  .about-hero {
-    min-height: 420px;
-  }
-
-  .about-tag {
-    font-size: 14px;
-  }
-
-  .about-hero h1 {
-    font-size: 30px;
   }
 
   .about-hero p {
     font-size: 15px;
-    line-height: 1.7;
+  }
+
+  .about-container {
+    padding: 60px 20px;
   }
 
   .about-carousel {
-    padding: 20px;
+    padding: 20px 20px;
   }
 
   .about-carousel-slide img {
-    height: 180px;
-  }
-
-  .about-carousel-container h2,
-  .about-philosophy h2,
-  .about-makers h2,
-  .experience-intro h2 {
-    font-size: 28px;
-  }
-
-  .philosophy-card {
-    padding: 24px;
-  }
-
-  .maker-card img {
-    width: 200px;
     height: 200px;
   }
-
-  .experience-values {
-    padding: 28px 20px;
+  .about-philosophy {
+    padding: 20px 0;
+  }
+  .philosophy-card {
+    padding: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .about-hero h1 {
+    font-size: 26px;
   }
 
-  .about-closing {
-    padding: 48px 20px;
+  .about-hero p {
+    font-size: 14px;
   }
 
-  .about-closing h2 {
-    font-size: 28px;
+  .about-carousel-slide img {
+    height: 150px;
   }
 
-  .signature-text {
-    font-size: 24px;
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
   }
 }
