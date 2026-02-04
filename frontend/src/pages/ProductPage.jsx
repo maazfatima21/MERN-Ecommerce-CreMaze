@@ -41,7 +41,7 @@ function ProductPage() {
   }, [product]);
 
   const handleAddToCart = () => {
-    if (product.stock === 0) return;
+    if (product.countInStock === 0) return;
     console.log(`${product.name} added to cart`);
   };
 
@@ -52,49 +52,55 @@ function ProductPage() {
   return (
     <Layout>
       <div className="product-page">
-      <div className="product-page-card">
-        <h2>{product.name}</h2>
+        <div className="product-page-card product-page-flex">
+          {/* LEFT SIDE — DETAILS */}
+          <div className="product-page-details">
+            <h2>{product.name}</h2>
 
-        <img
-          src={
-            product.image
-              ? `http://localhost:5000/uploads/${product.image}`
-              : "/placeholder.png"
-          }
-          alt={product.name}
-          className="product-page-image"
-        />
+            <p className="product-page-description">
+              {product.description || "No description available"}
+            </p>
 
-        {/* ✅ Description moved ABOVE price */}
-        <p className="product-page-description">
-          {product.description || "No description available"}
-        </p>
+            <p className="product-page-price">Price: ₹{product.price}</p>
 
-        <p className="product-page-price">Price: ₹{product.price}</p>
+            <p
+              className={`product-page-stock ${
+                product.countInStock > 0 ? "in-stock" : "out-of-stock"
+              }`}
+            >
+              {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+            </p>
 
-        <p
-          className={`product-page-stock ${
-            product.stock > 0 ? "in-stock" : "out-of-stock"
-          }`}
-        >
-          {product.stock > 0 ? "In Stock" : "Out of Stock"}
-        </p>
+            {product.rating && (
+              <p className="product-page-rating">
+                Rating: {product.rating} / 5
+              </p>
+            )}
 
-        {product.rating && (
-          <p className="product-page-rating">
-            Rating: {product.rating} / 5
-          </p>
-        )}
+            <button
+              className="product-page-button"
+              onClick={handleAddToCart}
+              disabled={product.countInStock === 0}
+            >
+              {product.countInStock > 0 ? "Add to Cart" : "Notify Me"}
+            </button>
+          </div>
 
-        <button
-          className="product-page-button"
-          onClick={handleAddToCart}
-          disabled={product.stock === 0}
-        >
-          {product.stock > 0 ? "Add to Cart" : "Notify Me"}
-        </button>
+          {/* RIGHT SIDE — IMAGE */}
+          <div className="product-page-image-wrapper">
+            <img
+              src={
+                product.image
+                  ? `http://localhost:5000/uploads/${product.image}`
+                  : "/placeholder.png"
+              }
+              alt={product.name}
+              className="product-page-image"
+            />
+          </div>
+        </div>
       </div>
-    </div>
+
     </Layout>
   );
 }
