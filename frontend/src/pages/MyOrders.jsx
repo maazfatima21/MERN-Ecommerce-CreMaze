@@ -86,7 +86,7 @@ function MyOrders() {
                     item.image && (
                       <img
                         key={i}
-                        src={item.image}
+                        src={`http://localhost:5000/uploads/${item.image}`}
                         alt={item.name}
                       />
                     )
@@ -175,7 +175,7 @@ function MyOrders() {
                   <div key={i} className="modal-item">
                     {item.image && (
                       <img
-                        src={item.image}
+                        src={`http://localhost:5000/uploads/${item.image}`}
                         alt={item.name}
                         className="modal-item-image"
                       />

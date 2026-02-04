@@ -133,6 +133,7 @@ const Checkout = () => {
             qty: item.qty,
             price: item.price,
             product: item._id,
+            image: item.image,
           })),
           shippingAddress: address,
           customerDetails: customer,

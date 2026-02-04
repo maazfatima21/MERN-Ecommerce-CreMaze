@@ -84,7 +84,18 @@ function Cart() {
   /* ========== LOAD CART ========== */
   useEffect(() => {
     const timer = setTimeout(() => {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      
+      // Check if there are reorder items and merge them
+      const reorderItems = localStorage.getItem("reorderItems");
+      if (reorderItems) {
+        const reordered = JSON.parse(reorderItems);
+        // Clear the reorderItems after reading
+        localStorage.removeItem("reorderItems");
+        // Set the reordered items as the new cart
+        cart = reordered;
+      }
+      
       setCartItems(cart);
       setLoading(false);
     }, 600);

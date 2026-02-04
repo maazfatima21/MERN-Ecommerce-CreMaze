@@ -32,7 +32,7 @@ router.post("/", protect, async (req, res) => {
 
   return {
     name: item.name,
-    image: item.image || item.product?.image || "/placeholder.png",
+    image: item.image || null,
     qty: item.qty,
     price: item.price,
     product: item.product || item._id,
@@ -63,9 +63,25 @@ router.post("/", protect, async (req, res) => {
 router.get("/myorders", protect, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id })
+    .populate("orderItems.product", "image name price")
     .sort({createdAt: -1 })
     .select("orderItems totalPrice isPaid isDelivered createdAt orderStatus");
-    res.json(orders);
+    
+    // Ensure images are populated from product if not directly set
+    const enrichedOrders = orders.map(order => {
+      const plainOrder = order.toObject();
+      plainOrder.orderItems = plainOrder.orderItems.map(item => {
+        // Use direct image if it's valid, otherwise use product image
+        const validImage = item.image && item.image !== "/placeholder.png" ? item.image : (item.product?.image || null);
+        return {
+          ...item,
+          image: validImage
+        };
+      });
+      return plainOrder;
+    });
+    
+    res.json(enrichedOrders);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch orders" });
   }
