@@ -81,35 +81,31 @@ function MyOrders() {
               <div key={order._id} className="order-row">
                 
                 {/* LEFT — PRODUCT IMAGES */}
-                <div className="order-row-image">
-                  {order.orderItems.slice(0, 2).map((item, i) => (
-                    item.image && (
+                <div className="order-row-items">
+                  {order.orderItems.map((item, i) => (
+                    <div key={i} className="order-item">
                       <img
-                        key={i}
-                        src={`http://localhost:5000/uploads/${item.image}`}
+                        src={item.image ? `http://localhost:5000/uploads/${item.image}` : "https://via.placeholder.com/55x55?text=No+Image"}
                         alt={item.name}
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/55x55?text=No+Image";
+                        }}
                       />
-                    )
+                      <span className="order-item-name">{item.name}</span>
+                      <span className="order-item-qty">x{item.qty}</span>
+                    </div>
                   ))}
-
-                  {order.orderItems.length > 2 && (
-                    <span className="more-items">
-                      +{order.orderItems.length - 2}
-                    </span>
-                  )}
                 </div>
+
 
                 {/* CENTER — PRODUCT INFO */}
                 <div className="order-row-info">
-                  <h3>
-                    {order.orderItems[0]?.name}
-                    {order.orderItems.length > 1 &&
-                      ` & ${order.orderItems.length - 1} more`}
-                  </h3>
+                  {order.orderItems.map((item, index) => (
+                    <h3 key={index} className="order-item-name-row">{item.name}</h3>
+                  ))}
 
                   <span className="order-meta">
-                    ORDER #{order._id.slice(-8).toUpperCase()} ·{" "}
-                    {formatDate(order.createdAt)}
+                    ORDER #{order._id.slice(-8).toUpperCase()} · {formatDate(order.createdAt)}
                   </span>
 
                   <button
@@ -121,14 +117,15 @@ function MyOrders() {
                   </button>
                 </div>
 
+
                 {/* RIGHT — STATUS & ACTIONS */}
                 <div className="order-row-status">
                   <span
                     className={`delivery-status ${
-                      order.isDelivered ? "delivered" : "progress"
+                      order.orderStatus === "Delivered" ? "delivered" : "progress"
                     }`}
                   >
-                    {order.isDelivered ? "Delivered" : "In Progress"}
+                    {order.orderStatus === "Delivered" ? "Delivered" : "In Progress"}
                   </span>
 
                   <span className="order-total">
@@ -173,10 +170,19 @@ function MyOrders() {
               <div className="modal-items">
                 {selectedOrder.orderItems.map((item, i) => (
                   <div key={i} className="modal-item">
-                    {item.image && (
+                    {item.image ? (
                       <img
                         src={`http://localhost:5000/uploads/${item.image}`}
                         alt={item.name}
+                        className="modal-item-image"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/80x80?text=No+Image";
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src="https://via.placeholder.com/80x80?text=No+Image"
+                        alt="No image"
                         className="modal-item-image"
                       />
                     )}

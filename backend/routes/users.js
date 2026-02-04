@@ -61,7 +61,7 @@ router.put('/profile', protect, async (req, res) => {
     const { firstname, lastname, email, phone, address } = req.body;
 
     try {
-        let user = await User.findById(req.user.id);
+        let user = await User.findById(req.user._id);
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });

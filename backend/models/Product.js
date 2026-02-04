@@ -24,6 +24,7 @@ const productSchema = new mongoose.Schema(
     },
     countInStock: {
       type: Number,
+      required: true,
       default: 0,
     },
     isActive: {

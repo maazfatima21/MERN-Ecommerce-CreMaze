@@ -65,7 +65,7 @@ router.get("/myorders", protect, async (req, res) => {
     const orders = await Order.find({ user: req.user._id })
     .populate("orderItems.product", "image name price")
     .sort({createdAt: -1 })
-    .select("orderItems totalPrice isPaid isDelivered createdAt orderStatus");
+    .select("orderItems totalPrice isPaid orderStatus deliveredAt cancelledAt createdAt");
     
     // Ensure images are populated from product if not directly set
     const enrichedOrders = orders.map(order => {
@@ -109,13 +109,18 @@ router.put("/:id/deliver", protect, admin, async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    if (order.isCancelled) {
+    if (order.orderStatus === "Cancelled") {
       return res
         .status(400)
         .json({ message: "Cancelled orders cannot be delivered" });
     }
 
-    order.isDelivered = true;
+    if (order.orderStatus === "Delivered") {
+      return res
+        .status(400)
+        .json({ message: "Order already delivered" });
+    }
+
     order.deliveredAt = Date.now();
     order.orderStatus = "Delivered";
 
@@ -135,13 +140,18 @@ router.put("/:id/cancel", protect, admin, async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    if (order.isDelivered) {
+    if (order.orderStatus === "Delivered") {
       return res
         .status(400)
         .json({ message: "Delivered orders cannot be cancelled" });
     }
 
-    order.isCancelled = true;
+    if (order.orderStatus === "Cancelled") {
+      return res
+        .status(400)
+        .json({ message: "Order already cancelled" });
+    }
+
     order.cancelledAt = Date.now();
     order.orderStatus = "Cancelled";
 
@@ -161,13 +171,12 @@ router.put("/:id/restore", protect, admin, async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    if (!order.isCancelled) {
+    if (order.orderStatus !== "Cancelled") {
       return res
         .status(400)
         .json({ message: "Only cancelled orders can be restored" });
     }
 
-    order.isCancelled = false;
     order.cancelledAt = null;
     order.orderStatus = "Placed";
 
