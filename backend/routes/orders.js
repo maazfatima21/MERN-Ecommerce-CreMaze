@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Order = require("../models/Order");
 const { protect, admin } = require("../middleware/auth");
+const mongoose = require("mongoose");
+
+// Helper function to validate MongoDB ObjectId
+const validateObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 /* ================= CREATE ORDER ================= */
 router.post("/", protect, async (req, res) => {
@@ -103,6 +107,10 @@ router.get("/", protect, admin, async (req, res) => {
 /* ================= ADMIN: MARK DELIVERED ================= */
 router.put("/:id/deliver", protect, admin, async (req, res) => {
   try {
+    if (!validateObjectId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid order ID format" });
+    }
+
     const order = await Order.findById(req.params.id);
 
     if (!order) {
@@ -112,13 +120,13 @@ router.put("/:id/deliver", protect, admin, async (req, res) => {
     if (order.orderStatus === "Cancelled") {
       return res
         .status(400)
-        .json({ message: "Cancelled orders cannot be delivered" });
+        .json({ message: "Cannot deliver a cancelled order" });
     }
 
     if (order.orderStatus === "Delivered") {
       return res
         .status(400)
-        .json({ message: "Order already delivered" });
+        .json({ message: "Order is already delivered" });
     }
 
     order.deliveredAt = Date.now();
@@ -127,13 +135,17 @@ router.put("/:id/deliver", protect, admin, async (req, res) => {
     const updatedOrder = await order.save();
     res.json(updatedOrder);
   } catch (error) {
-    res.status(500).json({ message: "Delivery update failed" });
+    res.status(500).json({ message: "Failed to update delivery status" });
   }
 });
 
 /* ================= ADMIN: CANCEL ORDER ================= */
 router.put("/:id/cancel", protect, admin, async (req, res) => {
   try {
+    if (!validateObjectId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid order ID format" });
+    }
+
     const order = await Order.findById(req.params.id);
 
     if (!order) {
@@ -143,13 +155,13 @@ router.put("/:id/cancel", protect, admin, async (req, res) => {
     if (order.orderStatus === "Delivered") {
       return res
         .status(400)
-        .json({ message: "Delivered orders cannot be cancelled" });
+        .json({ message: "Cannot cancel a delivered order" });
     }
 
     if (order.orderStatus === "Cancelled") {
       return res
         .status(400)
-        .json({ message: "Order already cancelled" });
+        .json({ message: "Order is already cancelled" });
     }
 
     order.cancelledAt = Date.now();
@@ -158,13 +170,17 @@ router.put("/:id/cancel", protect, admin, async (req, res) => {
     const updatedOrder = await order.save();
     res.json(updatedOrder);
   } catch (error) {
-    res.status(500).json({ message: "Cancel failed" });
+    res.status(500).json({ message: "Failed to cancel order" });
   }
 });
 
 /* ================= ADMIN: RESTORE CANCELLED ORDER ================= */
 router.put("/:id/restore", protect, admin, async (req, res) => {
   try {
+    if (!validateObjectId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid order ID format" });
+    }
+
     const order = await Order.findById(req.params.id);
 
     if (!order) {
@@ -183,13 +199,17 @@ router.put("/:id/restore", protect, admin, async (req, res) => {
     const updatedOrder = await order.save();
     res.json(updatedOrder);
   } catch (error) {
-    res.status(500).json({ message: "Restore failed" });
+    res.status(500).json({ message: "Failed to restore order" });
   }
 });
 
 /* ================= ORDER DETAILS ================= */
 router.get("/:id", protect, async (req, res) => {
   try {
+    if (!validateObjectId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid order ID format" });
+    }
+
     const order = await Order.findById(req.params.id).populate(
       "user",
       "name email"
@@ -203,12 +223,12 @@ router.get("/:id", protect, async (req, res) => {
       order.user._id.toString() !== req.user._id.toString() &&
       !req.user.isAdmin
     ) {
-      return res.status(403).json({ message: "Not authorized" });
+      return res.status(403).json({ message: "Not authorized to view this order" });
     }
 
     res.json(order);
   } catch (error) {
-    res.status(500).json({ message: "Failed to load order" });
+    res.status(500).json({ message: "Failed to load order details" });
   }
 });
 

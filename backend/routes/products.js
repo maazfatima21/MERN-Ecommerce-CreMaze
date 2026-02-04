@@ -4,6 +4,10 @@ const Product = require('../models/Product');
 const { protect, admin } = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
+const mongoose = require('mongoose');
+
+// Helper function to validate MongoDB ObjectId
+const validateObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 // ---------------- Multer Config ----------------
 const storage = multer.diskStorage({
@@ -44,11 +48,15 @@ router.get('/', async (req, res) => {
 // GET single product by ID (Public)
 router.get('/:id', async (req, res) => {
   try {
+    if (!validateObjectId(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid product ID format' });
+    }
+    
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
     res.json(product);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'Failed to fetch product' });
   }
 });
 
@@ -74,6 +82,10 @@ router.post('/', protect, admin, upload.single('image'), async (req, res) => {
 // UPDATE product (Admin only)
 router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
   try {
+    if (!validateObjectId(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid product ID format' });
+    }
+
     const updateData = { ...req.body };
     if (updateData.price) updateData.price = Number(updateData.price);
     if (req.file) updateData.image = req.file.filename;
@@ -88,19 +100,23 @@ router.put('/:id', protect, admin, upload.single('image'), async (req, res) => {
 
     res.json(product);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to update product' });
   }
 });
 
 // DELETE product (Admin only)
 router.delete('/:id', protect, admin, async (req, res) => {
   try {
+    if (!validateObjectId(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid product ID format' });
+    }
+
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
 
     res.json({ message: 'Product deleted successfully' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'Failed to delete product' });
   }
 });
 
