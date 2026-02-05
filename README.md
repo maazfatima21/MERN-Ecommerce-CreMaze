@@ -1,11 +1,7 @@
 # 🍦 CreMaze - Premium Ice Cream E-Commerce Platform
-
 A full-stack MERN (MongoDB, Express, React, Node.js) application for a premium ice cream business with user authentication, product management, order tracking, and admin dashboard.
 
----
-
 ## 📋 Table of Contents
-
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
@@ -18,7 +14,6 @@ A full-stack MERN (MongoDB, Express, React, Node.js) application for a premium i
 - [Key Features Explained](#key-features-explained)
 - [Troubleshooting](#troubleshooting)
 
----
 
 ## ✨ Features
 
@@ -40,23 +35,17 @@ A full-stack MERN (MongoDB, Express, React, Node.js) application for a premium i
 
 ### General Features
 - **Contact Form**: Send messages with email notifications
-- **Responsive Design**: Works on desktop, tablet, and mobile devices
 - **Email Notifications**: Confirmation emails for contact submissions
-- **Secure Payments**: Payment method selection for orders
 - **Search & Filter**: Find products easily
-
----
 
 ## 🛠 Tech Stack
 
 ### Frontend
-- **React 19.2.0** - UI library
-- **Vite** - Fast build tool
+- **React  & Vite** - UI library, Fast build tool
 - **React Router DOM 7.9.6** - Client-side routing
 - **Redux Toolkit 2.11.0** - State management
 - **Axios 1.13.2** - HTTP client
 - **React Icons 5.5.0** - Icon library
-- **Tailwind CSS 4.1.18** - Utility-first CSS
 - **React Toastify 11.0.5** - Toast notifications
 
 ### Backend
@@ -68,7 +57,6 @@ A full-stack MERN (MongoDB, Express, React, Node.js) application for a premium i
 - **Multer 2.0.2** - File upload handling
 - **Nodemailer 7.0.12** - Email service
 - **CORS** - Cross-origin resource sharing
-- **dotenv** - Environment variable management
 
 ---
 
@@ -172,48 +160,24 @@ npm install
 ## 🔐 Environment Variables
 
 ### Backend (.env)
-Create a `.env` file in the `backend/` directory:
 
-```dotenv
-# Server Configuration
 PORT=5000
 NODE_ENV=development
-
-# Database
 MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/cremaze?retryWrites=true&w=majority
-
-# Authentication
 JWT_SECRET=your_super_secret_jwt_key_here
-
-# Email Service (Gmail)
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-specific-password
 
-# Google Maps (Optional)
-VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-```
-
-**Note on Gmail**: Use an [App-Specific Password](https://myaccount.google.com/apppasswords) instead of your regular Gmail password.
-
 ### Frontend (.env)
-Create a `.env` file in the `frontend/` directory:
-
-```dotenv
-# API Configuration
-VITE_API_URL=http://localhost:5000
-
-# Google Maps
 VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-```
-
----
+VITE_API_URL=http://localhost:5000
 
 ## ▶️ Running the Project
 
 ### Start Backend Server
 ```bash
 cd backend
-npm run dev
+node server.js
 ```
 Server runs on: **http://localhost:5000**
 
@@ -401,28 +365,6 @@ Orders follow a strict state machine:
 
 ---
 
-## 🐛 Troubleshooting
-
-### MongoDB Connection Error
-```
-Error: MongoDB connection error
-```
-**Solution**: 
-- Check MONGO_URI in .env is correct
-- Ensure MongoDB is running (local) or accessible (Atlas)
-- Check IP whitelist on MongoDB Atlas
-
-### PORT Already in Use
-```
-Error: listen EADDRINUSE: address already in use :::5000
-```
-**Solution**: 
-```bash
-# Kill process on port 5000
-lsof -ti:5000 | xargs kill -9  # macOS/Linux
-netstat -ano | findstr :5000   # Windows
-```
-
 ### JWT Token Expired
 - Token expires after 30 days
 - User is automatically logged out
@@ -455,11 +397,6 @@ netstat -ano | findstr :5000   # Windows
 - [Mongoose Documentation](https://mongoosejs.com/)
 
 
-## 👥 Support
-
-For issues or questions:
-- **Email**: hello@cremaze.com
-- **Phone**: +91 98765 43210
 
 ---
 
