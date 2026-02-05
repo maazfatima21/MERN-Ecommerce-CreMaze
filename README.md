@@ -196,6 +196,29 @@ npm run build
 
 # Output in frontend/dist/
 ```
+## 📸 Screenshots
+
+### Home Page
+![Home Page](screenshots/home.jpg)
+
+### Login and Myorder
+![Loginandmyorder](screenshots/login%20and%20myorder.jpg)
+
+### Products Page
+![Products Page](screenshots/products.jpg)
+
+### Contact Page
+![contact Page](screenshots/contact.jpg)
+
+### About
+![About](screenshots/about.jpg)
+
+### Cart
+![Cart Page](screenshots/cart.jpg)
+
+### Admin pages
+![Admin](screenshots/Admin.jpg)
+
 
 ---
 
