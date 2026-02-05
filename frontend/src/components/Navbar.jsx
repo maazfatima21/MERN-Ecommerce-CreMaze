@@ -112,8 +112,18 @@ const handleAdminKeyDown = (e) => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    // Clear all sensitive data explicitly
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("reorderItems");
+    
+    // Close menu
     setSidebarOpen(false);
+    setAdminOpen(false);
+    
+    // Redirect to login
     navigate("/login");
   };
 

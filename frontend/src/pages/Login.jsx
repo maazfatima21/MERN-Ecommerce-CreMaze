@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import Layout from "../components/Layout";
+import { getUserFriendlyError } from "../utils/formatting";
 import "../styles/Login.css";
 
 const Login = () => {
@@ -71,8 +72,9 @@ const Login = () => {
         setIsLogin(true);
       }
     } catch (err) {
-      console.error(err);
-      setStatus(err.response?.data?.message || "Server error. Please try again.");
+      const errorMessage = getUserFriendlyError(err);
+      setStatus(errorMessage);
+      setFormData({ ...formData, password: "", confirmPassword: "" });
     }
   };
 

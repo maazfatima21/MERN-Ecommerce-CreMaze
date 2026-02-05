@@ -117,7 +117,7 @@ MERN Fullstack project/
 │   │   │   ├── Contact.jsx      # Contact form
 │   │   │   ├── About.jsx        # About page
 │   │   │   ├── AdminProduct.jsx # Admin product management
-│   │   │   ├── AdminOrders.jsx  # Admin order management
+│   │   │   ├── AdminOrders.jsx  # Admin order 
 │   │   │   ├── AdminMessages.jsx# Admin messages view
 │   │   │   ├── ProtectedRoute.jsx # Route protection HOC
 │   │   ├── context/
@@ -454,13 +454,6 @@ netstat -ano | findstr :5000   # Windows
 - [JWT Authentication](https://jwt.io/)
 - [Mongoose Documentation](https://mongoosejs.com/)
 
----
-
-## 📝 License
-
-This project is proprietary to Besent Tech. All rights reserved.
-
----
 
 ## 👥 Support
 
@@ -470,5 +463,5 @@ For issues or questions:
 
 ---
 
-**Last Updated**: February 4, 2026
+**Last Updated**: February 5, 2026
 **Version**: 1.0.0
