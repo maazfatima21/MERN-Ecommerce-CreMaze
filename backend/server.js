@@ -17,10 +17,9 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "http://localhost:4173",
       "http://localhost:5174",
-      "http://localhost:5173",
-      "https://your-vercel-project-name.vercel.app"
+      "https://cremaze2026.vercel.app",
+      "https://cremaze.onrender.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
