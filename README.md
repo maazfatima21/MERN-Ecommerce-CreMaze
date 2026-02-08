@@ -8,6 +8,7 @@ A full-stack MERN (MongoDB, Express, React, Node.js) application for a premium i
 - [Installation](#installation)
 - [Environment Variables](#environment-variables)
 - [Running the Project](#running-the-project)
+- [Deployment](#deployment)
 - [API Documentation](#api-documentation)
 - [Database Schema](#database-schema)
 - [Authentication](#authentication)
@@ -196,6 +197,31 @@ npm run build
 
 # Output in frontend/dist/
 ```
+## Deployment
+The CreMaze project is live and deployed for production.
+
+### Frontend Deployment
+
+Hosted on Vercel
+URL: https://cremaze2026.vercel.app
+Built with npm run build (Vite production build)
+Configured to fetch data from the live backend API
+
+### Backend Deployment
+
+Hosted on Render
+URL: https://cremaze.onrender.com
+Handles all API requests, authentication, image uploads, and email notifications
+MongoDB Atlas is used as the cloud database
+Environment variables stored securely in Render
+
+### Steps Taken for Deployment
+
+1. Frontend: Built with npm run build → Deployed to Vercel
+2. Backend: Node.js app deployed on Render → Configured static /uploads folder for images
+3. Live Connection: Frontend Axios API URLs updated to point to Render backend
+4. Testing: Verified all routes, JWT authentication, image uploads, and email notifications
+
 ## 📸 Screenshots
 
 ### Home Page
@@ -419,9 +445,8 @@ Orders follow a strict state machine:
 - [JWT Authentication](https://jwt.io/)
 - [Mongoose Documentation](https://mongoosejs.com/)
 
-
-
 ---
 
-**Last Updated**: February 5, 2026
+**Last Updated**: February 8, 2026
 **Version**: 1.0.0
+**Live Demo**: https://cremaze2026.vercel.app

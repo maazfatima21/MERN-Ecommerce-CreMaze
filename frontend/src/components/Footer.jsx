@@ -30,7 +30,7 @@ function Footer() {
           <h3>Quick Links</h3>
           <ul className="footer-links">
             <li><span className="link-inner"><a href="/">Home</a></span></li>
-            <li><span className="link-inner"><a href="/menu">Menu</a></span></li>
+            <li><span className="link-inner"><a href="/products">Menu</a></span></li>
             <li><span className="link-inner"><a href="/about">About Us</a></span></li>
             <li><span className="link-inner"><a href="/contact">Contact</a></span></li>
           </ul>
