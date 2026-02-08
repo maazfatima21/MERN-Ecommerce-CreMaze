@@ -337,7 +337,7 @@
   100% { transform: translateY(0); }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px),(max-width: 768px) {
   .home-container .hero {
     grid-template-columns: 1fr;
     text-align: center;

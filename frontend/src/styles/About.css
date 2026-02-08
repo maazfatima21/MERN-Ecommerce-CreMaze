@@ -344,6 +344,10 @@
   .philosophy-card {
     padding: 20px;
   }
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
 }
 @media (max-width: 480px) {
   .about-hero h1 {
