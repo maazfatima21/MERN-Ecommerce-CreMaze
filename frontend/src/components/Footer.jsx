@@ -19,7 +19,7 @@ function Footer() {
         {/* Logo & Tagline */}
         <div className="footer-section footer-tagline">
           <div className="footer-tagline-top">
-            <img src="/logo.png" alt="CreMaze Logo" className="logo" />
+            <img src="/images/logo.png" alt="CreMaze Logo" className="logo" />
             <h2>Where Every Scoop <br /> is a Delight!</h2>
           </div>
           <p>Dive into a world of creamy flavors and endless happiness!</p>
@@ -74,7 +74,7 @@ function Footer() {
       <div className="footer-bottom">
         &copy; 2025 CreMaze | All rights reserved.
       </div>
-      <img src="footer bg.png" className="footer-right-img" alt="" />
+      <img src="/images/footer bg.png" className="footer-right-img" alt="" />
 
     </footer>
   );

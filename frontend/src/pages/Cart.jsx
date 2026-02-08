@@ -185,7 +185,7 @@ function Cart() {
           <div className="cremaze-empty-cart">
             <div className="empty-cart-wrapper">
               <div className="empty-cart-illustration">
-                <img src="/Emptycart 1.png" alt="Empty Cart" />
+                <img src="/images/Emptycart 1.png" alt="Empty Cart" />
               </div>
 
               <h1>Your Cart</h1>

@@ -244,7 +244,7 @@ const Contact = () => {
             <button className="party-btn">Reserve Yours</button>
           </div>
 
-          <img src="/img.png" alt="CreMaze Celebration" />
+          <img src="/images/img.png" alt="CreMaze Celebration" />
         </section>
         </section>
         

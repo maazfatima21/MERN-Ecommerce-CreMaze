@@ -31,7 +31,7 @@ const Home = () => {
         </div>
 
         <div className="hero-right">
-          <img src="Home.png" alt="CreMaze Signature Creation" />
+          <img src="/images/Home.png" alt="CreMaze Signature Creation" />
         </div>
       </section>
 
@@ -45,7 +45,7 @@ const Home = () => {
 
         <div className="signature-grid">
         <div className="signature-card">
-          <img src="111.jpeg" alt="Strawberry Splash" />
+          <img src="/images/111.jpeg" alt="Strawberry Splash" />
           <div className="signature-overlay">
             <h4>Strawberry Splash</h4>
             <span>Bright · Silken</span>
@@ -53,7 +53,7 @@ const Home = () => {
         </div>
 
         <div className="signature-card">
-          <img src="112.jpg" alt="Emerald Scoop" />
+          <img src="/images/112.jpg" alt="Emerald Scoop" />
           <div className="signature-overlay">
             <h4>Emerald Scoop</h4>
             <span>Herbal · Calm</span>
@@ -61,7 +61,7 @@ const Home = () => {
         </div>
 
         <div className="signature-card">
-          <img src="113.png" alt="Indigo Mist" />
+          <img src="/images/113.png" alt="Indigo Mist" />
           <div className="signature-overlay">
             <h4>Indigo Mist</h4>
             <span>Floral · Velvet</span>
@@ -69,7 +69,7 @@ const Home = () => {
         </div>
 
         <div className="signature-card">
-          <img src="114.png" alt="Dark Secret Scoop" />
+          <img src="/images/114.png" alt="Dark Secret Scoop" />
           <div className="signature-overlay">
             <h4>Dark Secret</h4>
             <span>Deep · Decadent</span>
@@ -92,42 +92,42 @@ const Home = () => {
 
         <div className="maze-grid">
           <div className="maze-card tall">
-            <img src="/H1.jpg" alt="Exquisite" />
+            <img src="/images/H1.jpg" alt="Exquisite" />
             <div className="maze-text">
               <h4>Exquisite</h4>              
             </div>
           </div>
 
           <div className="maze-card">
-            <img src="/H2.jpg" alt="Botanical" />
+            <img src="/images/H2.jpg" alt="Botanical" />
             <div className="maze-text">
               <h4>Botanical</h4>              
             </div>
           </div>
 
           <div className="maze-card">
-            <img src="/H4.jpg" alt="Pure Bliss" />
+            <img src="/images/H4.jpg" alt="Pure Bliss" />
             <div className="maze-text">
               <h4>Pure Bliss</h4>
             </div>
           </div>
 
           <div className="maze-card">
-            <img src="/H3.jpg" alt="Unforgettable Moments" />
+            <img src="/images/H3.jpg" alt="Unforgettable Moments" />
             <div className="maze-text">
               <h4>Unforgettable Moments</h4>              
             </div>
           </div>
 
           <div className="maze-card wide">
-            <img src="/H5.jpg" alt="Legacy" />
+            <img src="/images/H5.jpg" alt="Legacy" />
             <div className="maze-text">
               <h4>Legacy</h4>
             </div>
           </div>
 
           <div className="maze-card wide">
-            <img src="/H6.jpg" alt="Perfection" />
+            <img src="/images/H6.jpg" alt="Perfection" />
             <div className="maze-text">
               <h4>Perfection</h4>              
             </div>

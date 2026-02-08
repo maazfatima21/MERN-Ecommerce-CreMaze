@@ -40,19 +40,19 @@ const About = () => {
 
           <div className="about-carousel-track">
             <div className="about-carousel-slide">
-            <img src="ice1.png" alt="ice cream" loading="lazy" />
-            <img src="ice2.png" alt="ice cream" loading="lazy" />
-            <img src="ice3.png" alt="ice cream" loading="lazy" />
-            <img src="ice4.png" alt="ice cream" loading="lazy" />
-            <img src="ice5.png" alt="ice cream" loading="lazy" />
-            <img src="ice6.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice1.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice2.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice3.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice4.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice5.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice6.png" alt="ice cream" loading="lazy" />
 
-            <img src="ice1.png" alt="ice cream" loading="lazy" />
-            <img src="ice2.png" alt="ice cream" loading="lazy" />
-            <img src="ice3.png" alt="ice cream" loading="lazy" />
-            <img src="ice4.png" alt="ice cream" loading="lazy" />
-            <img src="ice5.png" alt="ice cream" loading="lazy" />
-            <img src="ice6.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice1.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice2.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice3.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice4.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice5.png" alt="ice cream" loading="lazy" />
+            <img src="/images/ice6.png" alt="ice cream" loading="lazy" />
             </div>
           </div>
         </section>
@@ -106,19 +106,19 @@ const About = () => {
 
             <div className="makers-grid">
               <div className="maker-card">
-                <img src="/M1.png" alt="image" loading="lazy" />
+                <img src="/images/M1.png" alt="image" loading="lazy" />
                 <h4>Flavor Curator</h4>
                 <span>Vision · Direction · Taste</span>
               </div>
 
               <div className="maker-card">
-                <img src="/M2.png" alt="image" loading="lazy" />
+                <img src="/images/M2.png" alt="image" loading="lazy" />
                 <h4>Master Artisan</h4>
                 <span>Texture · Technique · Precision</span>
               </div>
 
               <div className="maker-card">
-                <img src="/M3.png" alt="image" loading="lazy" />
+                <img src="/images/M3.png" alt="image" loading="lazy" />
                 <h4>Ingredient Specialist</h4>
                 <span>Sourcing · Integrity</span>
               </div>

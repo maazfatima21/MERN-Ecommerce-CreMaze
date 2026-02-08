@@ -40,7 +40,7 @@ const CreMazeOrderPlaced = () => {
           <div className="cmop-content-row">
             <div className="cmop-image-wrapper">
               <img
-                src="OS-pg.png"
+                src="/images/OS-pg.png"
                 alt="Order confirmed"
                 className="cmop-order-image"
               />

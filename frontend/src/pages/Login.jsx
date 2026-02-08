@@ -86,7 +86,7 @@ const Login = () => {
         {/* LEFT IMAGE SECTION */}
         <div className="login-left">
           <img
-            src="login.png"
+            src="/images/login.png"
             alt="Ice Cream"
           />
         </div>
