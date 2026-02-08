@@ -3,7 +3,7 @@ import axios from "axios";
 export const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: `${API_BASE_URL}/api`,
 });
 
 // 🔐 AUTO LOGOUT ON TOKEN EXPIRY
