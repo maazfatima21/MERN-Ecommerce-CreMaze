@@ -91,7 +91,7 @@ function ProductPage() {
             <img
               src={
                 product.image
-                  ? `${import.meta.env.VITE_API_URL.replace('/api','')}/uploads/${product.image}`
+                  ? `${import.meta.env.VITE_API_URL}/${product.image.startsWith('uploads/') ? product.image : `uploads/${product.image}`}`
                   : "/placeholder.png"
               }
               alt={product.name}

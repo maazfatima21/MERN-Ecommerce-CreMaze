@@ -11,12 +11,12 @@ const Toast = ({ message, type = "success" }) => {
 
 /* ================= CART ITEM ================= */
 const CartItem = ({ item, onQtyChange, onRemove }) => {
-  const BASE_URL = import.meta.env.VITE_API_URL.replace('/api','');
+  const BASE_URL = import.meta.env.VITE_API_URL;
 
   return (
     <div className="cart-item">
       <img
-        src={`${BASE_URL}/uploads/${item.image}`}
+        src={item.image ? `${BASE_URL}/${item.image.startsWith('uploads/') ? item.image : `uploads/${item.image}`}` : "/placeholder.png"}
         alt={item.name}
         onError={(e) => (e.target.src = "/placeholder.png")}
       />
