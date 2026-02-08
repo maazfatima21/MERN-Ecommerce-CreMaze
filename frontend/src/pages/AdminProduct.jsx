@@ -39,7 +39,7 @@ const AdminProduct = () => {
           const res = await API.get(`/products/${id}`);
           setFormData(res.data);
           if (res.data.image) {
-            setCurrentImage(`http://localhost:5000/uploads/${res.data.image}`);
+            setCurrentImage(`${import.meta.env.VITE_API_URL.replace('/api','')}/uploads/${res.data.image}`);
           }
           setPreview(null);
           setImage(null);

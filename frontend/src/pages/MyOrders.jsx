@@ -85,7 +85,7 @@ function MyOrders() {
                   {order.orderItems.map((item, i) => (
                     <div key={i} className="order-item">
                       <img
-                        src={item.image ? `http://localhost:5000/uploads/${item.image}` : "https://via.placeholder.com/55x55?text=No+Image"}
+                        src={item.image ? `${import.meta.env.VITE_API_URL}/uploads/${item.image}` : "https://via.placeholder.com/55x55?text=No+Image"}
                         alt={item.name}
                         onError={(e) => {
                           e.target.src = "https://via.placeholder.com/55x55?text=No+Image";
@@ -172,7 +172,7 @@ function MyOrders() {
                   <div key={i} className="modal-item">
                     {item.image ? (
                       <img
-                        src={`http://localhost:5000/uploads/${item.image}`}
+                        src={`${import.meta.env.VITE_API_URL}/uploads/${item.image}`}
                         alt={item.name}
                         className="modal-item-image"
                         onError={(e) => {

@@ -10,7 +10,7 @@ function ProductCard({ product, onAddToCart, onDeleteClick }) {
       <img
         src={
           product.image
-            ? `http://localhost:5000/uploads/${product.image}`
+            ? `${import.meta.env.VITE_API_URL.replace('/api','')}/uploads/${product.image}`
             : "/no-image.png"
         }
         alt={product.name}

@@ -11,7 +11,7 @@ const Toast = ({ message, type = "success" }) => {
 
 /* ================= CART ITEM ================= */
 const CartItem = ({ item, onQtyChange, onRemove }) => {
-  const BASE_URL = "http://localhost:5000";
+  const BASE_URL = import.meta.env.VITE_API_URL.replace('/api','');
 
   return (
     <div className="cart-item">

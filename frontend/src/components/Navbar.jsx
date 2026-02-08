@@ -58,7 +58,7 @@ const handleAdminKeyDown = (e) => {
       if (!token) return;
 
       const res = await fetch(
-        "http://localhost:5000/api/contact/unread-count",
+        `${import.meta.env.VITE_API_URL}/contact/unread-count`,
         {
           headers: {
           Authorization: `Bearer ${token}`,
