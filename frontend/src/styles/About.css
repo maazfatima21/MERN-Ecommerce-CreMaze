@@ -22,7 +22,7 @@
   justify-content: center;
   background: linear-gradient( rgba(61, 61, 61, 0.664),
       rgba(8, 8, 8, 0.718)  ),
-    url("About.jpg") center / cover no-repeat;
+    url("/images/About.jpg") center / cover no-repeat;
   text-align: center;
 }
 
